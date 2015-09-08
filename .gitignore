@@ -194,3 +194,11 @@ FakesAssemblies/
 
 # Visual Studio 6 workspace options file
 *.opt
+
+
+#Project specific ignore
+*.vcxproj
+*.filters
+CGAL_ProjectFiles/
+*.cmake
+CMakeLists.txt
