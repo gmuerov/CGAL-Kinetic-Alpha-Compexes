@@ -9,6 +9,8 @@ KineticAlphaComplex::KineticAlphaComplex(Traits st,
 	hiddenFaces(del_.number_of_faces())
 {
 	typedef StaticTriangulation::Finite_faces_iterator FaceIt;
+
+	//setup the initial hidden faces
 	for (FaceIt iterator = del.finite_faces_begin();
 			iterator != del.finite_faces_end();
 			iterator ++)
@@ -24,6 +26,8 @@ KineticAlphaComplex::KineticAlphaComplex(Traits st,
 				StaticTriangulation::Point end2 = iterator->vertex(1)->point();
 
 				typedef StaticTriangulation::Geom_traits GTraits;
+
+
 			}
 			break;
 		case 2: 
