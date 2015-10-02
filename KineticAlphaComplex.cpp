@@ -26,8 +26,6 @@ KineticAlphaComplex::KineticAlphaComplex(Traits st,
 				StaticTriangulation::Point end2 = iterator->vertex(1)->point();
 
 				typedef StaticTriangulation::Geom_traits GTraits;
-
-
 			}
 			break;
 		case 2: 
