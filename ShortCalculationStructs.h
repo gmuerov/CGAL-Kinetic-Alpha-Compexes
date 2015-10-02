@@ -14,9 +14,9 @@
 */
 
 template <class KK>
-struct ShortEdgesCheck2D
+struct ShortEdgeCheck2D
 {
-	ShortEdgesCheck2D(){}
+	ShortEdgeCheck2D(){}
 	typedef typename KK::Certificate_function result_type;
 	typedef typename KK::Point_2 Argument;
 
