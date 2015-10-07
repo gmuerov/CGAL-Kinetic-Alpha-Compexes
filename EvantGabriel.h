@@ -7,11 +7,11 @@ class EvantGabriel:
 
 	typedef Delaunay_event_base_3<KD, RS> baseEvent;
 	//kdel -> it's the Kinetic Alfha Complex Kernel
-	EvantGabriel(const RS &s,const typename KD::Face_handle &f,KD *kdel):baseEvent(s, kdel), f_(f){}
+	EvantGabriel(const RS &s,const typename KD::Face &f,KD *kdel):baseEvent(s, kdel), f_(f){}
 	void process(){
-		kdel()->hideShowFace(f_);
+		kdel()->hideShowFacet(f_);
 	}
 
 protected:
-  const typename KD::Face_handle f_;
+  const typename KD::Facet f_;
 #endif

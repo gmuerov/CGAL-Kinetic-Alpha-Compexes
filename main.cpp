@@ -4,12 +4,15 @@
 #include "ShortCalculationStructs.h"
 #include "ExtendedExactTraits.h"
 #include "AlphaComplexKineticKernel.h"
+#include <CGAL/Kinetic/Delaunay_triangulation_3.h>
+#include <CGAL/Kinetic/Delaunay_triangulation_visitor_base_3.h>
 
 #include <CGAL/determinant.h>
+typedef ExtendedExactTraits Traits;
 
 int main()
 {
-	typedef ExtendedExactTraits Traits;
+	
 	Traits tr(0, 1000);
 
 	typedef Traits::Kinetic_kernel KK;
@@ -17,6 +20,13 @@ int main()
 	typedef KK::Point_3 Argument3;
 	typedef KK::Certificate_function result_type;
 	typedef Traits::Kinetic_kernel::Motion_function F;
+	typedef CGAL::Kinetic::Delaunay_triangulation_visitor_base_3 Visitor;
+	typedef CGAL::Kinetic::Delaunay_triangulation_3<Traits>::Facet Facet;
+	typedef CGAL::Kinetic::Delaunay_triangulation_3<Traits>::Edge Edge;
+	Edge edge;
+	Facet facet;
+	int f1 = edge.third;
+	int f = facet.second;
 	std::vector<F::NT> coefsAx;
 	coefsAx.push_back(F::NT(3.0));
 	coefsAx.push_back(F::NT(7.0));

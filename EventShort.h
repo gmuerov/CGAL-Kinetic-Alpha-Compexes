@@ -2,18 +2,18 @@
 #define EVANT_SHORT_H
 
 template <class KD, class RS>
-class EvantShort:
+class EventShort:
 	public CGAL::Kinetic::internal::Delaunay_event_base_3<class KD, class RS>
 {
 	typedef Delaunay_event_base_3<KD, RS> baseEvent;
 	//kdel -> it's the Kinetic Alfha Complex Kernel
-	EvantShort(const RS &s,const typename KD::Face_handle &f,KD *kdel):baseEvent(s, kdel), f_(f){}
+	EventShort(const RS &s,const typename KD::Facet &f,KD *kdel):baseEvent(s, kdel), f_(f){}
 	void process(){
-		kdel()->hideShowFace(f_);
+		kdel()->hideShowFacet(f_);
 	}
 
 protected:
-  const typename KD::Face_handle f_;
+  const typename KD::Facet f_;
 
 }
 
