@@ -4,6 +4,7 @@
 #include "ShortCalculationStructs.h"
 #include "ExtendedExactTraits.h"
 #include "AlphaComplexKineticKernel.h"
+#include "KineticAphaComplexTriangulationBase3.h"
 #include <CGAL/Kinetic/Delaunay_triangulation_3.h>
 #include <CGAL/Kinetic/Delaunay_triangulation_visitor_base_3.h>
 
@@ -21,12 +22,24 @@ int main()
 	typedef KK::Certificate_function result_type;
 	typedef Traits::Kinetic_kernel::Motion_function F;
 	typedef CGAL::Kinetic::Delaunay_triangulation_visitor_base_3 Visitor;
-	typedef CGAL::Kinetic::Delaunay_triangulation_3<Traits>::Facet Facet;
-	typedef CGAL::Kinetic::Delaunay_triangulation_3<Traits>::Edge Edge;
-	Edge edge;
-	Facet facet;
-	int f1 = edge.third;
-	int f = facet.second;
+	typedef CGAL::Kinetic::Delaunay_triangulation_3<Traits> KDel;
+
+	std::set<KDel::Facet> facets;
+
+	facets.insert(KDel::Facet());
+
+	CGAL::Kinetic::Delaunay_triangulation_3<Traits> beef(tr);
+
+	std::cout<<"It runs!";
+
+	return 0;
+}
+
+
+
+/* Motion function tests
+
+	
 	std::vector<F::NT> coefsAx;
 	coefsAx.push_back(F::NT(3.0));
 	coefsAx.push_back(F::NT(7.0));
@@ -62,7 +75,4 @@ int main()
 	std::cout<< (a.x() + b.x()) / 2<<"\n";
 	std::cout<< M1240 *M1240 <<"\n";
 	KineticAlphaComplex x(tr, 2.0);
-	std::cout<<"It runs!";
-
-	return 0;
-}
+	*/
