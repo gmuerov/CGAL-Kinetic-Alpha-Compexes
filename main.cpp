@@ -1,4 +1,3 @@
-#include "KineticAlphaCompex.h"
 #include <CGAL/Kinetic/Exact_simulation_traits.h>
 #include <CGAL/Kinetic/Cartesian.h>
 #include "ShortCalculationStructs.h"
@@ -21,7 +20,6 @@ int main()
 	typedef KK::Point_3 Argument3;
 	typedef KK::Certificate_function result_type;
 	typedef Traits::Kinetic_kernel::Motion_function F;
-	typedef CGAL::Kinetic::Delaunay_triangulation_visitor_base_3 Visitor;
 	typedef CGAL::Kinetic::Delaunay_triangulation_3<Traits> KDel;
 
 	std::set<KDel::Facet> facets;
