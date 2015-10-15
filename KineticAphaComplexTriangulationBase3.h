@@ -66,6 +66,83 @@ Facet flip(const Edge &e)
 
 protected:
 
+void Initialization()
+{
+	Base::Initialization();
+
+    for (Base::All_edges_iterator eit = triangulation_.all_edges_begin();
+		eit != triangulation_.all_edges_end(); ++eit)
+	{
+		if(!CheckShortEdge(eit))
+		{
+			hiddenEdgeList.insert(eit);
+		}
+	}
+			
+
+    for (Base::All_facets_iterator fit = triangulation_.all_edges_begin();
+		fit != triangulation_.all_edges_end(); ++fit)
+	    {
+			if(!CheckShortFacet(fit))
+			{
+				hiddenFaceList.insert(fit);
+			}
+		}
+
+    for (Base::All_cells_iterator cit = triangulation_.all_edges_begin();
+		fit != triangulation_.all_edges_end(); ++cit)
+	    {
+			if(!CheckShortCell(cit))
+			{
+				hiddenCellList.insert(cit);
+			}
+		}
+    
+}
+
+ bool CheckShortCell(Cell_handle cell)
+{
+	std::vector<Point_key> ids;
+	cellPoint(cell, ids);
+
+	CGAL::Sign certSign = s4C3.sign_at(
+		point(ids[0]),
+		point(ids[1]),
+		point(ids[2]),
+		point(ids[3]),
+        simulator->current_time());
+
+        
+	return certSign != CGAL::NEGATIVE;
+}
+
+ bool CheckShortFacet(Facet facet)
+{
+	std::vector<Point_key> ids;
+	facetPoint(facet, ids);
+
+	CGAL::Sign certSign = sTC3.sign_at(
+		point(ids[0]),
+		point(ids[1]),
+		point(ids[2]),
+        simulator->current_time());
+        
+	return certSign != CGAL::NEGATIVE;
+}
+
+ bool CheckShortEdge(Edge edge)
+{
+	std::vector<Point_key> ids;
+	facetPoint(edge, ids);
+
+	CGAL::Sign certSign = sEC3.sign_at(
+		point(ids[0]),
+		point(ids[1]),
+        simulator->current_time());
+        
+	return certSign != CGAL::NEGATIVE;
+}
+
 void CheckHiddenAndAddCertificates(Cell_handle cell)
 {
     std::vector<Point_key> ids;
