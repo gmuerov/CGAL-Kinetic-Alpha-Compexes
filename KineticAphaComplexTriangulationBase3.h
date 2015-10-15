@@ -29,27 +29,27 @@ class KineticAphaComplexTriangulationBase:
 public:
 Facet flip(const Edge &e)
 {
+    Cell_handle deletedcell = e.first();
+
     CellCirculator ccir = triangulation_.incident_cells(e);
-    CellCirculator end = ccir;
+    CellCirculator end  = ccir;
 
     std::vector<cell_handle> cells;
     int degree = 0;
-
-    while(ccir!= end)
+    do
     {
-        if (*ccir != deletedcell)
-            cells.push_back(cell_handle(ccir));
+        if (ccir != deletedcell)
+            cells.push_back(Cell_handle(ccir));
 
         ccir++;
         degree++;
     }
+    while(ccir != end)
         
     if (degree > 3)
         return Facet();
 
     Base::flip(e);
-
-    Cell_handle deletedcell = e.first();
 
     Event_key deletedkey = cellslist[deletedcell];
     cellslist.remove(deletedcell);
@@ -60,7 +60,6 @@ Facet flip(const Edge &e)
         it != cells.end(); it++)
     {
         removeShortCertificate(it*);
-
         CheckHiddenAndAddCertificates(it*);
     }
 }
@@ -70,7 +69,7 @@ protected:
 void CheckHiddenAndAddCertificates(Cell_handle cell)
 {
     std::vector<Point_key> ids;
-    cellPoint(c, ids);
+    cellPoint(cell, ids);
 
     CGAL::Sign certSign = s4C3.sign_at(point(ids[0]),
 		point(ids[1]),
@@ -89,7 +88,13 @@ void CheckHiddenAndAddCertificates(Cell_handle cell)
     for(int i = 0; i < 4; i++)
     {
         Facet facet(cell, i);
+        makeShortCertificate(facet);
 
+        for(int j = 0; j < 4; j++)
+        {
+            if (j != i)
+                makeShortCertificate(Edge(cell, i, j));
+        }
     }
 }
 
@@ -372,8 +377,8 @@ Certificate facetRootStack(const Facet &f,
 
 void makeShortCertificate( const Facet &f,
 			      const typename Simulator::Time &st) {
-    CGAL_precondition(!has_event(f));
-    CGAL_precondition(!has_degree_3_edge(f));
+   
+    CGAL_precondition(!hasShortCertificate(f));
     
     Certificate cert = facetRootStack(f, st);
     if (cert.will_fail()) {
@@ -391,7 +396,7 @@ void makeShortCertificate( const Facet &f) {
 
 void makeShortCertificate( const Edge &e,
 			 const typename Simulator::Time &st) {
-    CGAL_precondition(!has_event(e));
+    CGAL_precondition(!hasShortCertificate(e));
     
     Certificate cert = edgeRootStack(e, st);
     if (cert.will_fail()) {
@@ -409,7 +414,7 @@ void makeShortCertificate( const Edge &e) {
 
 void makeShortCertificate( const Cell_handle &c,
 			 const typename Simulator::Time &st) {
-    CGAL_precondition(!has_event(c));
+    CGAL_precondition(!hasShortCertificate(c));
     
     Certificate cert = cellRootStack(c, st);
     if (cert.will_fail()) {
@@ -451,9 +456,42 @@ void create_all_certificates() {
     }
   }
 
+bool hasShortCertificate(const Edge& e)
+{
+    CellCirculator cc = triangulation_.incident_cells(e);
+    CellCirculator sent = cc;
+    
+    int count = 0;
+
+    do
+    {
+        int i = cc->index(e.first()->vertex(e.first());
+        int j = cc->index(e.first()->vertex(e.second());
+        count += edgesList.count(Edge(cc, i, j));
+        if(count > 0)
+            return true;
+        cc++;
+    }
+    while (cc != sent);
+
+    return false;
+}
+
+bool hasShortCertificate(const Facet& f)
+{
+    Facet mirrored = triangulation_.mirror_facet(f);
+    int count = facetsList.count(f) + facetsList.count(mirrored);
+
+    return count > 0;
+}
+
+bool hasShortCertificate(const Cell_handle& c)
+{
+    return cellsList.count(c) > 0;
+}
+
 protected:
 //    NT squared_alpha;
-
 	std::set<Cell_handle> hiddenCellList;
 	std::set<Facet>		  hiddenFaceList;
 	std::set<Edge>	      hiddenEdgeList;
