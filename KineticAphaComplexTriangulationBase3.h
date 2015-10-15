@@ -59,8 +59,39 @@ Facet flip(const Edge &e)
     for(std::vector<cell_handle>::iterator it = cells.begin();
         it != cells.end(); it++)
     {
-        removeShortCertificate(it*);
-        CheckHiddenAndAddCertificates(it*);
+        removeShortCertificate(it);
+        
+        bool shortCell = CheckShortCell(it);
+        if (!shortCell)
+            hiddenCellList.insert(it);
+
+        makeShortCertificate(it);
+
+        for(int i = 0; i < 4; i++)
+        {
+            Facet facet(it, i);
+            Facet mirror = triangulation_.mirror_facet(facet);
+
+            if (!shortCell && CheckShortFacet(facet))
+                hiddenFaceList.insert(facet);
+
+            removeShortCertificate(facet);
+            makeShortCertificate(facet);
+
+            for(int j = i + 1; j < 4; j++)
+            {
+                if (j != i)
+                {
+                    Edge e(it, i, j);
+
+                    if (!shortCell && CheckShortEdge(e))
+                        hiddenEdgeList.insert(e);
+
+                    removeShortCertificate(e);
+                    makeShortCertificate(e);
+                }
+            }
+        }
     }
 }
 
@@ -141,38 +172,6 @@ void Initialization()
         simulator->current_time());
         
 	return certSign != CGAL::NEGATIVE;
-}
-
-void CheckHiddenAndAddCertificates(Cell_handle cell)
-{
-    std::vector<Point_key> ids;
-    cellPoint(cell, ids);
-
-    CGAL::Sign certSign = s4C3.sign_at(point(ids[0]),
-		point(ids[1]),
-		point(ids[2]),
-		point(ids[3]),
-        simulator->current_time());
-
-        
-    bool shortFace = certSign == CGAL::NEGATIVE;
-
-    if (!shortFace)
-        hiddenCellList.insert(cell);
-
-    makeShortCertificate(cell);
-
-    for(int i = 0; i < 4; i++)
-    {
-        Facet facet(cell, i);
-        makeShortCertificate(facet);
-
-        for(int j = 0; j < 4; j++)
-        {
-            if (j != i)
-                makeShortCertificate(Edge(cell, i, j));
-        }
-    }
 }
 
 void audit()
