@@ -20,7 +20,7 @@ struct ShortEdgeCheck2D
 	typedef typename KK::Certificate_function result_type;
 	typedef typename KK::Point_2 Argument;
 
-	result_type operator()(Argument a, Argument b, double squaredAlpha)
+	result_type operator()(Argument a, Argument b, double squaredAlpha) const
 	{
 		typedef typename KK::Certificate_function FT;
 		
@@ -42,7 +42,7 @@ struct ShortTriangleCheck2D
 	typedef typename KK::Certificate_function result_type;
 	typedef typename KK::Point_2 Argument;
 
-	result_type operator()(Argument a, Argument b, Argument c, double squaredAlpha)
+	result_type operator()(Argument a, Argument b, Argument c, double squaredAlpha) const
 	{
 
 		//The radius of the circumcircle of ABC is |AB||BC||AC| / 2|ABC|
@@ -75,7 +75,7 @@ struct ShortEdgeCheck3D
 	typedef typename KK::Certificate_function result_type;
 	typedef typename KK::Point_3 Argument;
 
-	result_type operator()(Argument a, Argument b, double squaredAlpha)
+	result_type operator()(Argument a, Argument b, double squaredAlpha) const
 	{
 		Argument dx = a.x() - b.x();
 		Argument dy = a.y() - b.y();
@@ -93,7 +93,7 @@ struct ShortTriangleCheck3D
 	typedef typename KK::Point_3 Argument;
 
 	/// Calculate the 3D polynomial 
-	result_type operator()(Argument a, Argument b, Argument c, double squaredAlpha)
+	result_type operator()(Argument a, Argument b, Argument c, double squaredAlpha) const
 	{
 		
 		//The radius of the circumcircle of ABC is |AB||BC||AC| / 2|ABC|
@@ -138,51 +138,56 @@ struct ShortTriangleCheck3D
 template <class KK>
 struct ShortTetrahedronCheck3D
 {
-	ShortTetrahedronCheck3D(){}
+	ShortTetrahedronCheck3D(){
+        std::vector<double> oneV(1, 1);
+        one = result_type(oneV.begin(), oneV.end());
+    }
 
 	typedef typename KK::Certificate_function result_type;
 	typedef typename KK::Point_3 Argument;
 
-	/// Calculate the 3D polynomial 
-	result_type operator()(Argument a, Argument b, Argument c, Argument d, double squaredAlpha)
-	{
-		Argument SizeA = CGAL::square(a.x()) + CGAL::square(a.y()) + CGAL::square(a.z());
-		Argument SizeB = CGAL::square(b.x()) + CGAL::square(b.y()) + CGAL::square(b.z());
-		Argument SizeC = CGAL::square(c.x()) + CGAL::square(c.y()) + CGAL::square(c.z());
-		Argument SizeD = CGAL::square(d.x()) + CGAL::square(d.y()) + CGAL::square(d.z());
-		
-		Argument M1240 =
-			CGAL::determinant(a.x(), a.y(), SizeA, 1,
-							  b.x(), b.y(), SizeB, 1,
-							  c.x(), c.y(), SizeC, 1,
-							  d.x(), d.y(), SizeD, 1);
-		
-		Argument M1340 =
-			CGAL::determinant(a.x(), a.z(), SizeA, 1,
-							  b.x(), b.z(), SizeB, 1,
-							  c.x(), c.z(), SizeC, 1,
-							  d.x(), d.z(), SizeD, 1);
-		
-		Argument M2340 =
-			CGAL::determinant(a.y(), a.z(), SizeA, 1,
-							  b.y(), b.z(), SizeB, 1,
-							  c.y(), c.z(), SizeC, 1,
-							  d.y(), d.z(), SizeD, 1);
+    result_type one;
 
-		Argument M1234 =
+	/// Calculate the 3D polynomial 
+	result_type operator()(Argument a, Argument b, Argument c, Argument d, double squaredAlpha) const
+	{
+		result_type SizeA = CGAL::square(a.x()) + CGAL::square(a.y()) + CGAL::square(a.z());
+		result_type SizeB = CGAL::square(b.x()) + CGAL::square(b.y()) + CGAL::square(b.z());
+		result_type SizeC = CGAL::square(c.x()) + CGAL::square(c.y()) + CGAL::square(c.z());
+		result_type SizeD = CGAL::square(d.x()) + CGAL::square(d.y()) + CGAL::square(d.z());
+		
+		result_type M1240 =
+			CGAL::determinant(a.x(), a.y(), SizeA, one,
+							  b.x(), b.y(), SizeB, one,
+							  c.x(), c.y(), SizeC, one,
+							  d.x(), d.y(), SizeD, one);
+		
+		result_type M1340 =
+			CGAL::determinant(a.x(), a.z(), SizeA, one,
+							  b.x(), b.z(), SizeB, one,
+							  c.x(), c.z(), SizeC, one,
+							  d.x(), d.z(), SizeD, one);
+		
+		result_type M2340 =
+			CGAL::determinant(a.y(), a.z(), SizeA, one,
+							  b.y(), b.z(), SizeB, one,
+							  c.y(), c.z(), SizeC, one,
+							  d.y(), d.z(), SizeD, one);
+
+		result_type M1234 =
 			CGAL::determinant(a.x(), a.y(), a.z(), SizeA,
 							  b.x(), b.y(), b.z(), SizeB,
 							  c.x(), c.y(), c.z(), SizeC,
 							  d.x(), d.y(), d.z(), SizeD);
 
-		Argument M1230 = 
-			CGAL::determinant(a.x(), a.y(), a.z(), 1,
-							  b.x(), b.y(), b.z(), 1,
-							  c.x(), c.y(), c.z(), 1,
-							  d.x(), d.y(), d.z(), 1);
+		result_type M1230 = 
+			CGAL::determinant(a.x(), a.y(), a.z(), one,
+							  b.x(), b.y(), b.z(), one,
+							  c.x(), c.y(), c.z(), one,
+							  d.x(), d.y(), d.z(), one);
 		
 		return squaredAlpha - (CGAL::square(M1240) + CGAL::square(M1340) + CGAL::square(M2340) - 4*M1234*M1230)/
-			                                                  4*CGAL::square(M1230)
+			                                                  4*CGAL::square(M1230);
 	}
 };
 
@@ -197,7 +202,7 @@ struct GabrielEdgeCheck2D
 	
 
 	///Get the polynomial responsible for the sign change of the Gabriel certificate for edge (a, b)
-	result_type operator()(Argument a, Argument b, Argument c)
+	result_type operator()(Argument a, Argument b, Argument c) 
 	{
 		//The center of the smallest circumcircle(the middle of the edge)
 		Argument center((a.x() + b.x())/2,(a.y() + b.y())/2);

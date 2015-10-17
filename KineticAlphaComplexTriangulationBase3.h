@@ -281,13 +281,14 @@ protected:
     bool CheckShortCell(Cell_handle cell)
     {
 	    std::vector<Point_key> ids;
-	    cellPoint(cell, ids);
+	    cellPoint(cell, std::back_insert_iterator<std::vector<Point_key> >(ids));
 
 	    CGAL::Sign certSign = s4C3.sign_at(
 		    point(ids[0]),
 		    point(ids[1]),
 		    point(ids[2]),
 		    point(ids[3]),
+            squared_alpha,
             simulator()->current_time());
 
         
@@ -297,13 +298,13 @@ protected:
     bool CheckShortFacet(Facet facet)
     {
 	    std::vector<Point_key> ids;
-	    facetPoint(facet, ids);
+	    facetPoint(facet, std::back_insert_iterator<std::vector<Point_key> >(ids));
 
 	    CGAL::Sign certSign = sTC3.sign_at(
 		    point(ids[0]),
 		    point(ids[1]),
 		    point(ids[2]),
-            squaredAlpha,
+            squared_alpha,
             simulator()->current_time());
         
 	    return certSign != CGAL::NEGATIVE;
@@ -312,12 +313,12 @@ protected:
     bool CheckShortEdge(Edge edge)
     {
 	    std::vector<Point_key> ids;
-        edgePoint(edge, ids);
+        edgePoint(edge, std::back_insert_iterator<std::vector<Point_key> >(ids));
 
 	    CGAL::Sign certSign = sEC3.sign_at(
 		    point(ids[0]),
 		    point(ids[1]),
-            squaredAlpha,
+            squared_alpha,
             simulator()->current_time());
         
 	    return certSign != CGAL::NEGATIVE;
@@ -428,7 +429,7 @@ protected:
 			     const typename Simulator::Time &st) const
     {
         std::vector<Point_key> ids;
-        edgePoint(e, ids);
+        edgePoint(e, std::back_insert_iterator<std::vector<Point_key> >(ids));
 	
         if (ids.size()==2) 
         {
@@ -447,7 +448,7 @@ protected:
 			      const typename Simulator::Time &st) const
     {
         std::vector<Point_key> ids;
-        facetPoint(f, ids);
+        facetPoint(f, std::back_insert_iterator<std::vector<Point_key> >(ids));
 	
 	    if (ids.size()==3) 
 	    {
@@ -583,7 +584,7 @@ protected:
     return cellsList.count(c) > 0;
 }
 
-    NT squared_alpha;
+    double squared_alpha;
     
     S4C3 s4C3;
     STC3 sTC3;
