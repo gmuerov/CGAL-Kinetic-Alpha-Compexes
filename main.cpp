@@ -2,8 +2,7 @@
 #include <CGAL/Kinetic/Cartesian.h>
 #include "ShortCalculationStructs.h"
 #include "ExtendedExactTraits.h"
-#include "AlphaComplexKineticKernel.h"
-#include "KineticAphaComplexTriangulationBase3.h"
+#include "KineticAlphaComplexTriangulation3.h"
 #include <CGAL/Kinetic/Delaunay_triangulation_3.h>
 #include <CGAL/Kinetic/Delaunay_triangulation_visitor_base_3.h>
 
@@ -27,7 +26,7 @@ int main()
 	facets.insert(KDel::Facet());
     std::cout<<facets.size()<<'\n';
 
-	CGAL::Kinetic::Delaunay_triangulation_3<Traits> beef(tr);
+	KineticAlphaComplexTriangulation3<Traits> beef(tr);
 
     typedef KDel::Cell_handle cell;
     typedef KDel::Facet Facet;

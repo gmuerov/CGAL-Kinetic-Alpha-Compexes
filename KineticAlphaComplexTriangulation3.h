@@ -3,7 +3,7 @@
 
 #include <CGAL/Kinetic/basic.h>
 
-#include "KineticAphaComplexTriangulationBase3.h"
+#include "KineticAlphaComplexTriangulationBase3.h"
 
 #include <CGAL/Kinetic/Listener.h>
 #include <CGAL/Kinetic/Ref_counted.h>
@@ -26,50 +26,54 @@
 #endif                          // initialize a member
 
 template <class Traits>
-struct Delaunay_triangulation_3_types
+struct AlphaComplex3Types
 {
   typedef typename Traits::Active_points_3_table MPT;
   typedef typename Traits::Kinetic_kernel KK;
   typedef CGAL::Kinetic::Delaunay_triangulation_cell_base_3<Traits> CFBI;
-  /*typedef CGAL::Triangulation_cell_base_with_info_3<Delaunay_cache_3<MPT, KK>,
-    typename Traits::Instantaneous_kernel, CFB> CFBI;*/
+
   typedef CGAL::Triangulation_vertex_base_3<typename Traits::Instantaneous_kernel> CVB;
   typedef CGAL::Triangulation_data_structure_3<CVB, CFBI> TDS;
 
   typedef CGAL::Delaunay_triangulation_3<typename Traits::Instantaneous_kernel, TDS> Default_triangulation;
 
-  //friend class CGAL::Delaunay_triangulation_3<typename P::Instantaneous_kernel, TDS>;
-
 };
-
-
-namespace CGAL { namespace Kinetic {
 
 //! A 3D kinetic Delaunay triangulation.
 template <class TraitsT,
-	  class Visitor= Delaunay_triangulation_visitor_base_3,
-	  class TriangulationT=typename internal::Delaunay_triangulation_3_types<TraitsT>::Default_triangulation>
-class Delaunay_triangulation_3: public Ref_counted<Delaunay_triangulation_3<TraitsT, Visitor, TriangulationT> > {
+	  class Visitor= CGAL::Kinetic::Delaunay_triangulation_visitor_base_3,
+	  class TriangulationT= typename AlphaComplex3Types<TraitsT>::Default_triangulation>
+class KineticAlphaComplexTriangulation3: 
+    public CGAL::Kinetic::Ref_counted<KineticAlphaComplexTriangulation3<TraitsT, Visitor, TriangulationT> > 
+{
+
 private:
-  typedef Delaunay_triangulation_3<TraitsT, Visitor, TriangulationT> This_DT3;
-  typedef Delaunay_triangulation_3<TraitsT, Visitor, TriangulationT> This;
+  typedef KineticAlphaComplexTriangulation3<TraitsT, Visitor, TriangulationT> This_AC3;
+  typedef KineticAlphaComplexTriangulation3<TraitsT, Visitor, TriangulationT> This;
+
 public:
   typedef typename TraitsT::Kinetic_kernel::Side_of_oriented_sphere_3::result_type Root_stack;
+  typedef typename TriangulationT::Cell_handle Cell_handle;
   typedef typename TriangulationT::Facet Facet;
   typedef typename TriangulationT::Edge Edge;
   typedef typename TraitsT::Simulator::Event_key Event_key;
   typedef typename TraitsT::Active_points_3_table::Key Point_key;
+
 private:
   struct Base_traits: public TraitsT {
     typedef TriangulationT Triangulation;
     typedef typename TraitsT::Kinetic_kernel::Side_of_oriented_sphere_3 Side_of_oriented_sphere_3;
     typedef typename TraitsT::Kinetic_kernel::Orientation_3 Orientation_3;
+    
+    typedef typename TraitsT::Kinetic_kernel::ShortEdgeCheck3        ShortEdgeCheck;
+    typedef typename TraitsT::Kinetic_kernel::ShortTriangleCheck3    ShortTriangleCheck;
+    typedef typename TraitsT::Kinetic_kernel::ShortTetrahedronCheck3 ShortTetrahedronCheck;
 
     // The next typedef is needed for VC++ as it does not pick the definition from ten lines above
     typedef typename TraitsT::Kinetic_kernel::Side_of_oriented_sphere_3::result_type Root_stack;
 
-    typedef internal::Delaunay_3_edge_flip_event<This_DT3, Root_stack> Edge_flip;
-    typedef typename internal::Delaunay_3_facet_flip_event<This_DT3, Root_stack> Facet_flip;
+    typedef CGAL::Kinetic::internal::Delaunay_3_edge_flip_event<This_AC3, Root_stack> Edge_flip;
+    typedef typename CGAL::Kinetic::internal::Delaunay_3_facet_flip_event<This_AC3, Root_stack> Facet_flip;
 
 
     Side_of_oriented_sphere_3 side_of_oriented_sphere_3_object() const
@@ -82,36 +86,36 @@ private:
       return TraitsT::kinetic_kernel_object().orientation_3_object();
     }
 
-    Base_traits(This_DT3 *t, const TraitsT &tr): TraitsT(tr), wr_(t) {}
+    Base_traits(This_AC3 *t, const TraitsT &tr): TraitsT(tr), wr_(t) {}
 
-    This_DT3* wrapper_handle() {
+    This_AC3* wrapper_handle() {
       return wr_;
     }
-    const This_DT3* wrapper_handle() const
+    const This_AC3* wrapper_handle() const
     {
       return wr_;
     }
 
-    This_DT3 *wr_;
+    This_AC3 *wr_;
   };
 
  
-  friend class internal::Delaunay_event_base_3<This, Root_stack>;  
+  friend class CGAL::Kinetic::internal::Delaunay_event_base_3<This, Root_stack>;  
 
-  friend class internal::Delaunay_3_edge_flip_event<This, Root_stack>;
+  friend class CGAL::Kinetic::internal::Delaunay_3_edge_flip_event<This, Root_stack>;
 
-  friend class internal::Delaunay_3_facet_flip_event<This, Root_stack>;
+  friend class CGAL::Kinetic::internal::Delaunay_3_facet_flip_event<This, Root_stack>;
 
   
 
-  typedef internal::KineticAphaComplexTriangulationBase3<Base_traits, Visitor> KDel;
+  typedef KineticAlphaComplexTriangulationBase<Base_traits, Visitor> ACBase;
 
   CGAL_KINETIC_DECLARE_LISTENERS(typename TraitsT::Simulator,
 				 typename TraitsT::Active_points_3_table)
 
 public:
   //! Initialize it.
-  Delaunay_triangulation_3(TraitsT tr, Visitor v= Visitor()): kdel_(Base_traits(this, tr), v) {
+  KineticAlphaComplexTriangulation3(TraitsT tr, Visitor v= Visitor()): kdel_(Base_traits(this, tr), v) {
     CGAL_KINETIC_INITIALIZE_LISTENERS(tr.simulator_handle(),
 				      tr.active_points_3_table_handle());
   }
@@ -175,12 +179,12 @@ public:
     on_geometry_changed();
   }
 
-  void flip(const typename KDel::Edge &edge) {
+  void flip(const typename ACBase::Edge &edge) {
     kdel_.flip(edge);
     on_geometry_changed();
   }
 
-  void flip(const typename KDel::Facet &flip_facet) {
+  void flip(const typename ACBase::Facet &flip_facet) {
     kdel_.flip(flip_facet);
     on_geometry_changed();
   }
@@ -193,10 +197,8 @@ public:
     CGAL_KINETIC_NOTIFY(TRIANGULATION);
   }
 
-  KDel kdel_;
+  ACBase kdel_;
 };
-
-} } //namespace CGAL::Kinetic
 
 #if defined(BOOST_MSVC)
 #  pragma warning(pop)
