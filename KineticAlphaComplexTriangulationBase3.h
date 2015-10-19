@@ -50,7 +50,7 @@ public:
     if (degree > 3)
         return Facet();
 
-    Base::flip(e);
+    Facet returnedFacet = Base::flip(e);
 
     Event_key deletedkey = cellslist[deletedcell];
     cellslist.remove(deletedcell);
@@ -94,13 +94,29 @@ public:
             }
         }
     }
+
+    return returnedFacet;
 }
 
     Edge flip(const Facet &f)
     {
         Cell_handle oldCell = f.first();
 
-        Base::flip(f);
+        Edge returnedEdge = Base::flip(f);
+
+        CellCirculator edgeCell = triangulation_.incident_cells(returnedEdge);
+        CellCirculator done = edgeCell;
+        
+        do
+        {
+            removeShortCertificate(edgeCell);
+            makeShortCertificate(edgeCell);
+
+            for(int i = 0; 
+        }
+        while(edgeCells != done)
+
+        return returnedEdge;
 
     }
 
@@ -198,7 +214,8 @@ public:
 		//Check if the edge is hidden
 		int edge = hiddenEdgeList.count(e);
 
-		//Look for the mirrored edge as well
+		//Look for the mirrored edge as well 
+        //not correct, fix that
 		Edge mirror= triangulation_.mirror_edge(e);
 		int mirroredEdge = hiddenEdgeList.count(mirror);
 
