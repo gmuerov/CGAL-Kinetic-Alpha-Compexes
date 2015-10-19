@@ -58,6 +58,7 @@ public:
   typedef typename TriangulationT::Edge Edge;
   typedef typename TraitsT::Simulator::Event_key Event_key;
   typedef typename TraitsT::Active_points_3_table::Key Point_key;
+  typedef typename TraitsT::Simulator Simulator;
 
 private:
   struct Base_traits: public TraitsT {
@@ -75,6 +76,10 @@ private:
     typedef CGAL::Kinetic::internal::Delaunay_3_edge_flip_event<This_AC3, Root_stack> Edge_flip;
     typedef typename CGAL::Kinetic::internal::Delaunay_3_facet_flip_event<This_AC3, Root_stack> Facet_flip;
 
+	typedef typename EventShortEdge<This_AC3, Root_stack> eventShortEdge;
+	typedef typename EventShortFacet<This_AC3, Root_stack> eventShortFacet;
+	typedef typename EventShortCell<This_AC3, Root_stack> eventShortCell;
+	
 
     Side_of_oriented_sphere_3 side_of_oriented_sphere_3_object() const
     {
@@ -114,6 +119,37 @@ private:
 				 typename TraitsT::Active_points_3_table)
 
 public:
+	
+	typename Simulator::Event_key GetEventKey(Edge e)
+	{
+		return kdel_.GetEventKey(e);
+	}
+
+	typename Simulator::Event_key GetEventKey(Facet f)
+	{
+		return kdel_.GetEventKey(f);
+	}
+
+	typename Simulator::Event_key GetEventKey(Cell_handle c)
+	{
+		return kdel_.GetEventKey(c);
+	}
+	
+	void hideShowFace(Edge e)
+	{
+		kdel_.hideShowFace(e);
+	}
+
+	void hideShowFace(Facet f)
+	{
+		kdel_.hideShowFace(f);
+	}
+
+	void hideShowFace(Cell_handle c)
+	{
+		kdel_.hideShowFace(c);
+	}
+
   //! Initialize it.
   KineticAlphaComplexTriangulation3(TraitsT tr, Visitor v= Visitor()): kdel_(Base_traits(this, tr), v) {
     CGAL_KINETIC_INITIALIZE_LISTENERS(tr.simulator_handle(),
