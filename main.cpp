@@ -11,7 +11,6 @@ typedef ExtendedExactTraits Traits;
 
 int main()
 {
-	
 	Traits tr(0, 1000);
 
 	typedef Traits::Kinetic_kernel KK;
@@ -21,22 +20,9 @@ int main()
 	typedef Traits::Kinetic_kernel::Motion_function F;
 	typedef CGAL::Kinetic::Delaunay_triangulation_3<Traits> KDel;
 
-	std::set<KDel::Facet> facets;
-
-	facets.insert(KDel::Facet());
-    std::cout<<facets.size()<<'\n';
-
 	KineticAlphaComplexTriangulation3<Traits> beef(tr);
 
-    typedef KDel::Cell_handle cell;
-    typedef KDel::Facet Facet;
-    typedef KDel::Edge Edge;
 
-    //cell c();
-
-    Facet f(cell(), 1);
-
-    Edge e(cell(), 1, 2);
 	std::cout<<"It runs!";
 
 	return 0;
@@ -46,8 +32,8 @@ int main()
 
 /* Motion function tests
 
-	
-	std::vector<F::NT> coefsAx;
+
+    std::vector<F::NT> coefsAx;
 	coefsAx.push_back(F::NT(3.0));
 	coefsAx.push_back(F::NT(7.0));
 	F ax(coefsAx.begin(), coefsAx.end());
@@ -56,6 +42,9 @@ int main()
 	coefsAy.push_back(F::NT(1.0));
 	coefsAy.push_back(F::NT(2.0));
 	F ay(coefsAy.begin(), coefsAy.end());
+
+    Argument3 additive(ax, ay, ax);
+    Argument3 additive2(ax, ay, ay);
 
 	std::vector<F::NT> coefsBx;
 	coefsBx.push_back(F::NT(2.0));

@@ -96,6 +96,14 @@ public:
     }
 }
 
+    Edge flip(const Facet &f)
+    {
+        Cell_handle oldCell = f.first();
+
+        Base::flip(f);
+
+    }
+
     void audit() const
     {
         Base::audit();

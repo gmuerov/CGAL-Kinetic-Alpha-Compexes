@@ -77,20 +77,26 @@ struct ShortEdgeCheck3D
 
 	result_type operator()(Argument a, Argument b, double squaredAlpha) const
 	{
-		Argument dx = a.x() - b.x();
-		Argument dy = a.y() - b.y();
-		Argument dz = a.z() - b.z();
+		result_type dx = a.x() - b.x();
+		result_type dy = a.y() - b.y();
+		result_type dz = a.z() - b.z();
 
-		return squaredAlpha - (CGAL::square(dx) + CGAL::square(dy) + CGAL::square(dz))/4;
+		return squaredAlpha - (dx*dx + dy*dy + dz*dz);//4;
 	}
 };
 
 template <class KK>
 struct ShortTriangleCheck3D
 {
-	ShortTriangleCheck3D(){}
+	ShortTriangleCheck3D(){
+        
+        std::vector<double> fourV(4, 1);
+        four = result_type(fourV.begin(), fourV.end());
+    }
 	typedef typename KK::Certificate_function result_type;
 	typedef typename KK::Point_3 Argument;
+
+    result_type four;
 
 	/// Calculate the 3D polynomial 
 	result_type operator()(Argument a, Argument b, Argument c, double squaredAlpha) const
@@ -98,12 +104,23 @@ struct ShortTriangleCheck3D
 		
 		//The radius of the circumcircle of ABC is |AB||BC||AC| / 2|ABC|
 		//where |ABC| is the face of the triangle
-		//To avoid computing the square root, we consider the squared expression.
+		//To avoid computing square root, we consider the squared expression.
 
 		//Length of the sides (squared)
-		Argument distanceAB = CGAL::square(a.x() - b.x()) + CGAL::square(a.y() - b.y());
-		Argument distanceBC = CGAL::square(c.x() - b.x()) + CGAL::square(c.y() - b.y());
-		Argument distanceAC = CGAL::square(a.x() - c.x()) + CGAL::square(a.y() - c.y());
+        
+        result_type axbx = a.x() - b.x();
+        result_type ayby = a.y() - b.y();
+        result_type azbz = a.z() - b.z();
+        result_type cxbx = c.x() - b.x();
+        result_type cyby = c.y() - b.y();
+        result_type czbz = c.z() - b.z();
+        result_type axcx = a.x() - c.x();
+        result_type aycy = a.y() - c.y();
+        result_type azcz = a.z() - c.z();
+
+		result_type distanceAB = axbx*axbx + ayby*ayby + azbz*azbz;
+		result_type distanceBC = cxbx*cxbx + cyby*cyby + czbz*czbz;
+		result_type distanceAC = axcx*axcx + aycy*aycy + azcz*azcz;
 
 		/* The face of the triangle in 3D is 
 		   sqrt ((M^{a,b,c}_[0,1,2])^2 + (M^{a,b,c}_[0,2,3])^2 + (M^{a,b,c}_[0,1,3])^2) / 2
@@ -121,17 +138,17 @@ struct ShortTriangleCheck3D
 								|1 cx cz|
 		*/
 		
-		Argument M012 = b.x() * c.y() + c.x() * a.y() + a.x() * b.y() -
-					   (b.x() * a.y() + c.x() * b.y() + a.x() * c.y());
+		result_type M012 = b.x() * c.y() + c.x() * a.y() + a.x() * b.y() -
+					      (b.x() * a.y() + c.x() * b.y() + a.x() * c.y());
 
-		Argument M023 = b.y() * c.z() + c.y() * a.z() + a.y() * b.z() -
-					   (b.y() * a.z() + c.y() * b.z() + a.y() * c.z());
+		result_type M023 = b.y() * c.z() + c.y() * a.z() + a.y() * b.z() -
+					      (b.y() * a.z() + c.y() * b.z() + a.y() * c.z());
 
-		Argument M013 = b.x() * c.z() + c.x() * a.z() + a.x() * b.z() -
-					   (b.x() * a.z() + c.x() * b.z() + a.x() * c.z());
+		result_type M013 = b.x() * c.z() + c.x() * a.z() + a.x() * b.z() -
+					      (b.x() * a.z() + c.x() * b.z() + a.x() * c.z());
 
-		return squaredAlpha -                  distanceAB * distanceBC * distanceBC / 
-			                  (4 * (CGAL::square(M012) + CGAL::square(M023) + CGAL::square(M013)));
+		return squaredAlpha -                  distanceAB * distanceBC * distanceBC; // 
+			                  //(4 * (CGAL::square(M012) + CGAL::square(M023) + CGAL::square(M013)));
 	}
 };
 
@@ -140,21 +157,24 @@ struct ShortTetrahedronCheck3D
 {
 	ShortTetrahedronCheck3D(){
         std::vector<double> oneV(1, 1);
+        std::vector<double> fourV(4, 1);
         one = result_type(oneV.begin(), oneV.end());
+        four = result_type(fourV.begin(), fourV.end());
     }
 
 	typedef typename KK::Certificate_function result_type;
 	typedef typename KK::Point_3 Argument;
 
+    result_type four;
     result_type one;
 
 	/// Calculate the 3D polynomial 
 	result_type operator()(Argument a, Argument b, Argument c, Argument d, double squaredAlpha) const
 	{
-		result_type SizeA = CGAL::square(a.x()) + CGAL::square(a.y()) + CGAL::square(a.z());
-		result_type SizeB = CGAL::square(b.x()) + CGAL::square(b.y()) + CGAL::square(b.z());
-		result_type SizeC = CGAL::square(c.x()) + CGAL::square(c.y()) + CGAL::square(c.z());
-		result_type SizeD = CGAL::square(d.x()) + CGAL::square(d.y()) + CGAL::square(d.z());
+		result_type SizeA = a.x() * a.x() + a.y() * a.y() + a.z() * a.z();
+		result_type SizeB = b.x() * b.x() + b.y() * b.y() + b.z() * b.z();
+		result_type SizeC = c.x() * c.x() + c.y() * c.y() + c.z() * c.z();
+		result_type SizeD = d.x() * d.x() + d.y() * d.y() + d.z() * d.z();
 		
 		result_type M1240 =
 			CGAL::determinant(a.x(), a.y(), SizeA, one,
@@ -186,8 +206,9 @@ struct ShortTetrahedronCheck3D
 							  c.x(), c.y(), c.z(), one,
 							  d.x(), d.y(), d.z(), one);
 		
-		return squaredAlpha - (CGAL::square(M1240) + CGAL::square(M1340) + CGAL::square(M2340) - 4*M1234*M1230)/
-			                                                  4*CGAL::square(M1230);
+		return squaredAlpha - (M1240 * M1240 + M1340 * M1340 + M2340 * M2340 - four*M1234*M1230);
+                                                                //
+			                                                  //(four*M1230 * M1230);
 	}
 };
 
