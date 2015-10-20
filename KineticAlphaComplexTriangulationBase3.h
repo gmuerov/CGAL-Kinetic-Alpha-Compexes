@@ -55,7 +55,7 @@ public:
 		if (degree > 3)
 			return Facet();
 
-		Base::flip(e);
+		Facet returned = Base::flip(e);
 
 		Event_key deletedkey = cellsList[deletedcell];
 		cellsList.erase(deletedcell);
@@ -99,14 +99,58 @@ public:
 				}
 			}
 		}
+        return returned;
 	}
 
     Edge flip(const Facet &f)
     {
         Cell_handle oldCell = f.first;
 
-        Base::flip(f);
-		return Edge();
+        Edge returned = Base::flip(f);
+
+        CellCirculator edgeCirc = triangulation_.incident_cells(returned);
+        CellCirculator done = edgeCirc;
+
+        do
+        {
+            removeShortCertificate(edgeCirc);
+            makeShortCertificate(edgeCirc);
+
+            bool cellShort = CheckShortCell(edgeCirc);
+
+            if(CheckShortCell(edgeCirc))
+                hiddenCellList.insert(Cell_handle(edgeCirc));
+
+            for(int i = 0; i < 4; i++)
+            {
+                Facet f(edgeCirc, i);
+
+                removeShortCertificate(f);
+                makeShortCertificate(f);
+
+                if (!cellShort && CheckShortFacet(f))
+                    hiddenFaceList.insert(f);
+
+                for(int j = i + 1; j < 4; j++)
+                {
+                    if(i != j)
+                    {
+                        Edge e(edgeCirc, i, j);
+
+                        removeShortCertificate(e);
+                        makeShortCertificate(e);
+
+                        if (!cellShort && CheckShortEdge(e))
+                            hiddenEdgeList.insert(e);
+                    }
+                }
+            }
+
+            edgeCir++;
+        }
+        while(edgeCir != done)
+
+		return returned;
     }
 
     void audit() const
@@ -200,23 +244,35 @@ public:
 	}
 
 	void hideShowFace(Edge e){
-		//Check if the edge is hidden
-		int edge = hiddenEdgeList.count(e);
 
-		//Look for the mirrored edge as well
-		/*Edge mirror= triangulation_.mirror_edge(e);
-		int mirroredEdge = hiddenEdgeList.count(mirror);*/
+		//Look for the other edge representations as well
+		CellCirculator circ = triangulation_.incident_cells(e);
+        CellCirculator done = circ;
+        bool removed = false;
+        do
+        {
+            //Find the indexes of the edge in the current cell
+            int i = circ->index(e.first->vertex(e.second));
+            int j = circ->index(e.first->vertex(e.third));
 
-		/*if (edge > 0 || mirroredEdge > 0)
-		{
-			if (edge > 0)
-				hiddenEdgeList.erase(e);
-			else
-				hiddenEdgeList.erase(mirror);
-		}
-		else
-			hiddenEdgeList.insert(e);*/
-		
+            Edge currentEdge(circ, i, j);
+            
+		    //Check if the edge is hidden
+		    int edgeCount = hiddenEdgeList.count(currentEdge);
+
+            if(edgeCount > 0)
+            {
+                removed = true; 
+                hiddenEdgeList.erase(currentEdge);
+                break;
+            }
+            circ++;
+        }
+        while (circ!=done);
+
+        if(!removed)
+            hiddenEdgeList.insert(e);
+
 		typename Simulator::Event_key failed = edgesList[e];
 
 		Base::Certificate core = extract_root_stack(failed);
@@ -291,7 +347,7 @@ protected:
 		    }
     }
 
-    bool CheckShortCell(Cell_handle cell)
+    bool CheckShortCell(const Cell_handle cell)
     {
 	    std::vector<Point_key> ids;
 	    cellPoint(cell, std::back_insert_iterator<std::vector<Point_key> >(ids));
