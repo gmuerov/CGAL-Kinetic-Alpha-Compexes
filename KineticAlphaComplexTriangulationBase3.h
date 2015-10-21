@@ -350,13 +350,15 @@ protected:
     {
 	    std::vector<Point_key> ids;
 	    cellPoint(cell, std::back_insert_iterator<std::vector<Point_key> >(ids));
+        
+        typename Kinetic_kernel::Function_kernel::Construct_function cf;
 
 	    CGAL::Sign certSign = s4C3.sign_at(
 		    point(ids[0]),
 		    point(ids[1]),
 		    point(ids[2]),
 		    point(ids[3]),
-            squared_alpha,
+            cf(squared_alpha),
             simulator()->current_time());
 
         
@@ -367,12 +369,13 @@ protected:
     {
 	    std::vector<Point_key> ids;
 	    facetPoint(facet, std::back_insert_iterator<std::vector<Point_key> >(ids));
+        typename Kinetic_kernel::Function_kernel::Construct_function cf;
 
 	    CGAL::Sign certSign = sTC3.sign_at(
 		    point(ids[0]),
 		    point(ids[1]),
 		    point(ids[2]),
-            squared_alpha,
+            cf(squared_alpha),
             simulator()->current_time());
         
 	    return certSign != CGAL::NEGATIVE;
@@ -382,11 +385,12 @@ protected:
     {
 	    std::vector<Point_key> ids;
         edgePoint(edge, std::back_insert_iterator<std::vector<Point_key> >(ids));
+        typename Kinetic_kernel::Function_kernel::Construct_function cf;
 
 	    CGAL::Sign certSign = sEC3.sign_at(
 		    point(ids[0]),
 		    point(ids[1]),
-            squared_alpha,
+            cf(squared_alpha),
             simulator()->current_time());
         
 	    return certSign != CGAL::NEGATIVE;
@@ -475,28 +479,30 @@ protected:
     Certificate cellRootStack(const Cell_handle &c,
 			     const typename Simulator::Time &st) const
     {
-    std::vector<Point_key> ids(4);
-    cellPoint(c, std::back_insert_iterator<std::vector<Point_key> >(ids));
+        typename Kinetic_kernel::Function_kernel::Construct_function cf;
+        std::vector<Point_key> ids(4);
+        cellPoint(c, std::back_insert_iterator<std::vector<Point_key> >(ids));
 	
-    if (ids.size()==4) 
-    {
+        if (ids.size()==4) 
+        {
      
-        return s4C3(point(ids[0]),
-		    point(ids[1]),
-		    point(ids[2]),
-		    point(ids[3]),
-			squared_alpha,
-		    st,
-		    simulator()->end_time());
-    }
+            return s4C3(point(ids[0]),
+		        point(ids[1]),
+		        point(ids[2]),
+		        point(ids[3]),
+			    cf(squared_alpha),
+		        st,
+		        simulator()->end_time());
+        }
 
-    CGAL_postcondition(0);
-    return Certificate();
+        CGAL_postcondition(0);
+        return Certificate();
     }
 
     Certificate edgeRootStack(const Edge &e,
 			     const typename Simulator::Time &st) const
     {
+        typename Kinetic_kernel::Function_kernel::Construct_function cf;
         std::vector<Point_key> ids;
         edgePoint(e, std::back_insert_iterator<std::vector<Point_key> >(ids));
 	
@@ -505,7 +511,7 @@ protected:
      
             return sEC3(point(ids[0]),
 		        point(ids[1]),
-				squared_alpha,
+				cf(squared_alpha),
 		        st,
 		        simulator()->end_time());
         }
@@ -517,6 +523,7 @@ protected:
     Certificate facetRootStack(const Facet &f,
 			      const typename Simulator::Time &st) const
     {
+        typename Kinetic_kernel::Function_kernel::Construct_function cf;
         std::vector<Point_key> ids;
         facetPoint(f, std::back_insert_iterator<std::vector<Point_key> >(ids));
 	
@@ -526,7 +533,7 @@ protected:
           return sTC3(point(ids[0]),
 		     point(ids[1]),
 		     point(ids[2]),
-			 squared_alpha,
+			 cf(squared_alpha),
 		     st,
 		     simulator()->end_time());
         }
