@@ -146,9 +146,9 @@ public:
                 }
             }
 
-            edgeCir++;
+            edgeCirc++;
         }
-        while(edgeCir != done)
+        while(edgeCirc != done);
 
 		return returned;
     }
@@ -282,7 +282,6 @@ public:
 		    core.pop_failure_time();
 			typename Simulator::Event_key k= simulator()->new_event(t, 
 										  edgeShortEvent(core, e, tr_.wrapper_handle()));
-      
 			edgesList[e] = k;
 		} else {
 			edgesList[e] = simulator()->null_event();
@@ -633,9 +632,8 @@ protected:
         {
             int i = cc->index(e.first->vertex(e.second));
             int j = cc->index(e.first->vertex(e.third));
-            count += edgesList.count(Edge(cc, i, j));
-            if(count > 0)
-                return true;
+            count = edgesList.count(Edge(cc, i, j));
+            if (count > 0) return true;
             cc++;
         }
         while (cc != sent);
