@@ -151,7 +151,8 @@ public:
 	}
 
   //! Initialize it.
-  KineticAlphaComplexTriangulation3(TraitsT tr, Visitor v= Visitor()): kdel_(Base_traits(this, tr), v) {
+  KineticAlphaComplexTriangulation3(TraitsT tr,typename TraitsT::Simulator::NT alpha, Visitor v= Visitor()): 
+    kdel_(Base_traits(this, tr), alpha, v) {
     CGAL_KINETIC_INITIALIZE_LISTENERS(tr.simulator_handle(),
 				      tr.active_points_3_table_handle());
   }

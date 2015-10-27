@@ -5,8 +5,9 @@
 #include "KineticAlphaComplexTriangulation3.h"
 #include <CGAL/Kinetic/Delaunay_triangulation_3.h>
 #include <CGAL/Kinetic/Delaunay_triangulation_visitor_base_3.h>
-
+#include <CGAL/Random.h>
 #include <CGAL/determinant.h>
+
 typedef ExtendedExactTraits Traits;
 
 int main()
@@ -17,13 +18,43 @@ int main()
 	typedef KK::Point_2 Argument;
 	typedef KK::Point_3 Argument3;
 	typedef KK::Certificate_function result_type;
-	typedef Traits::Kinetic_kernel::Motion_function F;
-	typedef CGAL::Kinetic::Delaunay_triangulation_3<Traits> KDel;
+	typedef KK::Motion_function F;
+    typedef KK::Point_3 Point;
+    typedef CGAL::Kinetic::Delaunay_triangulation_3<Traits> KineticTriangulation;
 
-	KineticAlphaComplexTriangulation3<Traits> beef(tr);
 
+    KineticAlphaComplexTriangulation3<Traits> beef(tr, Traits::Simulator::NT(2.0));
 
-	std::cout<<"It runs!";
+    KineticTriangulation triang(tr);
+
+    CGAL::Random rand;
+    for(int i = 0; i < 6; i++)
+    {
+        std::vector<F::NT> x;
+        std::vector<F::NT> y;
+        std::vector<F::NT> z;
+
+        for(int j = 0; j < 2; j++)
+        {
+            x.push_back(rand.get_double() * 5 - 2);
+            y.push_back(rand.get_double() * 7 - 5);
+            z.push_back(rand.get_double() * 6 - 3); 
+        }
+
+        F x_func(x.begin(), x.end());
+        F y_func(y.begin(), y.end());
+        F z_func(z.begin(), z.end());
+
+        Point new_point(x_func, y_func, z_func);
+
+        tr.active_points_3_table_handle()->insert(new_point);
+    }
+
+    beef.set_has_certificates(true);
+    triang.set_has_certificates(true);
+    tr.simulator_handle()->set_current_event_number(1);
+    printf("Simulator time %d\n",tr.simulator_handle()->current_time());
+    printf("The resulting triangulation is of dimension %d",triang.triangulation().dimension());
 
 	return 0;
 }

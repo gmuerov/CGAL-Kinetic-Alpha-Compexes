@@ -200,8 +200,8 @@ public:
         return cellsList[c];
     }
     
-    KineticAlphaComplexTriangulationBase(TraitsT tr, Visitor v = Visitor()):
-        Base(tr, v)
+    KineticAlphaComplexTriangulationBase(TraitsT tr, NT alpha, Visitor v = Visitor()):
+        Base(tr, v), squared_alpha(alpha * alpha)
     {
         Initialization();
     }
@@ -313,6 +313,32 @@ public:
 	}
 
 #pragma endregion The tree functions for hiding and revealing faces.
+
+    ///Sets the has_certificates_ property and creates/destroys 
+    ///the structure's certificates if needed
+    void set_has_certificates(bool b)
+    {
+        if (!has_certificates_ && b) {
+            printf("The triangulation is of %d dimensions.\n", triangulation_.dimension());
+            if (triangulation().dimension() == 3) {
+                printf("Ayyy lmao");
+	            //Add assertions for our certificates
+                /*for (All_edges_iterator eit = triangulation_.all_edges_begin();
+	                 eit != triangulation_.all_edges_end(); ++eit) {
+	              CGAL_assertion(!has_event(*eit));
+	            }
+	            for (All_facets_iterator eit = triangulation_.all_facets_begin();
+	                 eit != triangulation_.all_facets_end(); ++eit) {
+	              CGAL_assertion(!has_event(*eit));
+	            }*/
+	            create_all_certificates();
+        	    has_certificates_=true;
+            }
+        } else if (has_certificates_ && !b) {
+            destroy_all_certificates();
+            has_certificates_=false;
+        }
+    }
 
 protected:
     void Initialization()
@@ -516,7 +542,7 @@ protected:
 		        simulator()->end_time());
         }
 
-        CGAL_postcondition(0);
+        //CGAL_postcondition(0);
         return Certificate();
     }
 
@@ -601,8 +627,10 @@ protected:
 		          simulation_traits_object().simulator_handle()->current_time());
     }
 
+
     void create_all_certificates() 
     {
+        std::cout<<"Creating certificates...";
         CGAL_precondition(!has_certificates_);
  
         for (All_edges_iterator eit = triangulation_.all_edges_begin();
@@ -624,7 +652,7 @@ protected:
         for (All_cells_iterator cit= triangulation_.all_cells_begin(); 
 	     cit != triangulation_.all_cells_end(); ++cit) {
           v_.create_cell(cit);
-	      makeShortCertificate(*cit);
+	      makeShortCertificate(cit);
         }
       }
 
@@ -661,7 +689,7 @@ protected:
     return cellsList.count(c) > 0;
 }
 
-    double squared_alpha;
+    NT squared_alpha;
     
     S4C3 s4C3;
     STC3 sTC3;
