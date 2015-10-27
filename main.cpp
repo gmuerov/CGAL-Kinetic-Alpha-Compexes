@@ -25,7 +25,7 @@ int main()
 
     KineticAlphaComplexTriangulation3<Traits> beef(tr, Traits::Simulator::NT(2.0));
 
-    KineticTriangulation triang(tr);
+    //KineticTriangulation triang(tr);
 
     CGAL::Random rand;
     for(int i = 0; i < 6; i++)
@@ -51,10 +51,16 @@ int main()
     }
 
     beef.set_has_certificates(true);
-    triang.set_has_certificates(true);
-    tr.simulator_handle()->set_current_event_number(1);
+    //triang.set_has_certificates(true);
+
+	Traits::Simulator::Handle sp= tr.simulator_handle();
+
+	while (sp->next_event_time() != sp->end_time()) {
+		printf("curent evant %d\n",sp->current_event_number());
+        sp->set_current_event_number(sp->current_event_number()+1);
+    }
     printf("Simulator time %d\n",tr.simulator_handle()->current_time());
-    printf("The resulting triangulation is of dimension %d",triang.triangulation().dimension());
+    //printf("The resulting triangulation is of dimension %d",triang.triangulation().dimension());
 
 	return 0;
 }

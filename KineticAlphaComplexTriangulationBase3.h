@@ -35,6 +35,7 @@ public:
 
     Facet flip(const Edge &e)
 	{
+		printf("flip facet \n");
 		Cell_handle deletedcell = e.first;
 
 		CellCirculator ccir = triangulation_.incident_cells(e);
@@ -59,8 +60,11 @@ public:
 
 		Event_key deletedkey = cellsList[deletedcell];
 		cellsList.erase(deletedcell);
-
-		simulator()->delete_event(deletedkey);
+		if(deletedkey != Simulator::Event_key())
+		{
+			simulator()->delete_event(deletedkey);
+		}
+		
 
 		for(std::vector<Cell_handle>::iterator cit = cells.begin();
 			cit != cells.end(); cit++)
@@ -99,11 +103,12 @@ public:
 				}
 			}
 		}
+		printf("end flip facet \n");
         return returned;
 	}
 
     Edge flip(const Facet &f)
-    {
+    {   printf("flip edge \n");
         Cell_handle oldCell = f.first;
 
         Edge returned = Base::flip(f);
@@ -149,12 +154,13 @@ public:
             edgeCirc++;
         }
         while(edgeCirc != done);
-
+		printf("end flip edge \n");
 		return returned;
     }
 
     void audit() const
     {
+		printf("biginig aoudit");
         Base::audit();
 
         if (!has_certificates_)
@@ -173,15 +179,30 @@ public:
         {
             for (Base::Finite_edges_iterator eit = triangulation_.finite_edges_begin();
 	                eit != triangulation_.finite_edges_end(); ++eit)
-                        simulator()->audit_event(edgesList.at(*eit));
+			{
+				printf("evant key %d",edgesList.at(*eit) );
+				if(edgesList.at(*eit) != Simulator::Event_key() )	
+					simulator()->audit_event(edgesList.at(*eit));
+				
+			}     
 
             for (Base::All_facets_iterator fit = triangulation_.all_facets_begin();
 	            fit != triangulation_.all_facets_end(); ++fit)
-	                simulator()->audit_event(facetsList.at(*fit));
+			{
+				printf("evant key %d",facetsList.at(*fit) );
+				if(facetsList.at(*fit) != Simulator::Event_key())
+					simulator()->audit_event(facetsList.at(*fit));
+			}
+	                
 
             for (Base::All_cells_iterator cit = triangulation_.all_cells_begin();
 	            cit != triangulation_.all_cells_end(); ++cit)
-	                simulator()->audit_event(cellsList.at(cit));
+			{
+				printf("evant key %d",cellsList.at(cit) );
+				if(cellsList.at(cit) != Simulator::Event_key())
+					simulator()->audit_event(cellsList.at(cit));
+			}
+	                
         }
     }
 
@@ -343,6 +364,7 @@ public:
 protected:
     void Initialization()
     {
+		printf("Initialization \n");
         for (Base::All_edges_iterator eit = triangulation_.all_edges_begin();
 		    eit != triangulation_.all_edges_end(); ++eit)
 	    {
@@ -481,7 +503,11 @@ protected:
     void removeShortCertificate(Cell_handle cell)
     {
         Event_key renewed_key = cellsList[cell];
-        simulator()->delete_event(renewed_key);
+        if(renewed_key != Simulator::Event_key())
+		{
+			simulator()->delete_event(renewed_key);
+		}
+		
         
         cellsList.erase(cell);
     }
@@ -489,7 +515,11 @@ protected:
     void removeShortCertificate(Edge edge)
     {
         Event_key renewed_key = edgesList[edge];
-        simulator()->delete_event(renewed_key);
+        if(renewed_key != Simulator::Event_key())
+		{
+			simulator()->delete_event(renewed_key);
+		}
+		
         
         edgesList.erase(edge);
     }
@@ -497,7 +527,11 @@ protected:
     void removeShortCertificate(Facet facet)
     {
         Event_key renewed_key = facetsList[facet];
-        simulator()->delete_event(renewed_key);
+		if(renewed_key != Simulator::Event_key())
+		{
+			simulator()->delete_event(renewed_key);
+		}
+        
         
         facetsList.erase(facet);
     }
@@ -521,7 +555,7 @@ protected:
 		        simulator()->end_time());
         }
 
-        CGAL_postcondition(0);
+        //CGAL_postcondition(0);
         return Certificate();
     }
 
@@ -564,14 +598,14 @@ protected:
 		     simulator()->end_time());
         }
 
-        CGAL_postcondition(0);
+        //CGAL_postcondition(0);
         return Certificate();
     }
 
     void makeShortCertificate( const Facet &f,
 			      const typename Simulator::Time &st) 
     {
-   
+		printf("makeShortCertificate facet  \n");
         CGAL_precondition(!hasShortCertificate(f));
     
         Certificate cert = facetRootStack(f, st);
@@ -591,7 +625,8 @@ protected:
 
     void makeShortCertificate( const Edge &e,
 			     const typename Simulator::Time &st) {
-        CGAL_precondition(!hasShortCertificate(e));
+        printf("makeShortCertificate edge  \n");
+		CGAL_precondition(!hasShortCertificate(e));
     
         Certificate cert = edgeRootStack(e, st);
         if (cert.will_fail()) {
@@ -610,6 +645,7 @@ protected:
     void makeShortCertificate( const Cell_handle &c,
 			     const typename Simulator::Time &st) 
     {
+		printf("makeShortCertificate cell  \n");
         CGAL_precondition(!hasShortCertificate(c));
     
         Certificate cert = cellRootStack(c, st);
@@ -635,17 +671,18 @@ protected:
  
         for (All_edges_iterator eit = triangulation_.all_edges_begin();
 	     eit != triangulation_.all_edges_end(); ++eit) {
-          if (is_degree_3(*eit) && !has_degree_4_vertex(*eit)) {
-		    make_certificate(*eit);
-		    makeShortCertificate(*eit);
+			//printf("edge  %d\n",is_degree_3(*eit));
+			makeShortCertificate(*eit);
+			if (is_degree_3(*eit) && !has_degree_4_vertex(*eit)) {
+				make_certificate(*eit);
           }
         }
 
         for (All_facets_iterator fit = triangulation_.all_facets_begin();
 	     fit != triangulation_.all_facets_end(); ++fit) {
-          if (!has_degree_3_edge(*fit)) {
-		    make_certificate(*fit);
-		    makeShortCertificate(*fit);
+			makeShortCertificate(*fit);
+			if (!has_degree_3_edge(*fit)) {
+				make_certificate(*fit);
           }
         }
 
