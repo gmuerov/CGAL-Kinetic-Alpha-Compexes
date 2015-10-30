@@ -50,10 +50,17 @@ int main()
 
     beef.set_has_certificates(true);
     //triang.set_has_certificates(true);
-
+	 
 	Traits::Simulator::Handle sp= tr.simulator_handle();
+	CGAL::Lazy_exact_nt<F::NT> lazy ;
+	for (KineticAlphaComplexTriangulation3<Traits>::Finite_vertices_iterator vit = beef.triangulation().finite_vertices_begin();
+	                vit != beef.triangulation().finite_vertices_end(); ++vit)
+		{
+			std::cout<<"ggggggggggg"<<beef.pointEx(vit->point()).x().value_at(tr.simulator_handle()->current_time().compute_double(0.01))<<"ggggggggggggggg";
+		}
 
 	while (sp->next_event_time() != sp->end_time()) {
+		beef.displaySamthing();
 		printf("Current event %d\n",sp->current_event_number());
         sp->set_current_event_number(sp->current_event_number()+1);
     }

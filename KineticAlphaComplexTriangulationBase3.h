@@ -247,6 +247,30 @@ public:
         Initialization();
     }
 
+	void dispalyTest() const
+	{
+
+		std::cout<<std::endl<<"---------------"<<std::endl<<"Vertices Coordinates"<<std::endl<<"------------------"<<std::endl;
+		for (Base::Finite_vertices_iterator vit = triangulation_.finite_vertices_begin();
+			vit != triangulation_.finite_vertices_end(); ++vit)
+		{
+			
+			std::cout<<"---------------"<<vit->point()<<"------------------"<<std::endl;
+			std::cout<<"X :"<<point(vit->point()).x().value_at(tr_.simulator_handle()->current_time().compute_double(0.01))<<std::endl;
+			std::cout<<"Y :"<<point(vit->point()).y().value_at(tr_.simulator_handle()->current_time().compute_double(0.01))<<std::endl;
+			std::cout<<"Z :"<<point(vit->point()).z().value_at(tr_.simulator_handle()->current_time().compute_double(0.01))<<std::endl;
+
+		}
+
+		std::cout<<std::endl<<"---------------"<<std::endl<<"Edges"<<std::endl<<"------------------"<<std::endl;
+        for (All_edges_iterator eit = triangulation_.all_edges_begin();
+			eit != triangulation_.all_edges_end(); ++eit) 
+		{
+			std::cout<<eit->first->vertex(eit->second)->point()<<eit->first->vertex(eit->third)->point()<< std::endl;
+        }			   
+					   
+	}
+
 #pragma region Hide/Show functions
 
 	void hideShowFace(Facet f){
@@ -668,7 +692,7 @@ protected:
     void makeShortCertificate( const Facet &f,
 			      const typename Simulator::Time &st) 
     {
-		printf("makeShortCertificate facet  \n");
+		//printf("makeShortCertificate facet  \n");
         CGAL_precondition(!hasShortCertificate(f));
     
         Certificate cert = facetRootStack(f, st);
@@ -709,7 +733,6 @@ protected:
     void makeShortCertificate( const Cell_handle &c,
 			     const typename Simulator::Time &st) 
     {
-		printf("makeShortCertificate cell\n");
         CGAL_precondition(!hasShortCertificate(c));
     
         Certificate cert = cellRootStack(c, st);
