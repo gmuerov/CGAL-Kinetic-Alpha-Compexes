@@ -15,7 +15,6 @@ int main()
 	Traits tr(0, 1000);
 
 	typedef Traits::Kinetic_kernel KK;
-	typedef KK::Point_2 Argument;
 	typedef KK::Point_3 Argument3;
 	typedef KK::Certificate_function result_type;
 	typedef KK::Motion_function F;
@@ -33,12 +32,11 @@ int main()
         std::vector<F::NT> x;
         std::vector<F::NT> y;
         std::vector<F::NT> z;
-
         for(int j = 0; j < 2; j++)
         {
-            x.push_back(rand.get_double() * 5 - 2);
-            y.push_back(rand.get_double() * 7 - 5);
-            z.push_back(rand.get_double() * 6 - 3); 
+            x.push_back(rand.get_double(0, 3) * 5 - 2);
+            y.push_back(rand.get_double(0, 3) * 7 - 5);
+            z.push_back(rand.get_double(0, 3) * 6 - 3); 
         }
 
         F x_func(x.begin(), x.end());
@@ -56,7 +54,7 @@ int main()
 	Traits::Simulator::Handle sp= tr.simulator_handle();
 
 	while (sp->next_event_time() != sp->end_time()) {
-		printf("curent evant %d\n",sp->current_event_number());
+		printf("Current event %d\n",sp->current_event_number());
         sp->set_current_event_number(sp->current_event_number()+1);
     }
     printf("Simulator time %d\n",tr.simulator_handle()->current_time());

@@ -6,6 +6,7 @@
 #include <unordered_set>
 #include "EventShort.h"
 #include <CGAL\Kinetic\internal\Delaunay_triangulation_base_3.h>
+#include <ostream>
 
 template <class TraitsT, class Visitor>
 class KineticAlphaComplexTriangulationBase:
@@ -36,64 +37,57 @@ public:
     Facet flip(const Edge &e)
 	{
 		printf("flip facet \n");
-		Cell_handle deletedcell = e.first;
 
-		CellCirculator ccir = triangulation_.incident_cells(e);
-		CellCirculator end  = ccir;
-
-		std::vector<Cell_handle> cells;
-		int degree = 0;
-		do
-		{
-			if (ccir != deletedcell)
-				cells.push_back(Cell_handle(ccir));
-
-			ccir++;
-			degree++;
-		}
-		while(ccir != end);
-        
-		if (degree > 3)
-			return Facet();
+        Cell_handle deletedCell = e.first;
 
 		Facet returned = Base::flip(e);
+        
+        if (returned == Facet())
+            return returned;
 
-		Event_key deletedkey = cellsList[deletedcell];
-		cellsList.erase(deletedcell);
+        std::vector<Cell_handle> cells;
+        cells.push_back(returned.first);
+        cells.push_back(triangulation_.mirror_facet(returned).first);
+
+		Event_key deletedkey = cellsList[deletedCell];
+		cellsList.erase(deletedCell);
 		if(deletedkey != Simulator::Event_key())
 		{
 			simulator()->delete_event(deletedkey);
 		}
 		
-
+        printf("Constructing certificates for cells\n");
 		for(std::vector<Cell_handle>::iterator cit = cells.begin();
-			cit != cells.end(); cit++)
+			cit != cells.end(); ++cit)
 		{
 			removeShortCertificate(*cit);
-        
 			bool shortCell = CheckShortCell(*cit);
+
 			if (!shortCell)
 				hiddenCellList.insert(*cit);
 
 			makeShortCertificate(*cit);
 
+            printf("Constructing certificates for facets\n");
 			for(int i = 0; i < 4; i++)
 			{
 				Facet facet(*cit, i);
 				Facet mirror = triangulation_.mirror_facet(facet);
 
-				if (!shortCell && CheckShortFacet(facet))
+                if (!shortCell && CheckShortFacet(facet) && hiddenFaceList.count(mirror) == 0)
 					hiddenFaceList.insert(facet);
 
 				removeShortCertificate(facet);
 				makeShortCertificate(facet);
 
+                printf("Constructing certificates for edges\n");
 				for(int j = i + 1; j < 4; j++)
 				{
 					if (j != i)
 					{
 						Edge e(*cit, i, j);
 
+                        
 						if (!shortCell && CheckShortEdge(e))
 							hiddenEdgeList.insert(e);
 
@@ -112,6 +106,9 @@ public:
         Cell_handle oldCell = f.first;
 
         Edge returned = Base::flip(f);
+
+        if (returned == Edge())
+            return returned;
 
         CellCirculator edgeCirc = triangulation_.incident_cells(returned);
         CellCirculator done = edgeCirc;
@@ -170,10 +167,10 @@ public:
 	                CGAL_assertion(edgesList.count(*eit) <= 0);
             for (Base::All_facets_iterator fit = triangulation_.all_facets_begin();
 	            fit != triangulation_.all_facets_end(); ++fit)
-	                CGAL_assertion(!facetsList.count(*fit) <= 0);
+	                CGAL_assertion(facetsList.count(*fit) <= 0);
             for (Base::All_cells_iterator cit = triangulation_.all_cells_begin();
 	            cit != triangulation_.all_cells_end(); ++cit)
-	                CGAL_assertion(!cellsList.count(cit) <= 0);
+	                CGAL_assertion(cellsList.count(cit) <= 0);
         }
         else
         {
@@ -208,12 +205,35 @@ public:
 
     typename Simulator::Event_key GetEventKey(const Facet f)
     {
-        return facetsList[f];
+        if(facetsList.count(f) > 0)
+            return facetsList[f];
+        else
+        {
+            Facet mir = triangulation_.mirror_facet(f);
+            if (facetsList.count(mir) > 0)
+                return facetsList[triangulation_.mirror_facet(f)];
+            else
+                CGAL_ERROR("No key found for facet");
+            
+            return Simulator::Event_key();
+        }
     }
 
     typename Simulator::Event_key GetEventKey(const Edge e)
     {
-        return edgesList[e];
+        CellCirculator cc = triangulation_.incident_cells(e);
+        CellCirculator done = cc;
+
+        do
+        {
+            Edge current = GetEdgeInCell(cc, e);
+            if (edgesList.count(current) > 0)
+                return edgesList[current];
+            cc++;
+        }while(cc!=done);
+
+        CGAL_ERROR("Couldn't find key for edge");
+        return Simulator::Event_key();
     }
 
     typename Simulator::Event_key GetEventKey(const Cell_handle c)
@@ -340,9 +360,7 @@ public:
     void set_has_certificates(bool b)
     {
         if (!has_certificates_ && b) {
-            printf("The triangulation is of %d dimensions.\n", triangulation_.dimension());
             if (triangulation().dimension() == 3) {
-                printf("Ayyy lmao");
 	            //Add assertions for our certificates
                 /*for (All_edges_iterator eit = triangulation_.all_edges_begin();
 	                 eit != triangulation_.all_edges_end(); ++eit) {
@@ -362,6 +380,15 @@ public:
     }
 
 protected:
+    
+    Edge GetEdgeInCell(Cell_handle cc, Edge e)
+    {
+        int i = cc->index(e.first->vertex(e.second));
+        int j = cc->index(e.first->vertex(e.third));
+
+        return Edge(cc, i, j);
+    }
+
     void Initialization()
     {
 		printf("Initialization \n");
@@ -396,45 +423,55 @@ protected:
 
     bool CheckShortCell(const Cell_handle cell)
     {
-	    std::vector<Point_key> ids;
+	    std::vector<Point_key> ids(4);
 	    cellPoint(cell, std::back_insert_iterator<std::vector<Point_key> >(ids));
         
         typename Kinetic_kernel::Function_kernel::Construct_function cf;
+        if (ids.size() == 4)
+	    {
+            CGAL::Sign certSign = s4C3.sign_at(
+		        point(ids[0]),
+		        point(ids[1]),
+		        point(ids[2]),
+		        point(ids[3]),
+                cf(squared_alpha),
+                simulator()->current_time());
 
-	    CGAL::Sign certSign = s4C3.sign_at(
-		    point(ids[0]),
-		    point(ids[1]),
-		    point(ids[2]),
-		    point(ids[3]),
-            cf(squared_alpha),
-            simulator()->current_time());
+	        return certSign != CGAL::NEGATIVE;
+        }
 
-        
-	    return certSign != CGAL::NEGATIVE;
+        return false;
     }
 
     bool CheckShortFacet(Facet facet)
     {
-	    std::vector<Point_key> ids;
+	    std::vector<Point_key> ids(3);
 	    facetPoint(facet, std::back_insert_iterator<std::vector<Point_key> >(ids));
         typename Kinetic_kernel::Function_kernel::Construct_function cf;
 
-	    CGAL::Sign certSign = sTC3.sign_at(
-		    point(ids[0]),
-		    point(ids[1]),
-		    point(ids[2]),
-            cf(squared_alpha),
-            simulator()->current_time());
-        
-	    return certSign != CGAL::NEGATIVE;
+        if (ids.size() == 3)
+        {
+	        CGAL::Sign certSign = sTC3.sign_at(
+		        point(ids[0]),
+		        point(ids[1]),
+		        point(ids[2]),
+                cf(squared_alpha),
+                simulator()->current_time());
+
+            return certSign != CGAL::NEGATIVE;
+        }
+        //The facet is infinite so we don't care about it
+	    return false;
     }
 
     bool CheckShortEdge(Edge edge)
     {
-	    std::vector<Point_key> ids;
+	    std::vector<Point_key> ids(2);
+        printf("Extracting edge points.\n");
         edgePoint(edge, std::back_insert_iterator<std::vector<Point_key> >(ids));
         typename Kinetic_kernel::Function_kernel::Construct_function cf;
-
+        if(ids.size() == 2)
+        {
 	    CGAL::Sign certSign = sEC3.sign_at(
 		    point(ids[0]),
 		    point(ids[1]),
@@ -442,6 +479,9 @@ protected:
             simulator()->current_time());
         
 	    return certSign != CGAL::NEGATIVE;
+        }
+        //The edge is infinite so we don't care
+        return false;
     }
 
 #pragma region Point Extraction functions
@@ -487,7 +527,7 @@ protected:
     void cellPoint(const Cell_handle &c, Oit out) const
     {
 	    for (unsigned int i=0; i<4; ++i)
-	    {	
+	    {
 		    Point_key k= c->vertex(i)->point();
 		
 		    if(k.is_valid())
@@ -508,32 +548,54 @@ protected:
 			simulator()->delete_event(renewed_key);
 		}
 		
-        
         cellsList.erase(cell);
     }
 
     void removeShortCertificate(Edge edge)
     {
-        Event_key renewed_key = edgesList[edge];
-        if(renewed_key != Simulator::Event_key())
-		{
-			simulator()->delete_event(renewed_key);
-		}
-		
-        
-        edgesList.erase(edge);
+        CellCirculator cc = triangulation_.incident_cells(edge);
+        CellCirculator done = cc;
+        do
+        {
+            Edge current = GetEdgeInCell(cc, edge);
+
+            if (edgesList.count(current) > 0)
+            {
+                printf("Removing edge\n");
+                Event_key for_removal = edgesList[current];
+                simulator()->delete_event(for_removal);
+                edgesList.erase(current);
+                return;
+            }
+
+            cc++;
+        } while(cc != done);
+        printf("No edge removed\n");
     }
 
     void removeShortCertificate(Facet facet)
     {
-        Event_key renewed_key = facetsList[facet];
-		if(renewed_key != Simulator::Event_key())
+        if(facetsList.count(facet) > 0)
 		{
-			simulator()->delete_event(renewed_key);
+            Event_key remove_key = facetsList[facet];
+			simulator()->delete_event(remove_key);
+            printf("Removing facet\n");
+            facetsList.erase(facet);
 		}
-        
-        
-        facetsList.erase(facet);
+        else
+        {
+            Facet mirror = triangulation_.mirror_facet(facet);
+            if (facetsList.count(mirror) > 0)
+            {
+                Event_key mirror_key = facetsList[mirror];
+                simulator()->delete_event(mirror_key);
+                printf("Removing mirror facet\n");
+                facetsList.erase(mirror);
+            }
+            else
+                printf("No facet removed\n");
+        }
+
     }
 
     Certificate cellRootStack(const Cell_handle &c,
@@ -541,10 +603,12 @@ protected:
     {
         typename Kinetic_kernel::Function_kernel::Construct_function cf;
         std::vector<Point_key> ids(4);
+        printf("Getting points from cell\n");
         cellPoint(c, std::back_insert_iterator<std::vector<Point_key> >(ids));
-	
+	    
         if (ids.size()==4) 
         {
+            printf("Calculating certificate");
      
             return s4C3(point(ids[0]),
 		        point(ids[1]),
@@ -563,12 +627,11 @@ protected:
 			     const typename Simulator::Time &st) const
     {
         typename Kinetic_kernel::Function_kernel::Construct_function cf;
-        std::vector<Point_key> ids;
+        std::vector<Point_key> ids(2);
         edgePoint(e, std::back_insert_iterator<std::vector<Point_key> >(ids));
 	
         if (ids.size()==2) 
         {
-     
             return sEC3(point(ids[0]),
 		        point(ids[1]),
 				cf(squared_alpha),
@@ -584,7 +647,7 @@ protected:
 			      const typename Simulator::Time &st) const
     {
         typename Kinetic_kernel::Function_kernel::Construct_function cf;
-        std::vector<Point_key> ids;
+        std::vector<Point_key> ids(3);
         facetPoint(f, std::back_insert_iterator<std::vector<Point_key> >(ids));
 	
 	    if (ids.size()==3) 
@@ -609,11 +672,12 @@ protected:
         CGAL_precondition(!hasShortCertificate(f));
     
         Certificate cert = facetRootStack(f, st);
+
         if (cert.will_fail()) {
-          typename Simulator::Time t= cert.failure_time();
-          cert.pop_failure_time();
-          typename Simulator::Event_key k = simulator()->new_event(t, facetShortEvent(cert, f, tr_.wrapper_handle()));
-	      facetsList[f] = k;
+            typename Simulator::Time t= cert.failure_time();
+            cert.pop_failure_time();
+            typename Simulator::Event_key k = simulator()->new_event(t, facetShortEvent(cert, f, tr_.wrapper_handle()));
+            facetsList[f] = k;
         }
     }
 
@@ -625,10 +689,10 @@ protected:
 
     void makeShortCertificate( const Edge &e,
 			     const typename Simulator::Time &st) {
-        printf("makeShortCertificate edge  \n");
 		CGAL_precondition(!hasShortCertificate(e));
     
         Certificate cert = edgeRootStack(e, st);
+
         if (cert.will_fail()) {
           typename Simulator::Time t= cert.failure_time();
           cert.pop_failure_time();
@@ -645,10 +709,11 @@ protected:
     void makeShortCertificate( const Cell_handle &c,
 			     const typename Simulator::Time &st) 
     {
-		printf("makeShortCertificate cell  \n");
+		printf("makeShortCertificate cell\n");
         CGAL_precondition(!hasShortCertificate(c));
     
         Certificate cert = cellRootStack(c, st);
+
         if (cert.will_fail()) {
           typename Simulator::Time t= cert.failure_time();
           cert.pop_failure_time();
@@ -741,4 +806,5 @@ protected:
     std::map<Edge,        typename Simulator::Event_key> edgesList;
 
 };
+
 #endif
