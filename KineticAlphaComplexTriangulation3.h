@@ -114,7 +114,6 @@ private:
   
 
   typedef KineticAlphaComplexTriangulationBase<Base_traits, Visitor> ACBase;
-
   CGAL_KINETIC_DECLARE_LISTENERS(typename TraitsT::Simulator,
 				 typename TraitsT::Active_points_3_table)
 
@@ -148,6 +147,17 @@ public:
 	void hideShowFace(Cell_handle c)
 	{
 		kdel_.hideShowFace(c);
+	}
+
+	typename ACBase::Point pointEx(Point_key p)
+	{
+		return kdel_.point(p);
+	}
+
+	typedef typename ACBase::Finite_vertices_iterator Finite_vertices_iterator;
+	void displaySamthing()
+	{
+		kdel_.dispalyTest();
 	}
 
   //! Initialize it.
