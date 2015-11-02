@@ -36,7 +36,6 @@ public:
 
     Facet flip(const Edge &e)
 	{
-		printf("flip facet \n");
 
         Cell_handle deletedCell = e.first;
 
@@ -56,7 +55,6 @@ public:
 			simulator()->delete_event(deletedkey);
 		}
 		
-        printf("Constructing certificates for cells\n");
 		for(std::vector<Cell_handle>::iterator cit = cells.begin();
 			cit != cells.end(); ++cit)
 		{
@@ -68,7 +66,6 @@ public:
 
 			makeShortCertificate(*cit);
 
-            printf("Constructing certificates for facets\n");
 			for(int i = 0; i < 4; i++)
 			{
 				Facet facet(*cit, i);
@@ -80,7 +77,6 @@ public:
 				removeShortCertificate(facet);
 				makeShortCertificate(facet);
 
-                printf("Constructing certificates for edges\n");
 				for(int j = i + 1; j < 4; j++)
 				{
 					if (j != i)
@@ -97,12 +93,11 @@ public:
 				}
 			}
 		}
-		printf("end flip facet \n");
         return returned;
 	}
 
     Edge flip(const Facet &f)
-    {   printf("flip edge \n");
+    {
         Cell_handle oldCell = f.first;
 
         Edge returned = Base::flip(f);
@@ -151,13 +146,11 @@ public:
             edgeCirc++;
         }
         while(edgeCirc != done);
-		printf("end flip edge \n");
 		return returned;
     }
 
     void audit() const
     {
-		printf("biginig aoudit");
         Base::audit();
 
         if (!has_certificates_)
@@ -177,7 +170,6 @@ public:
             for (Base::Finite_edges_iterator eit = triangulation_.finite_edges_begin();
 	                eit != triangulation_.finite_edges_end(); ++eit)
 			{
-				printf("evant key %d",edgesList.at(*eit) );
 				if(edgesList.at(*eit) != Simulator::Event_key() )	
 					simulator()->audit_event(edgesList.at(*eit));
 				
@@ -186,7 +178,6 @@ public:
             for (Base::All_facets_iterator fit = triangulation_.all_facets_begin();
 	            fit != triangulation_.all_facets_end(); ++fit)
 			{
-				printf("evant key %d",facetsList.at(*fit) );
 				if(facetsList.at(*fit) != Simulator::Event_key())
 					simulator()->audit_event(facetsList.at(*fit));
 			}
@@ -195,7 +186,6 @@ public:
             for (Base::All_cells_iterator cit = triangulation_.all_cells_begin();
 	            cit != triangulation_.all_cells_end(); ++cit)
 			{
-				printf("evant key %d",cellsList.at(cit) );
 				if(cellsList.at(cit) != Simulator::Event_key())
 					simulator()->audit_event(cellsList.at(cit));
 			}
@@ -247,18 +237,18 @@ public:
         Initialization();
     }
 
-	void dispalyTest() const
+	void displayTest() const
 	{
-
-		std::cout<<std::endl<<"---------------"<<std::endl<<"Vertices Coordinates"<<std::endl<<"------------------"<<std::endl;
+        double currentTime = tr_.simulator_handle()->current_time().compute_double(0.01);
+		std::cout<<std::endl<<"------------------"<<std::endl<<"Vertices Coordinates"<<std::endl<<"------------------"<<std::endl;
 		for (Base::Finite_vertices_iterator vit = triangulation_.finite_vertices_begin();
 			vit != triangulation_.finite_vertices_end(); ++vit)
 		{
 			
 			std::cout<<"---------------"<<vit->point()<<"------------------"<<std::endl;
-			std::cout<<"X :"<<point(vit->point()).x().value_at(tr_.simulator_handle()->current_time().compute_double(0.01))<<std::endl;
-			std::cout<<"Y :"<<point(vit->point()).y().value_at(tr_.simulator_handle()->current_time().compute_double(0.01))<<std::endl;
-			std::cout<<"Z :"<<point(vit->point()).z().value_at(tr_.simulator_handle()->current_time().compute_double(0.01))<<std::endl;
+			std::cout<<"X :"<<point(vit->point()).x().value_at(currentTime)<<std::endl;
+			std::cout<<"Y :"<<point(vit->point()).y().value_at(currentTime)<<std::endl;
+			std::cout<<"Z :"<<point(vit->point()).z().value_at(currentTime)<<std::endl;
 
 		}
 
@@ -266,7 +256,8 @@ public:
         for (All_edges_iterator eit = triangulation_.all_edges_begin();
 			eit != triangulation_.all_edges_end(); ++eit) 
 		{
-			std::cout<<eit->first->vertex(eit->second)->point()<<eit->first->vertex(eit->third)->point()<< std::endl;
+			std::cout<<eit->first->vertex(eit->second)->point()<<
+                       eit->first->vertex(eit->third )->point()<< std::endl;
         }			   
 					   
 	}
@@ -415,7 +406,6 @@ protected:
 
     void Initialization()
     {
-		printf("Initialization \n");
         for (Base::All_edges_iterator eit = triangulation_.all_edges_begin();
 		    eit != triangulation_.all_edges_end(); ++eit)
 	    {
@@ -484,27 +474,26 @@ protected:
 
             return certSign != CGAL::NEGATIVE;
         }
-        //The facet is infinite so we don't care about it
+        //The facet is infinite so obviously not short
 	    return false;
     }
 
     bool CheckShortEdge(Edge edge)
     {
 	    std::vector<Point_key> ids(2);
-        printf("Extracting edge points.\n");
         edgePoint(edge, std::back_insert_iterator<std::vector<Point_key> >(ids));
         typename Kinetic_kernel::Function_kernel::Construct_function cf;
         if(ids.size() == 2)
         {
-	    CGAL::Sign certSign = sEC3.sign_at(
-		    point(ids[0]),
-		    point(ids[1]),
-            cf(squared_alpha),
-            simulator()->current_time());
+	        CGAL::Sign certSign = sEC3.sign_at(
+		        point(ids[0]),
+		        point(ids[1]),
+                cf(squared_alpha),
+                simulator()->current_time());
         
-	    return certSign != CGAL::NEGATIVE;
+	        return certSign != CGAL::NEGATIVE;
         }
-        //The edge is infinite so we don't care
+        //The edge is infinite so obviously not short
         return false;
     }
 
@@ -585,7 +574,6 @@ protected:
 
             if (edgesList.count(current) > 0)
             {
-                printf("Removing edge\n");
                 Event_key for_removal = edgesList[current];
                 simulator()->delete_event(for_removal);
                 edgesList.erase(current);
@@ -594,7 +582,6 @@ protected:
 
             cc++;
         } while(cc != done);
-        printf("No edge removed\n");
     }
 
     void removeShortCertificate(Facet facet)
@@ -603,7 +590,6 @@ protected:
 		{
             Event_key remove_key = facetsList[facet];
 			simulator()->delete_event(remove_key);
-            printf("Removing facet\n");
             facetsList.erase(facet);
 		}
         else
@@ -613,11 +599,8 @@ protected:
             {
                 Event_key mirror_key = facetsList[mirror];
                 simulator()->delete_event(mirror_key);
-                printf("Removing mirror facet\n");
                 facetsList.erase(mirror);
             }
-            else
-                printf("No facet removed\n");
         }
 
     }
@@ -627,13 +610,10 @@ protected:
     {
         typename Kinetic_kernel::Function_kernel::Construct_function cf;
         std::vector<Point_key> ids(4);
-        printf("Getting points from cell\n");
         cellPoint(c, std::back_insert_iterator<std::vector<Point_key> >(ids));
 	    
         if (ids.size()==4) 
         {
-            printf("Calculating certificate");
-     
             return s4C3(point(ids[0]),
 		        point(ids[1]),
 		        point(ids[2]),
@@ -692,7 +672,6 @@ protected:
     void makeShortCertificate( const Facet &f,
 			      const typename Simulator::Time &st) 
     {
-		//printf("makeShortCertificate facet  \n");
         CGAL_precondition(!hasShortCertificate(f));
     
         Certificate cert = facetRootStack(f, st);
@@ -759,7 +738,6 @@ protected:
  
         for (All_edges_iterator eit = triangulation_.all_edges_begin();
 	     eit != triangulation_.all_edges_end(); ++eit) {
-			//printf("edge  %d\n",is_degree_3(*eit));
 			makeShortCertificate(*eit);
 			if (is_degree_3(*eit) && !has_degree_4_vertex(*eit)) {
 				make_certificate(*eit);

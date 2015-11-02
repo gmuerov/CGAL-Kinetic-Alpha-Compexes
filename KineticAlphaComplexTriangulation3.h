@@ -155,9 +155,9 @@ public:
 	}
 
 	typedef typename ACBase::Finite_vertices_iterator Finite_vertices_iterator;
-	void displaySamthing()
+	void WriteVerticesAndEdges()
 	{
-		kdel_.dispalyTest();
+		kdel_.displayTest();
 	}
 
   //! Initialize it.
