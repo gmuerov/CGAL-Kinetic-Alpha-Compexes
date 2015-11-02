@@ -21,10 +21,13 @@ int main()
     typedef KK::Point_3 Point;
     typedef CGAL::Kinetic::Delaunay_triangulation_3<Traits> KineticTriangulation;
 
-
     KineticAlphaComplexTriangulation3<Traits> beef(tr, Traits::Simulator::NT(2.0));
 
     //KineticTriangulation triang(tr);
+	KineticAlphaComplexTriangulation3<Traits>::Cell_handle ddd;
+	//std::cout<<ddd;
+	/*KineticAlphaComplexTriangulation3<Traits>::Facet d;
+	std::cout<<d.first->vertex(1)->point();*/
 
     CGAL::Random rand;
     for(int i = 0; i < 6; i++)

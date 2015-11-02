@@ -61,8 +61,9 @@ public:
 			removeShortCertificate(*cit);
 			bool shortCell = CheckShortCell(*cit);
 
-			if (!shortCell)
+			if (!shortCell && (*cit)->is_valid())
 				hiddenCellList.insert(*cit);
+				
 
 			makeShortCertificate(*cit);
 
@@ -115,7 +116,7 @@ public:
 
             bool cellShort = CheckShortCell(edgeCirc);
 
-            if(CheckShortCell(edgeCirc))
+            if(!cellShort && edgeCirc->is_valid())
                 hiddenCellList.insert(Cell_handle(edgeCirc));
 
             for(int i = 0; i < 4; i++)
@@ -142,8 +143,11 @@ public:
                     }
                 }
             }
-
+			/*for(int i=0;i<4;i++)
+				std::cout<<edgeCirc->vertex(i)->point()<<"  ";
+			std::cout<<std::endl;*/
             edgeCirc++;
+			
         }
         while(edgeCirc != done);
 		return returned;
@@ -258,7 +262,34 @@ public:
 		{
 			std::cout<<eit->first->vertex(eit->second)->point()<<
                        eit->first->vertex(eit->third )->point()<< std::endl;
-        }			   
+        }	
+
+		std::cout<<std::endl<<"---------------"<<std::endl<<"HidenEdges"<<std::endl<<"------------------"<<std::endl;
+        for (std::set<Edge>::iterator heit = hiddenEdgeList.begin();
+			heit != hiddenEdgeList.end(); ++heit) 
+		{ 
+			std::cout<<heit->first->vertex(heit->second)->point()<<
+                       heit->first->vertex(heit->third )->point()<< std::endl;
+        }
+
+		std::cout<<std::endl<<"---------------"<<std::endl<<"HidenFacet"<<std::endl<<"------------------"<<std::endl;
+        for (std::set<Facet>::iterator hfit = hiddenFaceList.begin();
+			hfit != hiddenFaceList.end(); ++hfit) 
+		{ 
+			for(int i=0; i<4; i++)
+				if(i != hfit->second)
+					std::cout<<hfit->first->vertex(i)->point();
+			std::cout<<std::endl;
+        }
+
+		std::cout<<std::endl<<"---------------"<<std::endl<<"HidenCell"<<std::endl<<"------------------"<<std::endl;
+        for (std::set<Cell_handle>::iterator hcit = hiddenCellList.begin();
+			hcit != hiddenCellList.end(); ++hcit) 
+		{ 
+			for(int i=0; i<4; i++)
+				std::cout<<(*hcit)->vertex(i)->point();
+			std::cout<<std::endl;
+        }
 					   
 	}
 
@@ -428,7 +459,7 @@ protected:
         for (Base::All_cells_iterator cit = triangulation_.all_cells_begin();
 		    cit != triangulation_.all_cells_end(); ++cit)
 	        {
-			    if(!CheckShortCell(cit))
+			    if(!CheckShortCell(cit) && cit->is_valid())
 			    {
 				    hiddenCellList.insert(cit);
 			    }
@@ -437,9 +468,8 @@ protected:
 
     bool CheckShortCell(const Cell_handle cell)
     {
-	    std::vector<Point_key> ids(4);
+	    std::vector<Point_key> ids;
 	    cellPoint(cell, std::back_insert_iterator<std::vector<Point_key> >(ids));
-        
         typename Kinetic_kernel::Function_kernel::Construct_function cf;
         if (ids.size() == 4)
 	    {
@@ -454,15 +484,14 @@ protected:
 	        return certSign != CGAL::NEGATIVE;
         }
 
-        return false;
+        return true;
     }
 
     bool CheckShortFacet(Facet facet)
     {
-	    std::vector<Point_key> ids(3);
+	    std::vector<Point_key> ids;
 	    facetPoint(facet, std::back_insert_iterator<std::vector<Point_key> >(ids));
         typename Kinetic_kernel::Function_kernel::Construct_function cf;
-
         if (ids.size() == 3)
         {
 	        CGAL::Sign certSign = sTC3.sign_at(
@@ -474,16 +503,16 @@ protected:
 
             return certSign != CGAL::NEGATIVE;
         }
-        //The facet is infinite so obviously not short
-	    return false;
+        //The facet is infinite we dont't put it in too the hiden facets
+	    return true;
     }
 
     bool CheckShortEdge(Edge edge)
     {
-	    std::vector<Point_key> ids(2);
+	    std::vector<Point_key> ids;
         edgePoint(edge, std::back_insert_iterator<std::vector<Point_key> >(ids));
         typename Kinetic_kernel::Function_kernel::Construct_function cf;
-        if(ids.size() == 2)
+		if(ids.size() == 2)
         {
 	        CGAL::Sign certSign = sEC3.sign_at(
 		        point(ids[0]),
@@ -493,8 +522,8 @@ protected:
         
 	        return certSign != CGAL::NEGATIVE;
         }
-        //The edge is infinite so obviously not short
-        return false;
+        //The edge is infinite we dont't put it in too the hiden edges
+        return true;
     }
 
 #pragma region Point Extraction functions
@@ -519,7 +548,7 @@ protected:
     void edgePoint(const Edge &e, Oit out) const
     {
 		Point_key k= e.first->vertex(e.second)->point();
-			
+       	
 		if(k.is_valid())
 		{
 			*out = k;
@@ -539,16 +568,18 @@ protected:
     template <class Oit>
     void cellPoint(const Cell_handle &c, Oit out) const
     {
+		//std::cout<<" cell point:";
 	    for (unsigned int i=0; i<4; ++i)
 	    {
 		    Point_key k= c->vertex(i)->point();
-		
+			//std::cout<<k;
 		    if(k.is_valid())
 		    {
 			    *out = k;
 			    out++;
 		    }	
 	    }
+		//std::cout<<std::endl;
     }
 
 #pragma endregion Functions for extracting the points out of facets, cells and edges
@@ -609,7 +640,7 @@ protected:
 			     const typename Simulator::Time &st) const
     {
         typename Kinetic_kernel::Function_kernel::Construct_function cf;
-        std::vector<Point_key> ids(4);
+        std::vector<Point_key> ids;
         cellPoint(c, std::back_insert_iterator<std::vector<Point_key> >(ids));
 	    
         if (ids.size()==4) 
@@ -631,7 +662,7 @@ protected:
 			     const typename Simulator::Time &st) const
     {
         typename Kinetic_kernel::Function_kernel::Construct_function cf;
-        std::vector<Point_key> ids(2);
+        std::vector<Point_key> ids;
         edgePoint(e, std::back_insert_iterator<std::vector<Point_key> >(ids));
 	
         if (ids.size()==2) 
@@ -651,7 +682,7 @@ protected:
 			      const typename Simulator::Time &st) const
     {
         typename Kinetic_kernel::Function_kernel::Construct_function cf;
-        std::vector<Point_key> ids(3);
+        std::vector<Point_key> ids;
         facetPoint(f, std::back_insert_iterator<std::vector<Point_key> >(ids));
 	
 	    if (ids.size()==3) 
