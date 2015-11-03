@@ -11,7 +11,7 @@ class EventShortEdge:
 
 public:
 	//kdel -> it's the Kinetic Alpha Complex
-	EventShortEdge(const RS &s, const typename KD::Edge &e, KD *kdel):
+	EventShortEdge(const RS &s, const typename KD::StoredEdge &e, KD *kdel):
 		baseEvent(s, kdel), e_(e){}
 
 	void process(){
@@ -26,7 +26,7 @@ public:
     }
 
 protected:
-  const typename KD::Edge e_;
+  const typename KD::StoredEdge e_;
 
 };
 

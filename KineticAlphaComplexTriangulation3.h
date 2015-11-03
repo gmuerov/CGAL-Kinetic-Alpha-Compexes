@@ -119,7 +119,10 @@ private:
 
 public:
 	
-	typename Simulator::Event_key GetEventKey(Edge e)
+    
+    typedef typename ACBase::StoredEdge StoredEdge;
+
+	typename Simulator::Event_key GetEventKey(StoredEdge e)
 	{
 		return kdel_.GetEventKey(e);
 	}
@@ -134,7 +137,7 @@ public:
 		return kdel_.GetEventKey(c);
 	}
 	
-	void hideShowFace(Edge e)
+	void hideShowFace(StoredEdge e)
 	{
 		kdel_.hideShowFace(e);
 	}
