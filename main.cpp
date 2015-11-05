@@ -43,8 +43,11 @@ int main()
         }
 
         F x_func(x.begin(), x.end());
+        std::cout<<"X function: "<<x_func<<std::endl;
         F y_func(y.begin(), y.end());
+        std::cout<<"Y function: "<<y_func<<std::endl;
         F z_func(z.begin(), z.end());
+        std::cout<<"Z function: "<<z_func<<std::endl;
 
         Point new_point(x_func, y_func, z_func);
 
@@ -61,7 +64,6 @@ int main()
         sp->set_current_event_number(sp->current_event_number()+1);
     }
     printf("Simulator time %d\n",tr.simulator_handle()->current_time());
-    //printf("The resulting triangulation is of dimension %d",triang.triangulation().dimension());
 
 	return 0;
 }
