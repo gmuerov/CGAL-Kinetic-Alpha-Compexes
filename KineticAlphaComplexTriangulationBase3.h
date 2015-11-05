@@ -80,7 +80,6 @@ public:
 
         CellCirculator edgeCirc = triangulation_.incident_cells(returned);
         CellCirculator done = edgeCirc;
-        printf("Going over the new cells.\n");
         do
         {
             RenewCertificates(edgeCirc);
@@ -251,20 +250,7 @@ public:
 
 	void hideShowFace(Facet f)
     {
-        
-        printf("Current cells\n");
-        for(Base::All_cells_iterator cit = triangulation_.all_cells_begin();
-		    cit != triangulation_.all_cells_end(); ++cit)
-        {
-            for(int i = 0; i< 4; i++)
-                std::cout<<cit->vertex(i)->point();
-            std::cout<<std::endl;
-        }
-        printf("Facet Cell");
-        for(int i = 0; i< 4; i++)
-                std::cout<<f.first->vertex(i)->point();
-        std::cout<<std::endl;
-
+        printf("\nProcessing short facet event.\n\n");
 		//check if the Facet is contained in the set
 		int face = hiddenFaceList.count(f);
 
@@ -286,7 +272,8 @@ public:
 
 		Base::Certificate core = extract_root_stack(failed);
 
-		if (core.will_fail()) {
+		if (core.will_fail()) 
+        {
 		    typename Simulator::Time t= core.failure_time();
 		    core.pop_failure_time();
 		    typename Simulator::Event_key k= simulator()->new_event(t, 
@@ -300,7 +287,7 @@ public:
 
 	void hideShowFace(StoredEdge e)
     {
-
+        printf("\nProcessing edge short event\n\n");
         if (hiddenEdgeList.count(e) <= 0)
         {
             StoredEdge mirror(e.second, e.first);
@@ -308,14 +295,16 @@ public:
                 hiddenEdgeList.insert(e);
             else
                 hiddenEdgeList.erase(mirror);
-        }else
+        }
+        else
             hiddenEdgeList.erase(e);
 
 		typename Simulator::Event_key failed = edgesList[e];
 
 		Base::Certificate core = extract_root_stack(failed);
 
-		if (core.will_fail()) {
+		if (core.will_fail()) 
+        {
 			typename Simulator::Time t= core.failure_time();
 		    core.pop_failure_time();
 			typename Simulator::Event_key k= simulator()->new_event(t, 
@@ -328,7 +317,7 @@ public:
 
 	void hideShowFace(Cell_handle c)
     {
-        printf("Processing cell short event.\n");
+        printf("\nProcessing cell short event.\n\n");
 		//Check if the cell is hidden
 		int cell = hiddenCellList.count(c);
 
@@ -341,7 +330,8 @@ public:
 
 		Base::Certificate core = extract_root_stack(failed);
 
-		 if (core.will_fail()) {
+		if (core.will_fail()) 
+        {
 			typename Simulator::Time t= core.failure_time();
 		    core.pop_failure_time();
 			typename Simulator::Event_key k= simulator()->new_event(t, 
@@ -361,14 +351,20 @@ public:
         if (!has_certificates_ && b) {
             if (triangulation().dimension() == 3) {
 	            //Add assertions for our certificates
-                /*for (All_edges_iterator eit = triangulation_.all_edges_begin();
+                for (All_edges_iterator eit = triangulation_.all_edges_begin();
 	                 eit != triangulation_.all_edges_end(); ++eit) {
 	              CGAL_assertion(!has_event(*eit));
+                  CGAL_assertion(!hasShortCertificate(convertEdge(*eit)));
 	            }
 	            for (All_facets_iterator eit = triangulation_.all_facets_begin();
 	                 eit != triangulation_.all_facets_end(); ++eit) {
 	              CGAL_assertion(!has_event(*eit));
-	            }*/
+                  CGAL_assertion(!hasShortCertificate(*eit));
+	            }
+                for (Base::All_cells_iterator cit = triangulation_.all_cells_begin();
+                    cit != triangulation_.all_cells_end(); ++cit){
+                        CGAL_assertion(!hasShortCertificate(cit));
+                }
 	            create_all_certificates();
         	    has_certificates_=true;
             }
@@ -387,7 +383,7 @@ protected:
 	    {
             StoredEdge convert = convertEdge(*eit);
 		    if(!CheckShortEdge(convert) && 
-                hiddenEdgeList.count(StoredEdge(convert.second, convert.first))>0)
+                hiddenEdgeList.count(StoredEdge(convert.second, convert.first))<=0)
 		    {
 			    hiddenEdgeList.insert(convert);
 		    }
@@ -785,7 +781,8 @@ protected:
                 
             removeShortCertificate(f);
             makeShortCertificate(f);
-            if (!cellShort && CheckShortFacet(f))
+            if (!cellShort && CheckShortFacet(f) &&
+                hiddenFaceList.count(triangulation_.mirror_facet(f)) <= 0)
                 hiddenFaceList.insert(f);
 
             for(int j = i + 1; j < 4; j++)
@@ -796,7 +793,8 @@ protected:
                 removeShortCertificate(e);
                 makeShortCertificate(e);
 
-                if (!cellShort && CheckShortEdge(e))
+                if (!cellShort && CheckShortEdge(e) && 
+                     hiddenEdgeList.count(StoredEdge(e.second, e.first))<=0)
                     hiddenEdgeList.insert(e);
             }
         }
