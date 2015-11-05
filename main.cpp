@@ -30,7 +30,7 @@ int main()
 	std::cout<<d.first->vertex(1)->point();*/
 
     CGAL::Random rand;
-    for(int i = 0; i < 6; i++)
+    for(int i = 0; i < 5; i++)
     {
         std::vector<F::NT> x;
         std::vector<F::NT> y;

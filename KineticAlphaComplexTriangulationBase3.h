@@ -188,10 +188,13 @@ public:
 			vit != triangulation_.finite_vertices_end(); ++vit)
 		{
 			
-			std::cout<<"---------------"<<vit->point()<<"------------------"<<std::endl;
+			/*std::cout<<"---------------"<<vit->point()<<"------------------"<<std::endl;
 			std::cout<<"X :"<<point(vit->point()).x().value_at(currentTime)<<std::endl;
 			std::cout<<"Y :"<<point(vit->point()).y().value_at(currentTime)<<std::endl;
-			std::cout<<"Z :"<<point(vit->point()).z().value_at(currentTime)<<std::endl;
+			std::cout<<"Z :"<<point(vit->point()).z().value_at(currentTime)<<std::endl;*/
+			std::cout<<point(vit->point()).x().value_at(currentTime)<<" ";
+			std::cout<<point(vit->point()).y().value_at(currentTime)<<" ";
+			std::cout<<point(vit->point()).z().value_at(currentTime)<<std::endl;
 
 		}
 
@@ -199,8 +202,20 @@ public:
         for (All_edges_iterator eit = triangulation_.all_edges_begin();
 			eit != triangulation_.all_edges_end(); ++eit) 
 		{
-			std::cout<<eit->first->vertex(eit->second)->point()<<
-                       eit->first->vertex(eit->third )->point()<< std::endl;
+			/*std::cout<<eit->first->vertex(eit->second)->point()<<
+                       eit->first->vertex(eit->third )->point()<< std::endl;*/
+			if(eit->first->vertex(eit->second)->point().is_valid() && eit->first->vertex(eit->third)->point().is_valid())
+			{
+				std::cout<<point(eit->first->vertex(eit->second)->point()).x().value_at(currentTime)<<" ";
+				std::cout<<point(eit->first->vertex(eit->second)->point()).y().value_at(currentTime)<<" ";
+				std::cout<<point(eit->first->vertex(eit->second)->point()).z().value_at(currentTime)<<std::endl;
+				std::cout<<point(eit->first->vertex(eit->third)->point()).x().value_at(currentTime)<<" ";
+				std::cout<<point(eit->first->vertex(eit->third)->point()).y().value_at(currentTime)<<" ";
+				std::cout<<point(eit->first->vertex(eit->third)->point()).z().value_at(currentTime)<<std::endl;
+			}
+			/*std::cout<<eit->first->vertex(eit->second)->point()<<
+                       eit->first->vertex(eit->third )->point()<< std::endl;*/
+			
         }	
 
 		std::cout<<std::endl<<"---------------"<<std::endl<<"HidenEdges"<<std::endl<<"------------------"<<std::endl;
