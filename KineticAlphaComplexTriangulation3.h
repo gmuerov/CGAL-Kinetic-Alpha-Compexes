@@ -202,7 +202,6 @@ public:
   
   void audit() const
   {
-	  printf("audit kact3 \n");
     kdel_.audit();
   }
 

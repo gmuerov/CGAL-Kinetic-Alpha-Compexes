@@ -92,7 +92,10 @@ public:
 
     void audit() const
     {
+        printf("Beginning audit.\n");
         Base::audit();
+
+        auditHiddenFaces();
 
         if (!has_certificates_)
         {
@@ -132,6 +135,34 @@ public:
 			}
 	                
         }
+    }
+
+    void auditHiddenFaces() const
+    {
+        for (Base::All_cells_iterator cit = triangulation_.all_cells_begin();
+	            cit != triangulation_.all_cells_end(); ++cit)
+                if (hiddenCellList.count(cit) > 0)
+                    CGAL_assertion(CheckShortCell(cit));
+                else
+                    CGAL_assertion(!CheckShortCell(cit));
+
+        for (Base::Finite_edges_iterator eit = triangulation_.finite_edges_begin();
+	                eit != triangulation_.finite_edges_end(); ++eit)
+			{
+                StoredEdge edge = convertEdge(*eit);
+                if(hasShortCertificate(edge))
+                    CGAL_assertion( CheckShortEdge(edge));
+                else
+                    CGAL_assertion(!CheckShortEdge(edge));
+				
+			}     
+
+        for (Base::Finite_facets_iterator fit = triangulation_.finite_facets_begin();
+	            fit != triangulation_.finite_facets_end(); ++fit)
+                if(hasShortCertificate(*fit))
+                    CGAL_assertion(CheckShortFacet(*fit));
+                else
+                    CGAL_assertion(!CheckShortFacet(*fit));
     }
 
     typename Simulator::Event_key GetEventKey(const Facet f)
@@ -409,7 +440,7 @@ protected:
 		    }
     }
 
-    bool CheckShortCell(const Cell_handle cell)
+    bool CheckShortCell(const Cell_handle cell) const
     {
 	    std::vector<Point_key> ids;
 	    cellPoint(cell, std::back_insert_iterator<std::vector<Point_key> >(ids));
@@ -424,13 +455,13 @@ protected:
                 cf(squared_alpha),
                 simulator()->current_time());
 
-	        return certSign != CGAL::NEGATIVE;
+            return certSign == CGAL::POSITIVE;
         }
         //If the cell is infinite we don't want to put it with the hidden ones
         return true;
     }
 
-    bool CheckShortFacet(Facet facet)
+    bool CheckShortFacet(Facet facet) const
     {
 	    std::vector<Point_key> ids;
 	    facetPoint(facet, std::back_insert_iterator<std::vector<Point_key> >(ids));
@@ -444,13 +475,13 @@ protected:
                 cf(squared_alpha),
                 simulator()->current_time());
 
-            return certSign != CGAL::NEGATIVE;
+            return certSign == CGAL::POSITIVE;
         }
         //The facet is infinite we don't put it into the hiden facets
 	    return true;
     }
 
-    bool CheckShortEdge(StoredEdge edge)
+    bool CheckShortEdge(StoredEdge edge) const
     {
 	    std::vector<Point_key> ids;
         edgePoint(edge, std::back_insert_iterator<std::vector<Point_key> >(ids));
@@ -463,7 +494,7 @@ protected:
                 cf(squared_alpha),
                 simulator()->current_time());
         
-	        return certSign != CGAL::NEGATIVE;
+	        return certSign == CGAL::POSITIVE;
         }
         //The edge is infinite we don't put it into the hiden edges
         return true;
@@ -745,14 +776,14 @@ protected:
         }
       }
 
-    bool hasShortCertificate(const StoredEdge& e)
+    bool hasShortCertificate(const StoredEdge& e) const
     {
         StoredEdge copy(e.second, e.first);
         int count = edgesList.count(e) + edgesList.count(copy);
         return count > 0;
     }
 
-    bool hasShortCertificate(const Facet& f)
+    bool hasShortCertificate(const Facet& f) const
     {
         Facet mirrored = triangulation_.mirror_facet(f);
         int count = facetsList.count(f) + facetsList.count(mirrored);
@@ -760,10 +791,10 @@ protected:
         return count > 0;
     }
 
-    bool hasShortCertificate(const Cell_handle& c)
-{
-    return cellsList.count(c) > 0;
-}
+    bool hasShortCertificate(const Cell_handle& c) const
+    { 
+        return cellsList.count(c) > 0;
+    }
 
     void RenewCertificates(Cell_handle edgeCirc)
     {

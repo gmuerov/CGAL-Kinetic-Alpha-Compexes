@@ -10,6 +10,9 @@
 
 typedef ExtendedExactTraits Traits;
 
+#define CGAL_CHECK_EXACTNESS
+#define CGAL_KINETIC_CHECK_EXPENSIVE
+
 int main()
 {
 	Traits tr(0, 1000);
@@ -20,6 +23,7 @@ int main()
 	typedef KK::Motion_function F;
     typedef KK::Point_3 Point;
     typedef CGAL::Kinetic::Delaunay_triangulation_3<Traits> KineticTriangulation;
+    typedef Traits::Simulator Simulator;
 
     KineticAlphaComplexTriangulation3<Traits> beef(tr, Traits::Simulator::NT(2.0));
 
@@ -30,7 +34,7 @@ int main()
 	std::cout<<d.first->vertex(1)->point();*/
 
     CGAL::Random rand;
-    for(int i = 0; i < 5; i++)
+    for(int i = 0; i < 14; i++)
     {
         std::vector<F::NT> x;
         std::vector<F::NT> y;
@@ -43,11 +47,8 @@ int main()
         }
 
         F x_func(x.begin(), x.end());
-        std::cout<<"X function: "<<x_func<<std::endl;
         F y_func(y.begin(), y.end());
-        std::cout<<"Y function: "<<y_func<<std::endl;
         F z_func(z.begin(), z.end());
-        std::cout<<"Z function: "<<z_func<<std::endl;
 
         Point new_point(x_func, y_func, z_func);
 
