@@ -53,9 +53,12 @@ private:
 
 public:
   typedef typename TraitsT::Kinetic_kernel::Side_of_oriented_sphere_3::result_type Root_stack;
+
   typedef typename TriangulationT::Cell_handle Cell_handle;
   typedef typename TriangulationT::Facet Facet;
   typedef typename TriangulationT::Edge Edge;
+
+  typedef typename TraitsT Traits;
   typedef typename TraitsT::Simulator::Event_key Event_key;
   typedef typename TraitsT::Active_points_3_table::Key Point_key;
   typedef typename TraitsT::Simulator Simulator;
@@ -223,9 +226,6 @@ public:
   void insert(Point_key k) {
 
     kdel_.insert(k);
-    /*if (kdel_.triangulation()->dimension() ==3){
-      kdel_.set_has_certificates(true);
-      }*/
     on_geometry_changed();
   }
 
