@@ -34,7 +34,7 @@ int main()
 	std::cout<<d.first->vertex(1)->point();*/
 
     CGAL::Random rand;
-    for(int i = 0; i < 14; i++)
+    for(int i = 0; i < 10; i++)
     {
         std::vector<F::NT> x;
         std::vector<F::NT> y;
@@ -60,11 +60,12 @@ int main()
 	 
 	Traits::Simulator::Handle sp= tr.simulator_handle();
 	while (sp->next_event_time() != sp->end_time()) {
-		printf("Current event %d\n",sp->current_event_number());
+		std::cout<<"Frame"<<std::endl;
+		//printf("Current event %d\n",sp->current_event_number());
 		beef.WriteVerticesAndEdges();
         sp->set_current_event_number(sp->current_event_number()+1);
     }
-    printf("Simulator time %d\n",tr.simulator_handle()->current_time());
+    //printf("Simulator time %d\n",tr.simulator_handle()->current_time());
 
 	return 0;
 }
