@@ -239,7 +239,15 @@ public:
     on_geometry_changed();
   }
 
- 
+  typename ACBase::Simulator* simulator()
+  {
+      return kdel_.simulator();
+  }
+
+  typename ACBase::Moving_object_table* moving_object_table()
+  {
+      return kdel_.moving_object_table();
+  }
 
   CGAL_KINETIC_LISTENER1(TRIANGULATION)
 

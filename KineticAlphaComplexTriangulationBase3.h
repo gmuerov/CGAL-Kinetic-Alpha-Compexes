@@ -446,6 +446,11 @@ public:
         }
     }
 
+    typename Base::Moving_object_table* moving_object_table()
+    {
+        return tr_.active_points_3_table_handle();
+    }
+
 protected:
 
     void Initialization()
@@ -842,10 +847,13 @@ protected:
             for(int i = 0; i < 4; i++)
                 if(i != mirrored.second)
                     std::cout<< mirrored.first->vertex(i)->point()<<" ";
+            if (count > 0)
             std::cout<<std::endl;
         }
         return all > 0;
     }
+
+
 
     bool hasShortCertificate(const Cell_handle& c) const
     { 
