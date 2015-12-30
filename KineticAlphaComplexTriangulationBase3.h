@@ -18,6 +18,7 @@ public:
     typedef typename Base::Cell_circulator CellCirculator;
 
     typedef typename Base::Simulator::NT NT;
+    typedef typename Base::Triangulation Triang;
 
 	typedef typename Base::Facet       Facet;
 	typedef typename Base::Cell_handle Cell_handle;
@@ -385,6 +386,46 @@ public:
 					   
 	}
 
+    typename Triang::Vertex_handle insert(Point_key k)
+    {
+        Triang::Vertex_handle baseVertex = Base::insert(k);
+
+        std::vector<Cell_handle> incidents;
+        if(triangulation_.dimension() == 3)
+        {
+            triangulation_.incident_cells(baseVertex, back_inserter(incidents));
+
+            for(std::vector<Cell_handle>::iterator it = incidents.begin();
+                it != incidents.end(); it++)
+                RenewCertificates(*it);
+        }
+        return baseVertex;
+    }
+
+    typename Triang::Vertex_handle change_vertex(Point_key k)
+    {
+        if(!has_certificates_) 
+            return NULL;
+
+        Triang::Vertex_handle changedVertex = Base::change_vertex(k);
+
+        std::vector<Cell_handle> cellsAround;
+
+        if(triangulation_.dimension() == 3)
+        {
+            triangulation_.incident_cells(changedVertex, back_inserter(cellsAround));
+
+            for(std::vector<Cell_handle>::iterator it = cellsAround.begin();
+                it != cellsAround.end(); ++it)
+            {
+                RenewCertificates(*it);
+            }
+
+        }
+
+        return changedVertex;
+    }
+
 #pragma region Hide/Show functions
 
 	void hideShowFace(Facet f)
@@ -511,6 +552,11 @@ public:
             destroy_all_certificates();
             has_certificates_=false;
         }
+    }
+
+    typename Base::Moving_object_table* moving_object_table()
+    {
+        return tr_.active_points_3_table_handle();
     }
 
 protected:
@@ -650,18 +696,19 @@ protected:
     template <class Oit>
     void cellPoint(const Cell_handle &c, Oit out) const
     {
-		//std::cout<<" cell point:";
 	    for (unsigned int i=0; i<4; ++i)
 	    {
-		    Point_key k= c->vertex(i)->point();
-			//std::cout<<k;
-		    if(k.is_valid())
-		    {
-			    *out = k;
-			    out++;
-		    }	
+            Vertex_handle vh = c->vertex(i);
+            if (vh != NULL)
+            {
+		        Point_key k= vh->point();
+		        if(k.is_valid())
+		        {
+			        *out = k;
+			        out++;
+		        }
+            }
 	    }
-		//std::cout<<std::endl;
     }
 
 #pragma endregion Functions for extracting the points out of facets, cells and edges
@@ -894,10 +941,27 @@ protected:
     bool hasShortCertificate(const Facet& f) const
     {
         Facet mirrored = triangulation_.mirror_facet(f);
-        int count = facetsList.count(f) + facetsList.count(mirrored);
-
-        return count > 0;
+        int count = facetsList.count(f);
+        int countMirror = facetsList.count(mirrored);
+        int all = count + countMirror;
+        if (all > 0)
+        {
+            std::cout<<"Facet : ";
+            for(int i = 0; i < 4; i++)
+                if(i != f.second)
+                    std::cout<< f.first->vertex(i)->point()<<" ";
+            std::cout<<std::endl;
+            std::cout<<"Mirror: ";
+            for(int i = 0; i < 4; i++)
+                if(i != mirrored.second)
+                    std::cout<< mirrored.first->vertex(i)->point()<<" ";
+            if (count > 0)
+            std::cout<<std::endl;
+        }
+        return all > 0;
     }
+
+
 
     bool hasShortCertificate(const Cell_handle& c) const
     { 
@@ -906,8 +970,11 @@ protected:
 
     void RenewCertificates(Cell_handle edgeCirc)
     {
-        removeShortCertificate(edgeCirc);
-        makeShortCertificate(edgeCirc);
+        if (has_certificates_)
+        {
+            removeShortCertificate(edgeCirc);
+            makeShortCertificate(edgeCirc);
+        }
 
         bool cellShort = CheckShortCell(edgeCirc);
 
@@ -917,9 +984,13 @@ protected:
         for(int i = 0; i < 4; i++)
         {
             Facet f(edgeCirc, i);
-                
-            removeShortCertificate(f);
-            makeShortCertificate(f);
+            
+            if (has_certificates_)
+            {
+                removeShortCertificate(f);
+                makeShortCertificate(f);
+            }
+
             if (!cellShort && CheckShortFacet(f) &&
                 hiddenFaceList.count(triangulation_.mirror_facet(f)) <= 0)
                 hiddenFaceList.insert(f);
@@ -928,18 +999,17 @@ protected:
             { 
                 StoredEdge e(edgeCirc->vertex(i)->point(),
                              edgeCirc->vertex(j)->point());
-
-                removeShortCertificate(e);
-                makeShortCertificate(e);
+                if(has_certificates_)
+                {
+                    removeShortCertificate(e);
+                    makeShortCertificate(e);
+                }
 
                 if (!cellShort && CheckShortEdge(e) && 
                      hiddenEdgeList.count(StoredEdge(e.second, e.first))<=0)
                     hiddenEdgeList.insert(e);
             }
         }
-		/*for(int i=0;i<4;i++)
-			std::cout<<edgeCirc->vertex(i)->point()<<"  ";
-		std::cout<<std::endl;*/
     }
 
     NT squared_alpha;
