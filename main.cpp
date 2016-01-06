@@ -7,6 +7,7 @@
 #include <CGAL/Kinetic/Delaunay_triangulation_visitor_base_3.h>
 #include <CGAL/Random.h>
 #include <CGAL/determinant.h>
+#define _USE_MATH_DEFINES
 #include <math.h>
 #include "UtilityFunctions.h"
 //#include "TrajectoryChangeEvent.h"
@@ -85,43 +86,54 @@ int main()
         initialPoints.push_back(new_point);
     }
 
- //   std::vector<int> VisitedIndexes;
+    std::vector<int> VisitedIndexes;
 
- //   std::vector<Point_key> AlphaComplexKeys;
+    std::vector<Point_key> movingPoints;
 
- //   for(int i = 0; i < 6; i++)
- //   {
- //       /*int f = rand.get_int(0, 5);
- //       while (std::find(VisitedIndexes.begin(), VisitedIndexes.end(), f) 
- //                       != VisitedIndexes.end())
- //           f = rand.get_int(0, 5);
+    std::vector<Point_key> AlphaComplexKeys;
+    
+    Simulator::NT angle = Simulator::NT(2) * M_PI/Simulator::NT(5);
 
- //       VisitedIndexes.push_back(f);*/
- //       AlphaComplexKeys.push_back(Helper::makePointRotate(initialPoints[i],
- //                   &beef, tr.simulator_handle(), 5));
- //   }
+    for(int i = 0; i < 3; i++)
+    {
+        int f = rand.get_int(0, 5);
+        while (std::find(VisitedIndexes.begin(), VisitedIndexes.end(), f) 
+                        != VisitedIndexes.end())
+            f = rand.get_int(0, 5);
 
- //   /*for(int i = 0; i < 6; i++)
- //   {
- //       if (std::find(VisitedIndexes.begin(), VisitedIndexes.end(), i) 
- //                       != VisitedIndexes.end())
- //       {
- //           AlphaComplexKeys.push_back(tr.active_points_3_table_handle()->insert(
- //               Point(initialPoints[i])));
- //       }
- //   }*/
+        VisitedIndexes.push_back(f);
+        Point_key new_key = Helper::makePointRotate(initialPoints[f],
+                    &beef, tr.simulator_handle(), angle);
+        movingPoints.push_back(new_key);
+        AlphaComplexKeys.push_back(new_key);
+    }
+    
 
- //   beef.set_has_certificates(true);
-	//Traits::Simulator::Handle sp= tr.simulator_handle();
+	Traits::Simulator::Handle sp= tr.simulator_handle();
 
-	//while (sp->next_event_time() != sp->end_time()) 
- //   {
-	//	printf("Current event %d\n",sp->current_event_number());
- //       beef.WriteVerticesAndEdges();
- //       sp->set_current_event_number(sp->current_event_number()+1);
- //   }
+    sp->new_event(sp->next_time_representable_as_nt() + Simulator::NT(Helper::dt),
+        TrajectoryChangeEvent<AC>(&beef, movingPoints, angle));
 
- //   printf("Simulator time %d\n",tr.simulator_handle()->current_time());
+    for(int i = 0; i < 6; i++)
+    {
+        if (std::find(VisitedIndexes.begin(), VisitedIndexes.end(), i) 
+                        != VisitedIndexes.end())
+        {
+            AlphaComplexKeys.push_back(tr.active_points_3_table_handle()->insert(
+                Point(initialPoints[i])));
+        }
+    }
+
+    beef.set_has_certificates(true);
+
+	while (sp->next_event_time() != sp->end_time()) 
+    {
+		printf("Current event %d\n",sp->current_event_number());
+        beef.WriteVerticesAndEdges();
+        sp->set_current_event_number(sp->current_event_number()+1);
+    }
+
+    printf("Simulator time %d\n",tr.simulator_handle()->current_time());
 
     for(int i = 0; i< 6; i++)
     {
