@@ -102,8 +102,8 @@ int main()
             f = rand.get_int(0, 5);
 
         VisitedIndexes.push_back(f);
-        Point_key new_key = Helper::makePointRotate(initialPoints[f],
-                    &beef, tr.simulator_handle(), angle);
+        Point_key new_key = Helper::makePointRotate(initialPoints[f], 
+                    &beef, &tr, tr.simulator_handle(), angle);
         movingPoints.push_back(new_key);
         AlphaComplexKeys.push_back(new_key);
     }
@@ -112,7 +112,7 @@ int main()
 	Traits::Simulator::Handle sp= tr.simulator_handle();
 
     sp->new_event(sp->next_time_representable_as_nt() + Simulator::NT(Helper::dt),
-        TrajectoryChangeEvent<AC>(&beef, movingPoints, angle));
+        TrajectoryChangeEvent<AC>(&beef, sp, movingPoints, angle));
 
     for(int i = 0; i < 6; i++)
     {

@@ -60,23 +60,50 @@ namespace Helper{
 
     typedef KineticAlphaComplexTriangulation3<Traits> AC;
 
-    Point_key makePointRotate(StaticPoint source, AC* kac,
-                          Simulator::Handle sim, int sides)
+    Point_key makePointRotate(StaticPoint source, AC* kac, Traits* tr,
+                          Simulator::Handle sim, Simulator::NT angle)
     {
-        Simulator::NT angle = Simulator::NT(2)/Simulator::NT(sides);
-
         StaticPoint end = rotatePoint(source, angle);
         
-        sim->new_event(sim->next_time_representable_as_nt() + Simulator::NT(dt),
-            TrajectoryChangeEvent<AC>(kac, end, sides));
+        /*sim->new_event(sim->next_time_representable_as_nt() + Simulator::NT(dt),
+            TrajectoryChangeEvent<AC>(kac, end, sides));*/
 
 
-        Point moving = makeMovement(source, end, Simulator::NT(10), 
+        Point moving = makeMovement(source, end, Simulator::NT(dt), 
                                     sim->next_time_representable_as_nt());
 
-        return kac->moving_object_table()->insert(moving);
+        return tr->active_points_3_table_handle()->insert(moving);
     }
 
+    void ModifyPoints(std::vector<Point_key> points, AC* kac, 
+                      Simulator::Handle sim, Simulator::NT angle)
+    {
+        Simulator::NT t = sim->next_time_representable_as_nt();
+
+        for(size_t i = 0; i < points.size(); i++)
+        {
+            Point current = kac->pointEx(points[i]);
+
+            StaticPoint start(current.x().value_at(t),
+                              current.y().value_at(t),
+                              current.z().value_at(t));
+            
+            StaticPoint end = rotatePoint(start, angle);
+
+            Point moving = makeMovement(start, end, Simulator::NT(dt), t);
+            Simulator::NT X = current.x().value_at(t);
+            Simulator::NT X1 = moving.x().value_at(t);
+            
+            CGAL_assertion(CGAL::compare(current.x().value_at(t), moving.x().value_at(t)) == CGAL::EQUAL);
+            CGAL_assertion(CGAL::compare(current.y().value_at(t), moving.y().value_at(t)) == CGAL::EQUAL);
+            CGAL_assertion(CGAL::compare(current.z().value_at(t), moving.z().value_at(t)) == CGAL::EQUAL);
+
+            kac->moving_object_table()->set(points[i], moving);
+        }
+
+        sim->new_event(sim->next_time_representable_as_nt() + Simulator::NT(dt),
+                        TrajectoryChangeEvent<AC>(kac, sim, points, angle));
+    }
 }
 
 #endif
