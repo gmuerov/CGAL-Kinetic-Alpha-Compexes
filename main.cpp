@@ -79,96 +79,69 @@ int main()
     std::vector<StaticPoint> initialPoints;
 
     CGAL::Random rand;
-<<<<<<< HEAD
-    for(int i = 0; i < 10; i++)
-=======
-    for(int i = 0; i < 6; i++)
->>>>>>> refs/remotes/origin/insert-delete-change-points
-    {
-        StaticPoint new_point = Helper::sampleCube(rand, 2);
+	
+	
+	//reading
+	std::ifstream input( "Points.txt" );
+
+	for( std::string line; getline( input, line ); )
+	{
+		double x, y, z;
+		input >> x >> y >> z;
+		StaticPoint new_point = StaticPoint(x,y,z);		
         initialPoints.push_back(new_point);
+		//std::cout<<x<<" "<<y<<" "<<z<<std::endl;
+		
+	}
+
+	///
+    /*for(int i = 0; i < 6; i++)
+    {
+        StaticPoint new_point = StaticPoint(4,5,2);		
+        initialPoints.push_back(new_point);
+    }*/
+
+
+    std::vector<int> VisitedIndexes;
+
+    std::vector<Point_key> AlphaComplexKeys;
+
+    for(int i = 0; i < 8; i++)
+    {
+        /*int f = rand.get_int(0, 5);
+        while (std::find(VisitedIndexes.begin(), VisitedIndexes.end(), f) 
+                        != VisitedIndexes.end())
+            f = rand.get_int(0, 5);
+
+        VisitedIndexes.push_back(f);*/
+        AlphaComplexKeys.push_back(Helper::makePointRotate(initialPoints[i],
+                    &beef, tr.simulator_handle(), 5));
     }
 
-<<<<<<< HEAD
+    /*for(int i = 0; i < 6; i++)
+    {
+        if (std::find(VisitedIndexes.begin(), VisitedIndexes.end(), i) 
+                        != VisitedIndexes.end())
+        {
+            AlphaComplexKeys.push_back(tr.active_points_3_table_handle()->insert(
+                Point(initialPoints[i])));
+        }
+    }*/
+
     beef.set_has_certificates(true);
-    //triang.set_has_certificates(true);
-	 
 	Traits::Simulator::Handle sp= tr.simulator_handle();
-	while (sp->next_event_time() != sp->end_time()) {
-		std::cout<<"Frame"<<std::endl;
-		//printf("Current event %d\n",sp->current_event_number());
-		beef.WriteVerticesAndEdges();
+
+	while (sp->next_event_time() != sp->end_time()) 
+    {
+		printf("Current event %d\n",sp->current_event_number());
+        beef.WriteVerticesAndEdges();
         sp->set_current_event_number(sp->current_event_number()+1);
     }
-    //printf("Simulator time %d\n",tr.simulator_handle()->current_time());
 
-	return 0;
-}
-
-
-
-/* Motion function tests
-
-
-    std::vector<F::NT> coefsAx;
-	coefsAx.push_back(F::NT(3.0));
-	coefsAx.push_back(F::NT(7.0));
-	F ax(coefsAx.begin(), coefsAx.end());
-
-	std::vector<F::NT> coefsAy;
-	coefsAy.push_back(F::NT(1.0));
-	coefsAy.push_back(F::NT(2.0));
-	F ay(coefsAy.begin(), coefsAy.end());
-
-    Argument3 additive(ax, ay, ax);
-    Argument3 additive2(ax, ay, ay);
-
-	std::vector<F::NT> coefsBx;
-	coefsBx.push_back(F::NT(2.0));
-	coefsBx.push_back(F::NT(3.0));
-	F bx(coefsBx.begin(), coefsBx.end());
-=======
- //   std::vector<int> VisitedIndexes;
-
- //   std::vector<Point_key> AlphaComplexKeys;
-
- //   for(int i = 0; i < 6; i++)
- //   {
- //       /*int f = rand.get_int(0, 5);
- //       while (std::find(VisitedIndexes.begin(), VisitedIndexes.end(), f) 
- //                       != VisitedIndexes.end())
- //           f = rand.get_int(0, 5);
-
- //       VisitedIndexes.push_back(f);*/
- //       AlphaComplexKeys.push_back(Helper::makePointRotate(initialPoints[i],
- //                   &beef, tr.simulator_handle(), 5));
- //   }
-
- //   /*for(int i = 0; i < 6; i++)
- //   {
- //       if (std::find(VisitedIndexes.begin(), VisitedIndexes.end(), i) 
- //                       != VisitedIndexes.end())
- //       {
- //           AlphaComplexKeys.push_back(tr.active_points_3_table_handle()->insert(
- //               Point(initialPoints[i])));
- //       }
- //   }*/
-
- //   beef.set_has_certificates(true);
-	//Traits::Simulator::Handle sp= tr.simulator_handle();
-
-	//while (sp->next_event_time() != sp->end_time()) 
- //   {
-	//	printf("Current event %d\n",sp->current_event_number());
- //       beef.WriteVerticesAndEdges();
- //       sp->set_current_event_number(sp->current_event_number()+1);
- //   }
-
- //   printf("Simulator time %d\n",tr.simulator_handle()->current_time());
+    printf("Simulator time %d\n",tr.simulator_handle()->current_time());
 
     for(int i = 0; i< 6; i++)
     {
->>>>>>> refs/remotes/origin/insert-delete-change-points
 
     }
 
