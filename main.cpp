@@ -107,7 +107,6 @@ int main()
         movingPoints.push_back(new_key);
         AlphaComplexKeys.push_back(new_key);
     }
-    
 
 	Traits::Simulator::Handle sp= tr.simulator_handle();
 
@@ -117,7 +116,7 @@ int main()
     for(int i = 0; i < 6; i++)
     {
         if (std::find(VisitedIndexes.begin(), VisitedIndexes.end(), i) 
-                        != VisitedIndexes.end())
+                        == VisitedIndexes.end())
         {
             AlphaComplexKeys.push_back(tr.active_points_3_table_handle()->insert(
                 Point(initialPoints[i])));
