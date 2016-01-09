@@ -27,47 +27,6 @@ typedef Helper::Simulator Simulator;
 typedef Traits::Function_kernel::Construct_function CF;
 typedef Traits::Active_points_3_table::Key Point_key;
 
-///Creates a random linear trajectory.
-///If a point and time are given the new trajectory is guaranteed to pass through the same point at that time.
-Point makeRandomMovement(CGAL::Random& rand, Point source = Point(), F::NT time = F::NT(0))
-{
-    std::vector<F::NT> x;
-    std::vector<F::NT> y;
-    std::vector<F::NT> z;
-    for(int j = 0; j < 2; j++)
-    {
-        x.push_back(rand.get_double(0, 3) * 5 - 2);
-        y.push_back(rand.get_double(0, 3) * 7 - 5);
-        z.push_back(rand.get_double(0, 3) * 6 - 3); 
-    }
-    
-    
-    if (source.x() != Point().x() &&
-        source.y() != Point().y() &&
-        source.z() != Point().z())
-    {
-        
-        F::NT xs = x[0] + x[1]*time;
-        F::NT ys = y[0] + y[1]*time;
-        F::NT zs = z[0] + z[1]*time;
-
-        F::NT sourcex = source.x()(time);
-        F::NT sourcey = source.y()(time);
-        F::NT sourcez = source.z()(time);
-
-        x[0] = x[0] + sourcex - xs;
-        y[0] = y[0] + sourcey - ys;
-        z[0] = z[0] + sourcez - zs;
-    }
-    x[0] = x[0] / 10;
-    y[0] = y[0] / 10;
-    z[0] = z[0] / 10;
-    F x_func(x.begin(), x.end());
-    F y_func(y.begin(), y.end());
-    F z_func(z.begin(), z.end());
-
-    return Point(x_func, y_func, z_func);
-}
 
 int main()
 {
@@ -81,66 +40,23 @@ int main()
 
     CGAL::Random rand;
 	
-	
+
 	//reading
 	std::ifstream input( "Points.txt" );
-
+	std::cout<<"Frame"<<std::endl;
+	std::cout<<"Vertices"<<std::endl;
 	for( std::string line; getline( input, line ); )
 	{
 		double x, y, z;
 		input >> x >> y >> z;
 		StaticPoint new_point = StaticPoint(x,y,z);		
         initialPoints.push_back(new_point);
-		//std::cout<<x<<" "<<y<<" "<<z<<std::endl;
+		std::cout<<x<<" ";
+		std::cout<<y<<" ";
+		std::cout<<z<<std::endl;
 		
 	}
 
-	///
-    /*for(int i = 0; i < 6; i++)
-    {
-        StaticPoint new_point = StaticPoint(4,5,2);		
-        initialPoints.push_back(new_point);
-    }*/
-
-
-    std::vector<int> VisitedIndexes;
-
-    std::vector<Point_key> AlphaComplexKeys;
-
-    for(int i = 0; i < 8; i++)
-    {
-        /*int f = rand.get_int(0, 5);
-        while (std::find(VisitedIndexes.begin(), VisitedIndexes.end(), f) 
-                        != VisitedIndexes.end())
-            f = rand.get_int(0, 5);
-
-        VisitedIndexes.push_back(f);*/
-        AlphaComplexKeys.push_back(Helper::makePointRotate(initialPoints[i],
-                    &beef, tr.simulator_handle(), 5));
-    }
-
-    /*for(int i = 0; i < 6; i++)
-    {
-        if (std::find(VisitedIndexes.begin(), VisitedIndexes.end(), i) 
-                        != VisitedIndexes.end())
-        {
-            AlphaComplexKeys.push_back(tr.active_points_3_table_handle()->insert(
-                Point(initialPoints[i])));
-        }
-    }*/
-
-    beef.set_has_certificates(true);
-	Traits::Simulator::Handle sp= tr.simulator_handle();
-
-	while (sp->next_event_time() != sp->end_time()) 
-    {
-		printf("Current event %d\n",sp->current_event_number());
-        beef.WriteVerticesAndEdges();
-        sp->set_current_event_number(sp->current_event_number()+1);
-    }
-
-<<<<<<< HEAD
-=======
     std::vector<int> VisitedIndexes;
 
     std::vector<Point_key> movingPoints;
@@ -151,7 +67,7 @@ int main()
 
     for(int i = 0; i < 3; i++)
     {
-        int f = rand.get_int(0, 5);
+        int f = rand.get_int(0, 99);
         while (std::find(VisitedIndexes.begin(), VisitedIndexes.end(), f) 
                         != VisitedIndexes.end())
             f = rand.get_int(0, 5);
@@ -170,25 +86,86 @@ int main()
         TrajectoryChangeEvent<AC>(&beef, sp, movingPoints, angle));
 
     for(int i = 0; i < 6; i++)
-    {
+    {   //std::cout<<i<<std::endl;
         if (std::find(VisitedIndexes.begin(), VisitedIndexes.end(), i) 
-                        != VisitedIndexes.end())
+                        == VisitedIndexes.end())
         {
+			//std::cout<<"samting "<<std::endl;
             AlphaComplexKeys.push_back(tr.active_points_3_table_handle()->insert(
                 Point(initialPoints[i])));
         }
     }
 
+
+	AC::Triangulation tri = beef.triangulation();
+
+	
+	std::cout<<"Edges"<<std::endl;
+        for (AC::Triangulation::All_edges_iterator eit = tri.all_edges_begin();
+			eit != tri.all_edges_end(); ++eit) 
+		{			
+			if(eit->first->vertex(eit->second)->point().is_valid() && eit->first->vertex(eit->third)->point().is_valid())
+			{
+				std::cout<<eit->first->vertex(eit->second)->point()<<
+						 eit->first->vertex(eit->third )->point()<< std::endl;				 		
+			}			
+        }
+
+	std::cout<<"Facet"<<std::endl;
+		for (AC::Triangulation::All_facets_iterator fit = tri.all_facets_begin();
+	                 fit != tri.all_facets_end(); ++fit)
+		{ 
+			bool pointsValid = true;
+			
+			for(int i=0; i<4; i++)
+				if(i != fit->second)
+					if(!fit->first->vertex(i)->point().is_valid())
+						pointsValid = false;
+
+			if(pointsValid)
+			{
+				for(int i=0; i<4; i++)
+					if(i != fit->second)
+						std::cout<<fit->first->vertex(i)->point();
+				std::cout<<std::endl;
+			}
+			
+		}
+
+	std::cout<<"Cell"<<std::endl;
+		for (AC::Triangulation::All_cells_iterator cit = tri.all_cells_begin();
+			cit != tri.all_cells_end(); ++cit)
+		{
+			
+			bool pointsValid = true;
+			
+			for(int i=0; i<4; i++)
+					if(!cit->vertex(i)->point().is_valid())
+						pointsValid = false;
+
+			if(pointsValid)
+			{
+				for(int i=0; i<4; i++)
+					std::cout<<cit->vertex(i)->point();
+				std::cout<<std::endl;
+				
+			}
+			
+		}
+
+
+
+
     beef.set_has_certificates(true);
 
 	while (sp->next_event_time() != sp->end_time()) 
     {
-		printf("Current event %d\n",sp->current_event_number());
+		printf("Frame",sp->current_event_number());
+		std::cout<<std::endl;
         beef.WriteVerticesAndEdges();
         sp->set_current_event_number(sp->current_event_number()+1);
     }
 
->>>>>>> refs/remotes/origin/insert-delete-change-points
     printf("Simulator time %d\n",tr.simulator_handle()->current_time());
 
     for(int i = 0; i< 6; i++)

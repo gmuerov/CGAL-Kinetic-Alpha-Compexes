@@ -211,6 +211,7 @@ public:
         Initialization();
     }
 
+		//----------------------------------displa bigin--------------------
 	void displayTest() const
 	{
         double currentTime = tr_.simulator_handle()->current_time().compute_double(0.01);
@@ -218,19 +219,19 @@ public:
 		for (Base::Finite_vertices_iterator vit = triangulation_.finite_vertices_begin();
 			vit != triangulation_.finite_vertices_end(); ++vit)
 		{
-			
-			/*std::cout<<"---------------"<<vit->point()<<"------------------"<<std::endl;
-			std::cout<<"X :"<<point(vit->point()).x().value_at(currentTime)<<std::endl;
-			std::cout<<"Y :"<<point(vit->point()).y().value_at(currentTime)<<std::endl;
-			std::cout<<"Z :"<<point(vit->point()).z().value_at(currentTime)<<std::endl;*/
 			std::cout<<point(vit->point()).x().value_at(currentTime)<<" ";
 			std::cout<<point(vit->point()).y().value_at(currentTime)<<" ";
 			std::cout<<point(vit->point()).z().value_at(currentTime)<<std::endl;
 
 		}
 
-		std::cout<<"Edges"<<std::endl;
-        for (All_edges_iterator eit = triangulation_.all_edges_begin();
+		std::cout<<"HiddenEdges"<<std::endl;
+		for (std::set<StoredEdge>::iterator heit = hiddenEdgeList.begin();
+					 heit != hiddenEdgeList.end(); ++heit) 
+		{
+			std::cout<<heit->first<<heit->second<< std::endl;
+		}
+        /*for (All_edges_iterator eit = triangulation_.all_edges_begin();
 			eit != triangulation_.all_edges_end(); ++eit) 
 		{
 			
@@ -256,136 +257,106 @@ public:
 					std::cout<<eit->first->vertex(eit->second)->point()<<
 							 eit->first->vertex(eit->third )->point()<< std::endl;
 				 }
-					 
-				
-				/*std::cout<<point(eit->first->vertex(eit->second)->point()).x().value_at(currentTime)<<" ";
-				std::cout<<point(eit->first->vertex(eit->second)->point()).y().value_at(currentTime)<<" ";
-				std::cout<<point(eit->first->vertex(eit->second)->point()).z().value_at(currentTime)<<std::endl;
-				std::cout<<point(eit->first->vertex(eit->third)->point()).x().value_at(currentTime)<<" ";
-				std::cout<<point(eit->first->vertex(eit->third)->point()).y().value_at(currentTime)<<" ";
-				std::cout<<point(eit->first->vertex(eit->third)->point()).z().value_at(currentTime)<<std::endl;*/
-			}
-			/*std::cout<<eit->first->vertex(eit->second)->point()<<
-                       eit->first->vertex(eit->third )->point()<< std::endl;*/
-			
-        }	
-		
-		//std::cout<<std::endl<<"---------------"<<std::endl<<"HidenEdges"<<std::endl<<"------------------"<<std::endl;
-  //      for (std::set<StoredEdge>::iterator heit = hiddenEdgeList.begin();
-		//	heit != hiddenEdgeList.end(); ++heit) 
-		//{ 
 
-		//	/*std::cout<<point(heit->first).x().value_at(currentTime)<<" ";
-		//	std::cout<<point(heit->first).y().value_at(currentTime)<<" ";
-		//	std::cout<<point(heit->first).z().value_at(currentTime)<<std::endl;
-		//	std::cout<<point(heit->second).x().value_at(currentTime)<<" ";
-		//	std::cout<<point(heit->second).y().value_at(currentTime)<<" ";
-		//	std::cout<<point(heit->second).z().value_at(currentTime)<<std::endl;*/
-		//	std::cout<<heit->first<<heit->second<<std::endl;
-  //      }
-		
-		std::cout<<"Facet"<<std::endl;
-		for (All_facets_iterator fit = triangulation_.all_facets_begin();
-	                 fit != triangulation_.all_facets_end(); ++fit)
-		{ 
-			bool pointsValid = true;
-			
-			for(int i=0; i<4; i++)
-				if(i != fit->second)
-					if(!fit->first->vertex(i)->point().is_valid())
-						pointsValid = false;
-
-			if(pointsValid)
-			{
-				//check if the Facet is contained in the set
-				int face = hiddenFaceList.count(*fit);
-
-				//check for the mirror Facet within the set
-				Facet mirror = triangulation_.mirror_facet(*fit);
-				int mirroredFace = hiddenFaceList.count(mirror);
-
-				if(face == 0 && mirroredFace == 0)
-				{
-					for(int i=0; i<4; i++)
-						if(i != fit->second)
-							std::cout<<fit->first->vertex(i)->point();
-					std::cout<<std::endl;
-				}
 			}
 			
-		}
-
-		//std::cout<<std::endl<<"---------------"<<std::endl<<"HidenFacet"<<std::endl<<"------------------"<<std::endl;
-  //      for (std::set<Facet>::iterator hfit = hiddenFaceList.begin();
-		//	hfit != hiddenFaceList.end(); ++hfit) 
-		//{ 
-		//	for(int i=0; i<4; i++)
-		//		if(i != hfit->second)
-		//			std::cout<<hfit->first->vertex(i)->point();
-		//	std::cout<<std::endl;
-		//	/*for(int i=0; i<4; i++)
-		//		if(i != hfit->second)
-		//		{
-		//			std::cout<<point(hfit->first->vertex(i)->point()).x().value_at(currentTime)<<" ";
-		//			std::cout<<point(hfit->first->vertex(i)->point()).y().value_at(currentTime)<<" ";
-		//			std::cout<<point(hfit->first->vertex(i)->point()).z().value_at(currentTime)<<std::endl;
-		//		}
-		//	std::cout<<std::endl;*/
-  //      }
-		std::cout<<"Cell"<<std::endl;
-		for (Base::All_cells_iterator cit = triangulation_.all_cells_begin();
-			cit != triangulation_.all_cells_end(); ++cit)
+        }*/	
+		
+		
+		std::cout<<"HiddenFacet"<<std::endl;
+		for (std::set<Facet>::iterator hfit = hiddenFaceList.begin();
+					 hfit != hiddenFaceList.end(); ++hfit) 
 		{
-			
+			//std::cout<<hfit->first<<hfit->second<< std::endl;
+			bool pointsValid = true;
+			for(int i=0; i<4; i++)
+				if(i != hfit->second)
+					if(!hfit->first->vertex(i)->point().is_valid())
+						pointsValid = false;
+			if(pointsValid)
+			{
+				for(int i=0; i<4; i++)
+					if(i != hfit->second)
+						std::cout<<hfit->first->vertex(i)->point();
+					std::cout<<std::endl;
+			}
+		}
+		//for (All_facets_iterator fit = triangulation_.all_facets_begin();
+	 //                fit != triangulation_.all_facets_end(); ++fit)
+		//{ 
+		//	bool pointsValid = true;
+		//	
+		//	for(int i=0; i<4; i++)
+		//		if(i != fit->second)
+		//			if(!fit->first->vertex(i)->point().is_valid())
+		//				pointsValid = false;
+
+		//	if(pointsValid)
+		//	{
+		//		//check if the Facet is contained in the set
+		//		int face = hiddenFaceList.count(*fit);
+
+		//		//check for the mirror Facet within the set
+		//		Facet mirror = triangulation_.mirror_facet(*fit);
+		//		int mirroredFace = hiddenFaceList.count(mirror);
+
+		//		if(face == 0 && mirroredFace == 0)
+		//		{
+		//			for(int i=0; i<4; i++)
+		//				if(i != fit->second)
+		//					std::cout<<fit->first->vertex(i)->point();
+		//			std::cout<<std::endl;
+		//		}
+		//	}
+		//	
+		//}
+
+		std::cout<<"HiddenCell"<<std::endl;
+		for (std::set<Cell_handle>::iterator hcit = hiddenCellList.begin();
+					 hcit != hiddenCellList.end(); ++hcit) 
+		{
 			bool pointsValid = true;
 			
 			for(int i=0; i<4; i++)
-					if(!cit->vertex(i)->point().is_valid())
+					if(!(*hcit)->vertex(i)->point().is_valid())
 						pointsValid = false;
 
 			if(pointsValid)
 			{
-				//check if the Facet is contained in the set
-				int cell = hiddenCellList.count(cit);
-
-				if(cell == 0)
-				{
-					for(int i=0; i<4; i++)
-						std::cout<<cit->vertex(i)->point();
-					std::cout<<std::endl;
-				}
-				
+				for(int i=0; i<4; i++)
+					std::cout<<(*hcit)->vertex(i)->point();
+				std::cout<<std::endl;
 			}
-			
 		}
-
-		//std::cout<<std::endl<<"---------------"<<std::endl<<"HidenCell"<<std::endl<<"------------------"<<std::endl;
-  //      for (std::set<Cell_handle>::iterator hcit = hiddenCellList.begin();
-		//	hcit != hiddenCellList.end(); ++hcit) 
-		//{ /*
-		//	for(int i=0; i<3; i++)
-		//		{
-		//			std::cout<<point((*hcit)->vertex(i)->point()).x().value_at(currentTime)<<" ";
-		//			std::cout<<point((*hcit)->vertex(i)->point()).y().value_at(currentTime)<<" ";
-		//			std::cout<<point((*hcit)->vertex(i)->point()).z().value_at(currentTime)<<std::endl;
-		//			std::cout<<point((*hcit)->vertex(i+1)->point()).x().value_at(currentTime)<<" ";
-		//			std::cout<<point((*hcit)->vertex(i+1)->point()).y().value_at(currentTime)<<" ";
-		//			std::cout<<point((*hcit)->vertex(i+1)->point()).z().value_at(currentTime)<<std::endl;
-		//		}
-		//	std::cout<<point((*hcit)->vertex(3)->point()).x().value_at(currentTime)<<" ";
-		//	std::cout<<point((*hcit)->vertex(3)->point()).y().value_at(currentTime)<<" ";
-		//	std::cout<<point((*hcit)->vertex(3)->point()).z().value_at(currentTime)<<std::endl;
-		//	std::cout<<point((*hcit)->vertex(0)->point()).x().value_at(currentTime)<<" ";
-		//	std::cout<<point((*hcit)->vertex(0)->point()).y().value_at(currentTime)<<" ";
-		//	std::cout<<point((*hcit)->vertex(0)->point()).z().value_at(currentTime)<<std::endl;
-		//	std::cout<<std::endl;*/
+		//for (Base::All_cells_iterator cit = triangulation_.all_cells_begin();
+		//	cit != triangulation_.all_cells_end(); ++cit)
+		//{
+		//	
+		//	bool pointsValid = true;
+		//	
 		//	for(int i=0; i<4; i++)
-		//		std::cout<<(*hcit)->vertex(i)->point();
-		//	std::cout<<std::endl;
-  //      }
+		//			if(!cit->vertex(i)->point().is_valid())
+		//				pointsValid = false;
+
+		//	if(pointsValid)
+		//	{
+		//		//check if the Facet is contained in the set
+		//		int cell = hiddenCellList.count(cit);
+
+		//		if(cell == 0)
+		//		{
+		//			for(int i=0; i<4; i++)
+		//				std::cout<<cit->vertex(i)->point();
+		//			std::cout<<std::endl;
+		//		}
+		//		
+		//	}
+		//	
+		//}
+
 					   
 	}
-
+	//----------------------------------displa end--------------------
     typename Triang::Vertex_handle insert(Point_key k)
     {
         Triang::Vertex_handle baseVertex = Base::insert(k);
