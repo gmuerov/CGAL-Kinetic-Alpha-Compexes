@@ -80,7 +80,6 @@ int main()
         movingPoints.push_back(new_key);
         AlphaComplexKeys.push_back(new_key);
     }
-    
 
 	Traits::Simulator::Handle sp= tr.simulator_handle();
 
