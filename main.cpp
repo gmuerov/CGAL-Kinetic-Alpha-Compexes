@@ -45,6 +45,7 @@ int main()
 	std::ifstream input( "Points.txt" );
 	std::cout<<"Frame"<<std::endl;
 	std::cout<<"Vertices"<<std::endl;
+	int nrOfPoints = 0;
 	for( std::string line; getline( input, line ); )
 	{
 		double x, y, z;
@@ -54,6 +55,7 @@ int main()
 		std::cout<<x<<" ";
 		std::cout<<y<<" ";
 		std::cout<<z<<std::endl;
+		nrOfPoints++;
 		
 	}
 
@@ -65,9 +67,9 @@ int main()
     
     Simulator::NT angle = Simulator::NT(2) * M_PI/Simulator::NT(5);
 
-    for(int i = 0; i < 3; i++)
+    for(int i = 0; i < 6; i++)
     {
-        int f = rand.get_int(0, 99);
+        int f = rand.get_int(0, 99/*nrOfPoints-1*/);
         while (std::find(VisitedIndexes.begin(), VisitedIndexes.end(), f) 
                         != VisitedIndexes.end())
             f = rand.get_int(0, 5);
@@ -85,7 +87,7 @@ int main()
     sp->new_event(sp->next_time_representable_as_nt() + Simulator::NT(Helper::dt),
         TrajectoryChangeEvent<AC>(&beef, sp, movingPoints, angle));
 
-    for(int i = 0; i < 6; i++)
+    for(int i = 0; i < /*nrOfPoints*/100; i++)
     {   //std::cout<<i<<std::endl;
         if (std::find(VisitedIndexes.begin(), VisitedIndexes.end(), i) 
                         == VisitedIndexes.end())
