@@ -45,17 +45,24 @@ int main()
 	std::ifstream input( "Points.txt" );
 	std::cout<<"Frame"<<std::endl;
 	std::cout<<"Vertices"<<std::endl;
-	int nrOfPoints = 0;
+
+	int nrOfPoints = 20;
+	int allPoints = 0;
+	int nrOfPointsMoving = 5;
 	for( std::string line; getline( input, line ); )
 	{
 		double x, y, z;
 		input >> x >> y >> z;
 		StaticPoint new_point = StaticPoint(x,y,z);		
         initialPoints.push_back(new_point);
-		std::cout<<x<<" ";
-		std::cout<<y<<" ";
-		std::cout<<z<<std::endl;
-		nrOfPoints++;
+		if(nrOfPoints>allPoints)
+		{
+			std::cout<<x<<" ";
+			std::cout<<y<<" ";
+			std::cout<<z<<std::endl;
+		}
+		
+		allPoints++;
 		
 	}
 
@@ -67,13 +74,13 @@ int main()
     
     Simulator::NT angle = Simulator::NT(2) * M_PI/Simulator::NT(5);
 
-    for(int i = 0; i < 6; i++)
-    {
-        int f = rand.get_int(0, 99/*nrOfPoints-1*/);
+    for(int i = 0; i < nrOfPointsMoving; i++)
+    {   
+        int f = rand.get_int(0, nrOfPoints-1);
         while (std::find(VisitedIndexes.begin(), VisitedIndexes.end(), f) 
                         != VisitedIndexes.end())
-            f = rand.get_int(0, 5);
-
+            f = rand.get_int(0, nrOfPoints-1);
+			
         VisitedIndexes.push_back(f);
         Point_key new_key = Helper::makePointRotate(initialPoints[f], 
                     &beef, &tr, tr.simulator_handle(), angle);
@@ -86,12 +93,11 @@ int main()
     sp->new_event(sp->next_time_representable_as_nt() + Simulator::NT(Helper::dt),
         TrajectoryChangeEvent<AC>(&beef, sp, movingPoints, angle));
 
-    for(int i = 0; i < /*nrOfPoints*/100; i++)
-    {   //std::cout<<i<<std::endl;
+    for(int i = 0; i <nrOfPoints; i++)
+    {   
         if (std::find(VisitedIndexes.begin(), VisitedIndexes.end(), i) 
                         == VisitedIndexes.end())
         {
-			//std::cout<<"samting "<<std::endl;
             AlphaComplexKeys.push_back(tr.active_points_3_table_handle()->insert(
                 Point(initialPoints[i])));
         }
@@ -154,9 +160,6 @@ int main()
 			
 		}
 
-
-
-
     beef.set_has_certificates(true);
 
 	while (sp->next_event_time() != sp->end_time()) 
@@ -168,12 +171,6 @@ int main()
     }
 
     printf("Simulator time %d\n",tr.simulator_handle()->current_time());
-
-    for(int i = 0; i< 6; i++)
-    {
-
-    }
-
 
 	return 0;
 }
