@@ -733,15 +733,15 @@ protected:
 			simulator()->delete_event(remove_key);
             facetsList.erase(facet);
 		}
-        else
-        {
+        /*else
+        {*/
             if (facetsList.find(mirror) != facetsList.end())
             {
                 Event_key mirror_key = facetsList[mirror];
                 simulator()->delete_event(mirror_key);
                 facetsList.erase(mirror);
             }
-        }
+        //}
 
         if(hiddenFaceList.find(facet) != hiddenFaceList.end())
             hiddenFaceList.erase(facet);

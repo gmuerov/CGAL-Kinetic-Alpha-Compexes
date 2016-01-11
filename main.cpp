@@ -30,7 +30,7 @@ typedef Traits::Active_points_3_table::Key Point_key;
 
 int main()
 {
-	Traits tr(0, 1000);
+	Traits tr(0, 50);
 
     typedef KineticAlphaComplexTriangulation3<Traits> AC;
     AC beef(tr, Traits::Simulator::NT(2.0));
@@ -46,9 +46,9 @@ int main()
 	std::cout<<"Frame"<<std::endl;
 	std::cout<<"Vertices"<<std::endl;
 
-	int nrOfPoints = 20;
+	int nrOfPoints = 10;
 	int allPoints = 0;
-	int nrOfPointsMoving = 5;
+	int nrOfPointsMoving = 2;
 	for( std::string line; getline( input, line ); )
 	{
 		double x, y, z;
@@ -66,6 +66,8 @@ int main()
 		
 	}
 
+	//nrOfPoints = allPoints;
+
     std::vector<int> VisitedIndexes;
 
     std::vector<Point_key> movingPoints;
@@ -76,11 +78,12 @@ int main()
 
     for(int i = 0; i < nrOfPointsMoving; i++)
     {   
-        int f = rand.get_int(0, nrOfPoints-1);
+        /*int f = rand.get_int(0, nrOfPoints-1);
         while (std::find(VisitedIndexes.begin(), VisitedIndexes.end(), f) 
                         != VisitedIndexes.end())
             f = rand.get_int(0, nrOfPoints-1);
-			
+			*/
+		int f = 2 + i;
         VisitedIndexes.push_back(f);
         Point_key new_key = Helper::makePointRotate(initialPoints[f], 
                     &beef, &tr, tr.simulator_handle(), angle);
