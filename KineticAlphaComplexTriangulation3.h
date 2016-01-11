@@ -53,9 +53,12 @@ private:
 
 public:
   typedef typename TraitsT::Kinetic_kernel::Side_of_oriented_sphere_3::result_type Root_stack;
+
   typedef typename TriangulationT::Cell_handle Cell_handle;
   typedef typename TriangulationT::Facet Facet;
   typedef typename TriangulationT::Edge Edge;
+
+  typedef typename TraitsT Traits;
   typedef typename TraitsT::Simulator::Event_key Event_key;
   typedef typename TraitsT::Active_points_3_table::Key Point_key;
   typedef typename TraitsT::Simulator Simulator;
@@ -114,13 +117,15 @@ private:
   
 
   typedef KineticAlphaComplexTriangulationBase<Base_traits, Visitor> ACBase;
-
   CGAL_KINETIC_DECLARE_LISTENERS(typename TraitsT::Simulator,
 				 typename TraitsT::Active_points_3_table)
 
 public:
 	
-	typename Simulator::Event_key GetEventKey(Edge e)
+    
+    typedef typename ACBase::StoredEdge StoredEdge;
+
+	typename Simulator::Event_key GetEventKey(StoredEdge e)
 	{
 		return kdel_.GetEventKey(e);
 	}
@@ -135,7 +140,7 @@ public:
 		return kdel_.GetEventKey(c);
 	}
 	
-	void hideShowFace(Edge e)
+	void hideShowFace(StoredEdge e)
 	{
 		kdel_.hideShowFace(e);
 	}
@@ -150,8 +155,20 @@ public:
 		kdel_.hideShowFace(c);
 	}
 
+	typename ACBase::Point pointEx(Point_key p)
+	{
+		return kdel_.point(p);
+	}
+
+	typedef typename ACBase::Finite_vertices_iterator Finite_vertices_iterator;
+	void WriteVerticesAndEdges()
+	{
+		kdel_.displayTest();
+	}
+
   //! Initialize it.
-  KineticAlphaComplexTriangulation3(TraitsT tr, Visitor v= Visitor()): kdel_(Base_traits(this, tr), v) {
+  KineticAlphaComplexTriangulation3(TraitsT tr,typename TraitsT::Simulator::NT alpha, Visitor v= Visitor()): 
+    kdel_(Base_traits(this, tr), alpha, v) {
     CGAL_KINETIC_INITIALIZE_LISTENERS(tr.simulator_handle(),
 				      tr.active_points_3_table_handle());
   }
@@ -209,9 +226,6 @@ public:
   void insert(Point_key k) {
 
     kdel_.insert(k);
-    /*if (kdel_.triangulation()->dimension() ==3){
-      kdel_.set_has_certificates(true);
-      }*/
     on_geometry_changed();
   }
 
@@ -225,7 +239,15 @@ public:
     on_geometry_changed();
   }
 
- 
+  typename ACBase::Simulator* simulator()
+  {
+      return kdel_.simulator();
+  }
+
+  typename ACBase::Moving_object_table* moving_object_table()
+  {
+      return kdel_.moving_object_table();
+  }
 
   CGAL_KINETIC_LISTENER1(TRIANGULATION)
 

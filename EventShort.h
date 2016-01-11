@@ -11,7 +11,7 @@ class EventShortEdge:
 
 public:
 	//kdel -> it's the Kinetic Alpha Complex
-	EventShortEdge(const RS &s, const typename KD::Edge &e, KD *kdel):
+	EventShortEdge(const RS &s, const typename KD::StoredEdge &e, KD *kdel):
 		baseEvent(s, kdel), e_(e){}
 
 	void process(){
@@ -19,14 +19,15 @@ public:
     }
 
     void audit(typename KD::Event_key k)const{
-        if (kdel()->GetEventKey(e_) != k) {
-            CGAL_ERROR("Mismatch, for label " << k << " had event ");
+        KD::Event_key key = kdel()->GetEventKey(e_);
+        if (key != k) {
+            CGAL_ERROR("Mismatch, for label " << k << " had event " << key);
         }
-        CGAL_assertion(kdel()->GetEventKey(e_) == k);
+        CGAL_assertion(key == k);
     }
 
 protected:
-  const typename KD::Edge e_;
+  const typename KD::StoredEdge e_;
 
 };
 
@@ -45,10 +46,11 @@ public:
 	}
 
      void audit(typename KD::Event_key k)const{
-        if (kdel()->GetEventKey(f_) != k) {
-            CGAL_ERROR("Mismatch, for label " << k << " had event " );
+        KD::Event_key key = kdel()->GetEventKey(f_);
+        if (key != k) {
+            CGAL_ERROR("Mismatch, for label " << k << " had event " << key);
         }
-        CGAL_assertion(kdel()->GetEventKey(f_) == k);
+        CGAL_assertion(key == k);
     }
 
 protected:
@@ -71,10 +73,11 @@ public:
 	}
 
      void audit(typename KD::Event_key k)const{
-        if (kdel()->GetEventKey(c_) != k) {
-            CGAL_ERROR("Mismatch, for label " << k << " had event ");
+        KD::Event_key key = kdel()->GetEventKey(c_);
+        if (key != k) {
+            CGAL_ERROR("Mismatch, for label " << k << " had event "<<key);
         }
-        CGAL_assertion(kdel()->GetEventKey(c_) == k);
+        CGAL_assertion(key == k);
     }
 
 protected:

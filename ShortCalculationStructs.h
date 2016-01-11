@@ -74,32 +74,29 @@ struct ShortEdgeCheck3D
 	ShortEdgeCheck3D(){}
 	typedef typename KK::Certificate_function result_type;
 	typedef typename KK::Point_3 Argument;
+    typedef typename KK::Motion_function Motion_function;
 
-	result_type operator()(Argument a, Argument b, double squaredAlpha) const
+	result_type operator()(Argument a, Argument b, Motion_function squaredAlpha) const
 	{
 		result_type dx = a.x() - b.x();
 		result_type dy = a.y() - b.y();
 		result_type dz = a.z() - b.z();
 
-		return squaredAlpha - (dx*dx + dy*dy + dz*dz);//4;
+		return squaredAlpha * 4 - (dx*dx + dy*dy + dz*dz);
 	}
 };
 
 template <class KK>
 struct ShortTriangleCheck3D
 {
-	ShortTriangleCheck3D(){
-        
-        std::vector<double> fourV(4, 1);
-        four = result_type(fourV.begin(), fourV.end());
-    }
+	ShortTriangleCheck3D(){}
+
 	typedef typename KK::Certificate_function result_type;
 	typedef typename KK::Point_3 Argument;
-
-    result_type four;
+    typedef typename KK::Motion_function Motion_function;
 
 	/// Calculate the 3D polynomial 
-	result_type operator()(Argument a, Argument b, Argument c, double squaredAlpha) const
+	result_type operator()(Argument a, Argument b, Argument c, Motion_function squaredAlpha) const
 	{
 		
 		//The radius of the circumcircle of ABC is |AB||BC||AC| / 2|ABC|
@@ -147,8 +144,8 @@ struct ShortTriangleCheck3D
 		result_type M013 = b.x() * c.z() + c.x() * a.z() + a.x() * b.z() -
 					      (b.x() * a.z() + c.x() * b.z() + a.x() * c.z());
 
-		return squaredAlpha -                  distanceAB * distanceBC * distanceBC; // 
-			                  //(4 * (CGAL::square(M012) + CGAL::square(M023) + CGAL::square(M013)));
+		return squaredAlpha * (M012 * M012 + M023*M023 + M013*M013) * 4 - 
+                    distanceAB * distanceBC * distanceBC;
 	}
 };
 
@@ -157,19 +154,17 @@ struct ShortTetrahedronCheck3D
 {
 	ShortTetrahedronCheck3D(){
         std::vector<double> oneV(1, 1);
-        std::vector<double> fourV(4, 1);
         one = result_type(oneV.begin(), oneV.end());
-        four = result_type(fourV.begin(), fourV.end());
     }
 
 	typedef typename KK::Certificate_function result_type;
 	typedef typename KK::Point_3 Argument;
+    typedef typename KK::Motion_function Motion_function;
 
-    result_type four;
     result_type one;
 
 	/// Calculate the 3D polynomial 
-	result_type operator()(Argument a, Argument b, Argument c, Argument d, double squaredAlpha) const
+	result_type operator()(Argument a, Argument b, Argument c, Argument d, Motion_function squaredAlpha) const
 	{
 		result_type SizeA = a.x() * a.x() + a.y() * a.y() + a.z() * a.z();
 		result_type SizeB = b.x() * b.x() + b.y() * b.y() + b.z() * b.z();
@@ -206,9 +201,8 @@ struct ShortTetrahedronCheck3D
 							  c.x(), c.y(), c.z(), one,
 							  d.x(), d.y(), d.z(), one);
 		
-		return squaredAlpha - (M1240 * M1240 + M1340 * M1340 + M2340 * M2340 - four*M1234*M1230);
-                                                                //
-			                                                  //(four*M1230 * M1230);
+		return squaredAlpha * M1230 * M1230 * 4 - 
+              (M1240 * M1240 + M1340 * M1340 + M2340 * M2340 - M1234*M1230*4);
 	}
 };
 
