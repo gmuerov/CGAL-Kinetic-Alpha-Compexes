@@ -45,17 +45,22 @@ namespace Helper{
         std::vector<Simulator::NT> x(2);
         std::vector<Simulator::NT> y(2);
 
-        x[1] = (first.x() - second.x())/ dt;
+        x[1] = (second.x() - first.x())/ dt;
         x[0] = ((dt + time)*first.x() - time * second.x())/dt;
 
-        y[1] = (first.y() - second.y())/ dt;
+        y[1] = (second.y() - first.y())/ dt;
         y[0] = ((dt + time)*first.y() - time * second.y())/dt;
 
         F xp(x.begin(), x.end());
         F yp(y.begin(), y.end());
     
         std::vector<Simulator::NT> z(1, first.z());
-        return Point(xp, yp, F(z.begin(), z.end()));
+
+        Point result(xp, yp, F(z.begin(), z.end()));
+
+        CGAL_assertion(CGAL::compare(first.x(), result.x().value_at(time)) == CGAL::EQUAL);
+        CGAL_assertion(CGAL::compare(first.y(), result.y().value_at(time)) == CGAL::EQUAL);
+        return result;
     }
 
     typedef KineticAlphaComplexTriangulation3<Traits> AC;
@@ -64,10 +69,6 @@ namespace Helper{
                           Simulator::Handle sim, Simulator::NT angle)
     {
         StaticPoint end = rotatePoint(source, angle);
-        
-        /*sim->new_event(sim->next_time_representable_as_nt() + Simulator::NT(dt),
-            TrajectoryChangeEvent<AC>(kac, end, sides));*/
-
 
         Point moving = makeMovement(source, end, Simulator::NT(dt), 
                                     sim->next_time_representable_as_nt());
@@ -91,9 +92,7 @@ namespace Helper{
             StaticPoint end = rotatePoint(start, angle);
 
             Point moving = makeMovement(start, end, Simulator::NT(dt), t);
-            Simulator::NT X = current.x().value_at(t);
-            Simulator::NT X1 = moving.x().value_at(t);
-            
+
             CGAL_assertion(CGAL::compare(current.x().value_at(t), moving.x().value_at(t)) == CGAL::EQUAL);
             CGAL_assertion(CGAL::compare(current.y().value_at(t), moving.y().value_at(t)) == CGAL::EQUAL);
             CGAL_assertion(CGAL::compare(current.z().value_at(t), moving.z().value_at(t)) == CGAL::EQUAL);
