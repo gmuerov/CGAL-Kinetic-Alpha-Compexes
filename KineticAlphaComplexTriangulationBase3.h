@@ -38,8 +38,6 @@ public:
 
     Facet flip(const Edge &e)
 	{
-        //printf("Processing edge flip event.\n");
-
         Cell_handle deletedCell = e.first;
 
 		for (int i = 0; i < 4; i++)
@@ -230,7 +228,10 @@ public:
 		for (std::set<StoredEdge>::iterator heit = hiddenEdgeList.begin();
 					 heit != hiddenEdgeList.end(); ++heit) 
 		{
-			std::cout<<heit->first<<heit->second<< std::endl;
+			if(heit->first.is_valid() && heit->second.is_valid())
+			{
+				std::cout<<heit->first<<heit->second<< std::endl;
+			}
 		}
         /*for (All_edges_iterator eit = triangulation_.all_edges_begin();
 			eit != triangulation_.all_edges_end(); ++eit) 
