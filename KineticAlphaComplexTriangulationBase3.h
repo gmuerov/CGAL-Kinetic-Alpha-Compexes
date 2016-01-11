@@ -38,7 +38,7 @@ public:
 
     Facet flip(const Edge &e)
 	{
-        printf("Processing edge flip event.\n");
+        //printf("Processing edge flip event.\n");
 
         Cell_handle deletedCell = e.first;
 
@@ -72,7 +72,7 @@ public:
 
     Edge flip(const Facet &f)
     {
-        printf("Processing facet flip event.\n");
+        //printf("Processing facet flip event.\n");
         Cell_handle oldCell = f.first;
 
         Edge returned = Base::flip(f);
@@ -212,73 +212,152 @@ public:
         Initialization();
     }
 
+		//----------------------------------displa bigin--------------------
 	void displayTest() const
 	{
         double currentTime = tr_.simulator_handle()->current_time().compute_double(0.01);
-		std::cout<<std::endl<<"------------------"<<std::endl<<"Vertices Coordinates"<<std::endl<<"------------------"<<std::endl;
+		std::cout<<"Vertices"<<std::endl;
 		for (Base::Finite_vertices_iterator vit = triangulation_.finite_vertices_begin();
 			vit != triangulation_.finite_vertices_end(); ++vit)
 		{
-			
-			/*std::cout<<"---------------"<<vit->point()<<"------------------"<<std::endl;
-			std::cout<<"X :"<<point(vit->point()).x().value_at(currentTime)<<std::endl;
-			std::cout<<"Y :"<<point(vit->point()).y().value_at(currentTime)<<std::endl;
-			std::cout<<"Z :"<<point(vit->point()).z().value_at(currentTime)<<std::endl;*/
 			std::cout<<point(vit->point()).x().value_at(currentTime)<<" ";
 			std::cout<<point(vit->point()).y().value_at(currentTime)<<" ";
 			std::cout<<point(vit->point()).z().value_at(currentTime)<<std::endl;
 
 		}
 
-		std::cout<<std::endl<<"---------------"<<std::endl<<"Edges"<<std::endl<<"------------------"<<std::endl;
-        for (All_edges_iterator eit = triangulation_.all_edges_begin();
+		std::cout<<"HiddenEdges"<<std::endl;
+		for (std::set<StoredEdge>::iterator heit = hiddenEdgeList.begin();
+					 heit != hiddenEdgeList.end(); ++heit) 
+		{
+			std::cout<<heit->first<<heit->second<< std::endl;
+		}
+        /*for (All_edges_iterator eit = triangulation_.all_edges_begin();
 			eit != triangulation_.all_edges_end(); ++eit) 
 		{
-			/*std::cout<<eit->first->vertex(eit->second)->point()<<
-                       eit->first->vertex(eit->third )->point()<< std::endl;*/
+			
 			if(eit->first->vertex(eit->second)->point().is_valid() && eit->first->vertex(eit->third)->point().is_valid())
 			{
-				std::cout<<point(eit->first->vertex(eit->second)->point()).x().value_at(currentTime)<<" ";
-				std::cout<<point(eit->first->vertex(eit->second)->point()).y().value_at(currentTime)<<" ";
-				std::cout<<point(eit->first->vertex(eit->second)->point()).z().value_at(currentTime)<<std::endl;
-				std::cout<<point(eit->first->vertex(eit->third)->point()).x().value_at(currentTime)<<" ";
-				std::cout<<point(eit->first->vertex(eit->third)->point()).y().value_at(currentTime)<<" ";
-				std::cout<<point(eit->first->vertex(eit->third)->point()).z().value_at(currentTime)<<std::endl;
+				 bool hiddenEdge = false;
+				 for (std::set<StoredEdge>::iterator heit = hiddenEdgeList.begin();
+					 heit != hiddenEdgeList.end(); ++heit) 
+				 { 
+
+					if(eit->first->vertex(eit->second)->point() == heit->first &&
+						eit->first->vertex(eit->third)->point() == heit->second ||
+						eit->first->vertex(eit->third)->point() == heit->first &&
+						eit->first->vertex(eit->second)->point() == heit->second)
+					{
+						hiddenEdge = true;
+					}
+
+				 }
+
+				 if(!hiddenEdge)
+				 {
+					std::cout<<eit->first->vertex(eit->second)->point()<<
+							 eit->first->vertex(eit->third )->point()<< std::endl;
+				 }
+
 			}
-			/*std::cout<<eit->first->vertex(eit->second)->point()<<
-                       eit->first->vertex(eit->third )->point()<< std::endl;*/
 			
-        }	
-
-		std::cout<<std::endl<<"---------------"<<std::endl<<"HidenEdges"<<std::endl<<"------------------"<<std::endl;
-        for (std::set<StoredEdge>::iterator heit = hiddenEdgeList.begin();
-			heit != hiddenEdgeList.end(); ++heit) 
-		{ 
-			std::cout<<heit->first<<
-                       heit->second<< std::endl;
-        }
-
-		std::cout<<std::endl<<"---------------"<<std::endl<<"HidenFacet"<<std::endl<<"------------------"<<std::endl;
-        for (std::set<Facet>::iterator hfit = hiddenFaceList.begin();
-			hfit != hiddenFaceList.end(); ++hfit) 
-		{ 
+        }*/	
+		
+		
+		std::cout<<"HiddenFacet"<<std::endl;
+		for (std::set<Facet>::iterator hfit = hiddenFaceList.begin();
+					 hfit != hiddenFaceList.end(); ++hfit) 
+		{
+			//std::cout<<hfit->first<<hfit->second<< std::endl;
+			bool pointsValid = true;
 			for(int i=0; i<4; i++)
 				if(i != hfit->second)
-					std::cout<<hfit->first->vertex(i)->point();
-			std::cout<<std::endl;
-        }
+					if(!hfit->first->vertex(i)->point().is_valid())
+						pointsValid = false;
+			if(pointsValid)
+			{
+				for(int i=0; i<4; i++)
+					if(i != hfit->second)
+						std::cout<<hfit->first->vertex(i)->point();
+					std::cout<<std::endl;
+			}
+		}
+		//for (All_facets_iterator fit = triangulation_.all_facets_begin();
+	 //                fit != triangulation_.all_facets_end(); ++fit)
+		//{ 
+		//	bool pointsValid = true;
+		//	
+		//	for(int i=0; i<4; i++)
+		//		if(i != fit->second)
+		//			if(!fit->first->vertex(i)->point().is_valid())
+		//				pointsValid = false;
 
-		std::cout<<std::endl<<"---------------"<<std::endl<<"HidenCell"<<std::endl<<"------------------"<<std::endl;
-        for (std::set<Cell_handle>::iterator hcit = hiddenCellList.begin();
-			hcit != hiddenCellList.end(); ++hcit) 
-		{ 
+		//	if(pointsValid)
+		//	{
+		//		//check if the Facet is contained in the set
+		//		int face = hiddenFaceList.count(*fit);
+
+		//		//check for the mirror Facet within the set
+		//		Facet mirror = triangulation_.mirror_facet(*fit);
+		//		int mirroredFace = hiddenFaceList.count(mirror);
+
+		//		if(face == 0 && mirroredFace == 0)
+		//		{
+		//			for(int i=0; i<4; i++)
+		//				if(i != fit->second)
+		//					std::cout<<fit->first->vertex(i)->point();
+		//			std::cout<<std::endl;
+		//		}
+		//	}
+		//	
+		//}
+
+		std::cout<<"HiddenCell"<<std::endl;
+		for (std::set<Cell_handle>::iterator hcit = hiddenCellList.begin();
+					 hcit != hiddenCellList.end(); ++hcit) 
+		{
+			bool pointsValid = true;
+			
 			for(int i=0; i<4; i++)
-				std::cout<<(*hcit)->vertex(i)->point();
-			std::cout<<std::endl;
-        }
+					if(!(*hcit)->vertex(i)->point().is_valid())
+						pointsValid = false;
+
+			if(pointsValid)
+			{
+				for(int i=0; i<4; i++)
+					std::cout<<(*hcit)->vertex(i)->point();
+				std::cout<<std::endl;
+			}
+		}
+		//for (Base::All_cells_iterator cit = triangulation_.all_cells_begin();
+		//	cit != triangulation_.all_cells_end(); ++cit)
+		//{
+		//	
+		//	bool pointsValid = true;
+		//	
+		//	for(int i=0; i<4; i++)
+		//			if(!cit->vertex(i)->point().is_valid())
+		//				pointsValid = false;
+
+		//	if(pointsValid)
+		//	{
+		//		//check if the Facet is contained in the set
+		//		int cell = hiddenCellList.count(cit);
+
+		//		if(cell == 0)
+		//		{
+		//			for(int i=0; i<4; i++)
+		//				std::cout<<cit->vertex(i)->point();
+		//			std::cout<<std::endl;
+		//		}
+		//		
+		//	}
+		//	
+		//}
+
 					   
 	}
-
+	//----------------------------------displa end--------------------
     typename Triang::Vertex_handle insert(Point_key k)
     {
         Triang::Vertex_handle baseVertex = Base::insert(k);
@@ -323,7 +402,7 @@ public:
 
 	void hideShowFace(Facet f)
     {
-        printf("\nProcessing short facet event.\n\n");
+        //printf("\nProcessing short facet event.\n\n");
 		//check if the Facet is contained in the set
 		bool face = hiddenFaceList.find(f) != 
                     hiddenFaceList.end();
@@ -362,7 +441,7 @@ public:
 
 	void hideShowFace(StoredEdge e)
     {
-        printf("\nProcessing edge short event\n\n");
+        //printf("\nProcessing edge short event\n\n");
         if (hiddenEdgeList.count(e) <= 0)
         {
             StoredEdge mirror(e.second, e.first);
@@ -392,7 +471,7 @@ public:
 
 	void hideShowFace(Cell_handle c)
     {
-        printf("\nProcessing cell short event.\n\n");
+        
 		//Check if the cell is hidden
 		int cell = hiddenCellList.count(c);
 

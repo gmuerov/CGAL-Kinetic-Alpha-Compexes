@@ -27,47 +27,6 @@ typedef Helper::Simulator Simulator;
 typedef Traits::Function_kernel::Construct_function CF;
 typedef Traits::Active_points_3_table::Key Point_key;
 
-///Creates a random linear trajectory.
-///If a point and time are given the new trajectory is guaranteed to pass through the same point at that time.
-Point makeRandomMovement(CGAL::Random& rand, Point source = Point(), F::NT time = F::NT(0))
-{
-    std::vector<F::NT> x;
-    std::vector<F::NT> y;
-    std::vector<F::NT> z;
-    for(int j = 0; j < 2; j++)
-    {
-        x.push_back(rand.get_double(0, 3) * 5 - 2);
-        y.push_back(rand.get_double(0, 3) * 7 - 5);
-        z.push_back(rand.get_double(0, 3) * 6 - 3); 
-    }
-    
-    
-    if (source.x() != Point().x() &&
-        source.y() != Point().y() &&
-        source.z() != Point().z())
-    {
-        
-        F::NT xs = x[0] + x[1]*time;
-        F::NT ys = y[0] + y[1]*time;
-        F::NT zs = z[0] + z[1]*time;
-
-        F::NT sourcex = source.x()(time);
-        F::NT sourcey = source.y()(time);
-        F::NT sourcez = source.z()(time);
-
-        x[0] = x[0] + sourcex - xs;
-        y[0] = y[0] + sourcey - ys;
-        z[0] = z[0] + sourcez - zs;
-    }
-    x[0] = x[0] / 10;
-    y[0] = y[0] / 10;
-    z[0] = z[0] / 10;
-    F x_func(x.begin(), x.end());
-    F y_func(y.begin(), y.end());
-    F z_func(z.begin(), z.end());
-
-    return Point(x_func, y_func, z_func);
-}
 
 int main()
 {
@@ -82,12 +41,24 @@ int main()
     int numP = 50;
 
     CGAL::Random rand;
-    for(int i = 0; i < numP; i++)
-    {
-        StaticPoint new_point = Helper::sampleCube(rand, 2);
+
+	//reading
+	std::ifstream input( "Points.txt" );
+	std::cout<<"Frame"<<std::endl;
+	std::cout<<"Vertices"<<std::endl;
+	int nrOfPoints = 0;
+	for( std::string line; getline( input, line ); )
+	{
+		double x, y, z;
+		input >> x >> y >> z;
+		StaticPoint new_point = StaticPoint(x,y,z);		
         initialPoints.push_back(new_point);
-        std::cout<<new_point<<std::endl;
-    }
+		std::cout<<x<<" ";
+		std::cout<<y<<" ";
+		std::cout<<z<<std::endl;
+		nrOfPoints++;
+		
+	}
 
     std::vector<int> VisitedIndexes;
 
@@ -97,11 +68,10 @@ int main()
     
     Simulator::NT angle = Simulator::NT(2) * M_PI/Simulator::NT(5);
 
-    StaticPoint center = initialPoints[rand.get_int(0, numP - 1)];
-
     for(int i = 0; i < 6; i++)
     {
-        int f = rand.get_int(0, numP - 1);
+        int f = rand.get_int(0, 99/*nrOfPoints-1*/);
+
         while (std::find(VisitedIndexes.begin(), VisitedIndexes.end(), f) 
                         != VisitedIndexes.end())
             f = rand.get_int(0, numP - 1);
@@ -118,22 +88,84 @@ int main()
     sp->new_event(sp->next_time_representable_as_nt() + Simulator::NT(Helper::dt),
         TrajectoryChangeEvent<AC>(&beef, sp, movingPoints, center, angle));
 
-    for(int i = 0; i < numP; i++)
+    for(int i = 0; i < /*nrOfPoints*/100; i++)
     {
         if (std::find(VisitedIndexes.begin(), VisitedIndexes.end(), i) 
                         == VisitedIndexes.end())
         {
+			//std::cout<<"samting "<<std::endl;
             AlphaComplexKeys.push_back(tr.active_points_3_table_handle()->insert(
                 Point(initialPoints[i])));
         }
     }
 
+
+	AC::Triangulation tri = beef.triangulation();
+
+	
+	std::cout<<"Edges"<<std::endl;
+        for (AC::Triangulation::All_edges_iterator eit = tri.all_edges_begin();
+			eit != tri.all_edges_end(); ++eit) 
+		{			
+			if(eit->first->vertex(eit->second)->point().is_valid() && eit->first->vertex(eit->third)->point().is_valid())
+			{
+				std::cout<<eit->first->vertex(eit->second)->point()<<
+						 eit->first->vertex(eit->third )->point()<< std::endl;				 		
+			}			
+        }
+
+	std::cout<<"Facet"<<std::endl;
+		for (AC::Triangulation::All_facets_iterator fit = tri.all_facets_begin();
+	                 fit != tri.all_facets_end(); ++fit)
+		{ 
+			bool pointsValid = true;
+			
+			for(int i=0; i<4; i++)
+				if(i != fit->second)
+					if(!fit->first->vertex(i)->point().is_valid())
+						pointsValid = false;
+
+			if(pointsValid)
+			{
+				for(int i=0; i<4; i++)
+					if(i != fit->second)
+						std::cout<<fit->first->vertex(i)->point();
+				std::cout<<std::endl;
+			}
+			
+		}
+
+	std::cout<<"Cell"<<std::endl;
+		for (AC::Triangulation::All_cells_iterator cit = tri.all_cells_begin();
+			cit != tri.all_cells_end(); ++cit)
+		{
+			
+			bool pointsValid = true;
+			
+			for(int i=0; i<4; i++)
+					if(!cit->vertex(i)->point().is_valid())
+						pointsValid = false;
+
+			if(pointsValid)
+			{
+				for(int i=0; i<4; i++)
+					std::cout<<cit->vertex(i)->point();
+				std::cout<<std::endl;
+				
+			}
+			
+		}
+
+
+
+
     beef.set_has_certificates(true);
 
 	while (sp->next_event_time() != sp->end_time()) 
     {
-		printf("Current event %d\n",sp->current_event_number());
-        //beef.WriteVerticesAndEdges();
+		printf("Frame",sp->current_event_number());
+		std::cout<<std::endl;
+        beef.WriteVerticesAndEdges();
         sp->set_current_event_number(sp->current_event_number()+1);
     }
 
