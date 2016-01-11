@@ -28,16 +28,16 @@ namespace Helper{
         return StaticPoint(x, y, z);
     }
 
-    StaticPoint rotatePoint(StaticPoint stuff, Simulator::NT angle)
+    StaticPoint rotatePoint(StaticPoint source, StaticPoint center, Simulator::NT angle)
     {
         double approx = angle.exact().to_double();
 
         double sineA = sin(approx);
         double cosineA = cos(approx);
 
-        return StaticPoint(stuff.x() * cosineA - stuff.y() * sineA,
-                           stuff.x() * sineA   + stuff.y() * cosineA,
-                           stuff.z());
+        return StaticPoint(source.x() * cosineA - source.y() * sineA   + center.x(),
+                           source.x() * sineA   + source.y() * cosineA + center.y(),
+                           source.z());
     }
 
     Point makeMovement(StaticPoint first, StaticPoint second, Simulator::NT dt, Simulator::NT time)
@@ -65,19 +65,19 @@ namespace Helper{
 
     typedef KineticAlphaComplexTriangulation3<Traits> AC;
 
-    Point_key makePointRotate(StaticPoint source, AC* kac, Traits* tr,
+    Point_key makePointRotate(StaticPoint source, StaticPoint center, AC* kac, Traits* tr,
                           Simulator::Handle sim, Simulator::NT angle)
     {
-        StaticPoint end = rotatePoint(source, angle);
+        StaticPoint end = rotatePoint(source, center, angle);
 
-        Point moving = makeMovement(source, end, Simulator::NT(dt), 
+        Point moving = makeMovement(source, end, Simulator::NT(dt),
                                     sim->next_time_representable_as_nt());
 
         return tr->active_points_3_table_handle()->insert(moving);
     }
 
-    void ModifyPoints(std::vector<Point_key> points, AC* kac, 
-                      Simulator::Handle sim, Simulator::NT angle)
+    void ModifyPoints(std::vector<Point_key> points, StaticPoint center, 
+                    AC* kac, Simulator::Handle sim, Simulator::NT angle)
     {
         Simulator::NT t = sim->next_time_representable_as_nt();
 
@@ -89,7 +89,7 @@ namespace Helper{
                               current.y().value_at(t),
                               current.z().value_at(t));
             
-            StaticPoint end = rotatePoint(start, angle);
+            StaticPoint end = rotatePoint(start, center, angle);
 
             Point moving = makeMovement(start, end, Simulator::NT(dt), t);
 
@@ -101,7 +101,7 @@ namespace Helper{
         }
 
         sim->new_event(sim->next_time_representable_as_nt() + Simulator::NT(dt),
-                        TrajectoryChangeEvent<AC>(kac, sim, points, angle));
+                        TrajectoryChangeEvent<AC>(kac, sim, points, center, angle));
     }
 }
 

@@ -79,11 +79,14 @@ int main()
 	KineticAlphaComplexTriangulation3<Traits>::Cell_handle ddd;
     std::vector<StaticPoint> initialPoints;
 
+    int numP = 50;
+
     CGAL::Random rand;
-    for(int i = 0; i < 6; i++)
+    for(int i = 0; i < numP; i++)
     {
         StaticPoint new_point = Helper::sampleCube(rand, 2);
         initialPoints.push_back(new_point);
+        std::cout<<new_point<<std::endl;
     }
 
     std::vector<int> VisitedIndexes;
@@ -94,15 +97,17 @@ int main()
     
     Simulator::NT angle = Simulator::NT(2) * M_PI/Simulator::NT(5);
 
-    for(int i = 0; i < 3; i++)
+    StaticPoint center = initialPoints[rand.get_int(0, numP - 1)];
+
+    for(int i = 0; i < 6; i++)
     {
-        int f = rand.get_int(0, 5);
+        int f = rand.get_int(0, numP - 1);
         while (std::find(VisitedIndexes.begin(), VisitedIndexes.end(), f) 
                         != VisitedIndexes.end())
-            f = rand.get_int(0, 5);
+            f = rand.get_int(0, numP - 1);
 
         VisitedIndexes.push_back(f);
-        Point_key new_key = Helper::makePointRotate(initialPoints[f], 
+        Point_key new_key = Helper::makePointRotate(initialPoints[f], center,
                     &beef, &tr, tr.simulator_handle(), angle);
         movingPoints.push_back(new_key);
         AlphaComplexKeys.push_back(new_key);
@@ -111,9 +116,9 @@ int main()
 	Traits::Simulator::Handle sp= tr.simulator_handle();
 
     sp->new_event(sp->next_time_representable_as_nt() + Simulator::NT(Helper::dt),
-        TrajectoryChangeEvent<AC>(&beef, sp, movingPoints, angle));
+        TrajectoryChangeEvent<AC>(&beef, sp, movingPoints, center, angle));
 
-    for(int i = 0; i < 6; i++)
+    for(int i = 0; i < numP; i++)
     {
         if (std::find(VisitedIndexes.begin(), VisitedIndexes.end(), i) 
                         == VisitedIndexes.end())
@@ -128,17 +133,11 @@ int main()
 	while (sp->next_event_time() != sp->end_time()) 
     {
 		printf("Current event %d\n",sp->current_event_number());
-        beef.WriteVerticesAndEdges();
+        //beef.WriteVerticesAndEdges();
         sp->set_current_event_number(sp->current_event_number()+1);
     }
 
     printf("Simulator time %d\n",tr.simulator_handle()->current_time());
-
-    for(int i = 0; i< 6; i++)
-    {
-
-    }
-
 
 	return 0;
 }
