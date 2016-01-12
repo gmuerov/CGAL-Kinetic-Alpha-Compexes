@@ -38,8 +38,9 @@ int main()
 	KineticAlphaComplexTriangulation3<Traits>::Cell_handle ddd;
     std::vector<StaticPoint> initialPoints;
 
+    int numP = 50;
+
     CGAL::Random rand;
-	
 
 	//reading
 	std::ifstream input( "Points.txt" );
@@ -73,6 +74,8 @@ int main()
     std::vector<Point_key> AlphaComplexKeys;
     
     Simulator::NT angle = Simulator::NT(2) * M_PI/Simulator::NT(5);
+    
+    StaticPoint center = initialPoints[rand.get_int(0, numP - 1)];
 
     for(int i = 0; i < nrOfPointsMoving; i++)
     {   
@@ -80,9 +83,8 @@ int main()
         while (std::find(VisitedIndexes.begin(), VisitedIndexes.end(), f) 
                         != VisitedIndexes.end())
             f = rand.get_int(0, nrOfPoints-1);
-			
         VisitedIndexes.push_back(f);
-        Point_key new_key = Helper::makePointRotate(initialPoints[f], 
+        Point_key new_key = Helper::makePointRotate(initialPoints[f], center,
                     &beef, &tr, tr.simulator_handle(), angle);
         movingPoints.push_back(new_key);
         AlphaComplexKeys.push_back(new_key);
@@ -91,7 +93,7 @@ int main()
 	Traits::Simulator::Handle sp= tr.simulator_handle();
 
     sp->new_event(sp->next_time_representable_as_nt() + Simulator::NT(Helper::dt),
-        TrajectoryChangeEvent<AC>(&beef, sp, movingPoints, angle));
+        TrajectoryChangeEvent<AC>(&beef, sp, movingPoints, center, angle));
 
     for(int i = 0; i <nrOfPoints; i++)
     {   

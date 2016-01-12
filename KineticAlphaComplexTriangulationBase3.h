@@ -38,7 +38,6 @@ public:
 
     Facet flip(const Edge &e)
 	{
-
         Cell_handle deletedCell = e.first;
 
 		for (int i = 0; i < 4; i++)
@@ -724,26 +723,35 @@ protected:
 
     void removeShortCertificate(Facet facet)
     {
-        
+
         Facet mirror = triangulation_.mirror_facet(facet);
+        bool removed = false;
 
         if(facetsList.find(facet) != facetsList.end())
 		{
             Event_key remove_key = facetsList[facet];
 			simulator()->delete_event(remove_key);
             facetsList.erase(facet);
+            removed = true;
 		}
-        else
+        
+        if (facetsList.find(mirror) != facetsList.end())
         {
-            if (facetsList.find(mirror) != facetsList.end())
-            {
-                Event_key mirror_key = facetsList[mirror];
-                simulator()->delete_event(mirror_key);
-                facetsList.erase(mirror);
-            }
+            Event_key mirror_key = facetsList[mirror];
+            simulator()->delete_event(mirror_key);
+            facetsList.erase(mirror);
+            removed = true;
         }
 
-        if(hiddenFaceList.find(facet) != hiddenFaceList.end())
+        /*if (!removed)
+        {
+            std::cout<<"Warning: Facet ";
+            printFacet(facet);
+            std::cout<<" had no short certificate."<<endl;
+        }*/
+            
+
+        if(hiddenFaceList.find(facet ) != hiddenFaceList.end())
             hiddenFaceList.erase(facet);
         if(hiddenFaceList.find(mirror) != hiddenFaceList.end())
             hiddenFaceList.erase(mirror);
@@ -969,6 +977,15 @@ protected:
                      hiddenEdgeList.count(StoredEdge(e.second, e.first))<=0)
                     hiddenEdgeList.insert(e);
             }
+        }
+    }
+
+    void printFacet(Facet f) const
+    {
+        for(size_t i = 0; i < 4; i++)
+        {
+            if (i != f.second)
+                std::cout<<f.first->vertex(i)->point();
         }
     }
 
