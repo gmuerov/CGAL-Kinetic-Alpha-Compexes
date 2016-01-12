@@ -67,7 +67,7 @@ int main()
 		
 	}
 
-    std::vector<int> VisitedIndexes;
+    std::set<int> VisitedIndexes;
 
     std::vector<Point_key> movingPoints;
 
@@ -84,9 +84,9 @@ int main()
                         != VisitedIndexes.end())
             f = rand.get_int(0, nrOfPoints-1);
 			
-        VisitedIndexes.push_back(f);
+        VisitedIndexes.insert(f);
         Point_key new_key = Helper::makePointRotate(initialPoints[f], center,
-                    &beef, &tr, tr.simulator_handle(), angle);
+                    &tr, angle);
         movingPoints.push_back(new_key);
         AlphaComplexKeys.push_back(new_key);
     }
