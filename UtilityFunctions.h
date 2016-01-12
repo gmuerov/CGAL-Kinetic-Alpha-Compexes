@@ -35,8 +35,11 @@ namespace Helper{
         double sineA = sin(approx);
         double cosineA = cos(approx);
 
-        return StaticPoint(source.x() * cosineA - source.y() * sineA   + center.x(),
-                           source.x() * sineA   + source.y() * cosineA + center.y(),
+        Simulator::NT dx = source.x() - center.x();
+        Simulator::NT dy = source.y() - center.y();
+
+        return StaticPoint(dx * cosineA - dy * sineA   + center.x(),
+                           dy * sineA   + dy * cosineA + center.y(),
                            source.z());
     }
 
