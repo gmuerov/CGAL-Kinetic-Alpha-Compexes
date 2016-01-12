@@ -224,16 +224,8 @@ public:
 
 		}
 
-		std::cout<<"HiddenEdges"<<std::endl;
-		for (std::set<StoredEdge>::iterator heit = hiddenEdgeList.begin();
-					 heit != hiddenEdgeList.end(); ++heit) 
-		{
-			if(heit->first.is_valid() && heit->second.is_valid())
-			{
-				std::cout<<heit->first<<heit->second<< std::endl;
-			}
-		}
-        /*for (All_edges_iterator eit = triangulation_.all_edges_begin();
+		std::cout<<"Edges"<<std::endl;		
+        for (All_edges_iterator eit = triangulation_.all_edges_begin();
 			eit != triangulation_.all_edges_end(); ++eit) 
 		{
 			
@@ -262,99 +254,66 @@ public:
 
 			}
 			
-        }*/	
+        }	
 		
 		
-		std::cout<<"HiddenFacet"<<std::endl;
-		for (std::set<Facet>::iterator hfit = hiddenFaceList.begin();
-					 hfit != hiddenFaceList.end(); ++hfit) 
-		{
-			//std::cout<<hfit->first<<hfit->second<< std::endl;
-			bool pointsValid = true;
-			for(int i=0; i<4; i++)
-				if(i != hfit->second)
-					if(!hfit->first->vertex(i)->point().is_valid())
-						pointsValid = false;
-			if(pointsValid)
-			{
-				for(int i=0; i<4; i++)
-					if(i != hfit->second)
-						std::cout<<hfit->first->vertex(i)->point();
-					std::cout<<std::endl;
-			}
-		}
-		//for (All_facets_iterator fit = triangulation_.all_facets_begin();
-	 //                fit != triangulation_.all_facets_end(); ++fit)
-		//{ 
-		//	bool pointsValid = true;
-		//	
-		//	for(int i=0; i<4; i++)
-		//		if(i != fit->second)
-		//			if(!fit->first->vertex(i)->point().is_valid())
-		//				pointsValid = false;
-
-		//	if(pointsValid)
-		//	{
-		//		//check if the Facet is contained in the set
-		//		int face = hiddenFaceList.count(*fit);
-
-		//		//check for the mirror Facet within the set
-		//		Facet mirror = triangulation_.mirror_facet(*fit);
-		//		int mirroredFace = hiddenFaceList.count(mirror);
-
-		//		if(face == 0 && mirroredFace == 0)
-		//		{
-		//			for(int i=0; i<4; i++)
-		//				if(i != fit->second)
-		//					std::cout<<fit->first->vertex(i)->point();
-		//			std::cout<<std::endl;
-		//		}
-		//	}
-		//	
-		//}
-
-		std::cout<<"HiddenCell"<<std::endl;
-		for (std::set<Cell_handle>::iterator hcit = hiddenCellList.begin();
-					 hcit != hiddenCellList.end(); ++hcit) 
-		{
+		std::cout<<"Facet"<<std::endl;
+		for (All_facets_iterator fit = triangulation_.all_facets_begin();
+	                 fit != triangulation_.all_facets_end(); ++fit)
+		{ 
 			bool pointsValid = true;
 			
 			for(int i=0; i<4; i++)
-					if(!(*hcit)->vertex(i)->point().is_valid())
+				if(i != fit->second)
+					if(!fit->first->vertex(i)->point().is_valid())
 						pointsValid = false;
 
 			if(pointsValid)
 			{
-				for(int i=0; i<4; i++)
-					std::cout<<(*hcit)->vertex(i)->point();
-				std::cout<<std::endl;
+				//check if the Facet is contained in the set
+				int face = hiddenFaceList.count(*fit);
+
+				//check for the mirror Facet within the set
+				Facet mirror = triangulation_.mirror_facet(*fit);
+				int mirroredFace = hiddenFaceList.count(mirror);
+
+				if(face == 0 && mirroredFace == 0)
+				{
+					for(int i=0; i<4; i++)
+						if(i != fit->second)
+							std::cout<<fit->first->vertex(i)->point();
+					std::cout<<std::endl;
+				}
 			}
+			
 		}
-		//for (Base::All_cells_iterator cit = triangulation_.all_cells_begin();
-		//	cit != triangulation_.all_cells_end(); ++cit)
-		//{
-		//	
-		//	bool pointsValid = true;
-		//	
-		//	for(int i=0; i<4; i++)
-		//			if(!cit->vertex(i)->point().is_valid())
-		//				pointsValid = false;
 
-		//	if(pointsValid)
-		//	{
-		//		//check if the Facet is contained in the set
-		//		int cell = hiddenCellList.count(cit);
+		std::cout<<"Cell"<<std::endl;
+		for (Base::All_cells_iterator cit = triangulation_.all_cells_begin();
+			cit != triangulation_.all_cells_end(); ++cit)
+		{
+			
+			bool pointsValid = true;
+			
+			for(int i=0; i<4; i++)
+					if(!cit->vertex(i)->point().is_valid())
+						pointsValid = false;
 
-		//		if(cell == 0)
-		//		{
-		//			for(int i=0; i<4; i++)
-		//				std::cout<<cit->vertex(i)->point();
-		//			std::cout<<std::endl;
-		//		}
-		//		
-		//	}
-		//	
-		//}
+			if(pointsValid)
+			{
+				//check if the Facet is contained in the set
+				int cell = hiddenCellList.count(cit);
+
+				if(cell == 0)
+				{
+					for(int i=0; i<4; i++)
+						std::cout<<cit->vertex(i)->point();
+					std::cout<<std::endl;
+				}
+				
+			}
+			
+		}
 
 					   
 	}
@@ -734,7 +693,6 @@ protected:
             facetsList.erase(facet);
             removed = true;
 		}
-        
         if (facetsList.find(mirror) != facetsList.end())
         {
             Event_key mirror_key = facetsList[mirror];
