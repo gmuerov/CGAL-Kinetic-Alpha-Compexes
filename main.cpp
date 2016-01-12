@@ -45,8 +45,8 @@ int main()
 	//reading
 	std::ifstream input( "Points.txt" );
 
-	int nrOfPoints = 10;
-	int startOfRotation = 2;
+	int nrOfPoints = 100;
+	int startOfRotation = 10;
 	int nrOfPointsMoving = 2;
 
 
@@ -71,7 +71,7 @@ int main()
     
     Simulator::NT angle = Simulator::NT(2) * M_PI/Simulator::NT(5);
 
-    StaticPoint center = initialPoints[rand.get_int(0, nrOfPoints - 1)];
+    StaticPoint center = initialPoints[startOfRotation-1];
 
     for(int i = 0; i < nrOfPointsMoving; i++)
     {   
