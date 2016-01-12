@@ -67,7 +67,7 @@ int main()
 		
 	}
 
-    std::vector<int> VisitedIndexes;
+    std::set<int> VisitedIndexes;
 
     std::vector<Point_key> movingPoints;
 
@@ -75,7 +75,7 @@ int main()
     
     Simulator::NT angle = Simulator::NT(2) * M_PI/Simulator::NT(5);
     
-    StaticPoint center = initialPoints[rand.get_int(0, numP - 1)];
+    StaticPoint center = initialPoints[rand.get_int(0, nrOfPoints - 1)];
 
     for(int i = 0; i < nrOfPointsMoving; i++)
     {   
@@ -83,9 +83,10 @@ int main()
         while (std::find(VisitedIndexes.begin(), VisitedIndexes.end(), f) 
                         != VisitedIndexes.end())
             f = rand.get_int(0, nrOfPoints-1);
-        VisitedIndexes.push_back(f);
+			
+        VisitedIndexes.insert(f);
         Point_key new_key = Helper::makePointRotate(initialPoints[f], center,
-                    &beef, &tr, tr.simulator_handle(), angle);
+                    &tr, angle);
         movingPoints.push_back(new_key);
         AlphaComplexKeys.push_back(new_key);
     }

@@ -52,7 +52,7 @@ public:
         }
         removeShortCertificate(deletedCell);
 
-		Facet returned = Base::flip(e);
+        Facet returned = Base::flip(e);
         
         if (returned == Facet())
             return returned;

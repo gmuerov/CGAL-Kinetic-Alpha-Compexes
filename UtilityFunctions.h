@@ -27,20 +27,31 @@ namespace Helper{
     
         return StaticPoint(x, y, z);
     }
+    
+
+    Simulator::NT quickDistance(StaticPoint a, StaticPoint b)
+    {
+        Simulator::NT dx = a.x() - b.x();
+        Simulator::NT dy = a.y() - b.y();
+
+        return dx * dx + dy * dy;
+    }
 
     StaticPoint rotatePoint(StaticPoint source, StaticPoint center, Simulator::NT angle)
     {
         double approx = angle.exact().to_double();
 
-        double sineA = sin(approx);
+        double sineA   = sin(approx);
         double cosineA = cos(approx);
 
         Simulator::NT dx = source.x() - center.x();
         Simulator::NT dy = source.y() - center.y();
 
-        return StaticPoint(dx * cosineA - dy * sineA   + center.x(),
-                           dy * sineA   + dy * cosineA + center.y(),
-                           source.z());
+        StaticPoint newPoint((dx * cosineA) - (dy * sineA  ) + center.x(),
+                             (dx * sineA  ) + (dy * cosineA) + center.y(),
+                             source.z());
+
+        return newPoint;
     }
 
     Point makeMovement(StaticPoint first, StaticPoint second, Simulator::NT dt, Simulator::NT time)
@@ -68,10 +79,12 @@ namespace Helper{
 
     typedef KineticAlphaComplexTriangulation3<Traits> AC;
 
-    Point_key makePointRotate(StaticPoint source, StaticPoint center, AC* kac, Traits* tr,
-                          Simulator::Handle sim, Simulator::NT angle)
+    Point_key makePointRotate(StaticPoint source, StaticPoint center, Traits* tr,
+                              Simulator::NT angle)
     {
         StaticPoint end = rotatePoint(source, center, angle);
+
+        Simulator::Handle sim = tr->simulator_handle();
 
         Point moving = makeMovement(source, end, Simulator::NT(dt),
                                     sim->next_time_representable_as_nt());
