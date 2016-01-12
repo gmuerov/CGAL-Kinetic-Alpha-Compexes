@@ -14,8 +14,9 @@ class TrajectoryChangeEvent: public CGAL::Kinetic::Event_base<KDS*>
 
         TrajectoryChangeEvent(KDS* link, typename Traits::Simulator::Handle init,
                               std::vector<typename Traits::Active_points_3_table::Key> point,
+                              typename Traits::Static_kernel::Point_3 rotCenter,
                               typename Traits::Simulator::NT polSides):E(link), sim(init),
-                              angle(polSides),toUpdate(point)
+                              angle(polSides),toUpdate(point),center(rotCenter)
         {}
 
         TrajectoryChangeEvent()
@@ -23,13 +24,14 @@ class TrajectoryChangeEvent: public CGAL::Kinetic::Event_base<KDS*>
 
         void process()
         {
-            Helper::ModifyPoints(toUpdate, kds_, sim, angle);
+            Helper::ModifyPoints(toUpdate, center, kds_, sim, angle);
         }
         
     protected:
        const typename Traits::Simulator::Handle sim;
        const std::vector<typename Traits::Active_points_3_table::Key> toUpdate;
        const typename Traits::Simulator::NT angle;
+       typename Traits::Static_kernel::Point_3 center;
 };
 
 #endif
