@@ -43,25 +43,19 @@ int main()
 
 	//reading
 	std::ifstream input( "Points.txt" );
-	std::cout<<"Frame"<<std::endl;
-	std::cout<<"Vertices"<<std::endl;
 
 	int nrOfPoints = 10;
-	int allPoints = 0;
+	int startOfRotation = 2;
 	int nrOfPointsMoving = 2;
+
+
+	int allPoints = 0;
 	for( std::string line; getline( input, line ); )
 	{
 		double x, y, z;
 		input >> x >> y >> z;
 		StaticPoint new_point = StaticPoint(x,y,z);		
         initialPoints.push_back(new_point);
-		if(nrOfPoints>allPoints)
-		{
-			std::cout<<x<<" ";
-			std::cout<<y<<" ";
-			std::cout<<z<<std::endl;
-		}
-		
 		allPoints++;
 		
 	}
@@ -78,12 +72,13 @@ int main()
 
     for(int i = 0; i < nrOfPointsMoving; i++)
     {   
-        /*int f = rand.get_int(0, nrOfPoints-1);
+        /*rendam points selection
+		int f = rand.get_int(0, nrOfPoints-1);
         while (std::find(VisitedIndexes.begin(), VisitedIndexes.end(), f) 
                         != VisitedIndexes.end())
             f = rand.get_int(0, nrOfPoints-1);
 			*/
-		int f = 2 + i;
+		int f = startOfRotation + i;
         VisitedIndexes.push_back(f);
         Point_key new_key = Helper::makePointRotate(initialPoints[f], 
                     &beef, &tr, tr.simulator_handle(), angle);
@@ -105,64 +100,6 @@ int main()
                 Point(initialPoints[i])));
         }
     }
-
-
-	AC::Triangulation tri = beef.triangulation();
-
-	
-	std::cout<<"Edges"<<std::endl;
-        for (AC::Triangulation::All_edges_iterator eit = tri.all_edges_begin();
-			eit != tri.all_edges_end(); ++eit) 
-		{			
-			if(eit->first->vertex(eit->second)->point().is_valid() && eit->first->vertex(eit->third)->point().is_valid())
-			{
-				std::cout<<eit->first->vertex(eit->second)->point()<<
-						 eit->first->vertex(eit->third )->point()<< std::endl;				 		
-			}			
-        }
-
-	std::cout<<"Facet"<<std::endl;
-		for (AC::Triangulation::All_facets_iterator fit = tri.all_facets_begin();
-	                 fit != tri.all_facets_end(); ++fit)
-		{ 
-			bool pointsValid = true;
-			
-			for(int i=0; i<4; i++)
-				if(i != fit->second)
-					if(!fit->first->vertex(i)->point().is_valid())
-						pointsValid = false;
-
-			if(pointsValid)
-			{
-				for(int i=0; i<4; i++)
-					if(i != fit->second)
-						std::cout<<fit->first->vertex(i)->point();
-				std::cout<<std::endl;
-			}
-			
-		}
-
-	std::cout<<"Cell"<<std::endl;
-		for (AC::Triangulation::All_cells_iterator cit = tri.all_cells_begin();
-			cit != tri.all_cells_end(); ++cit)
-		{
-			
-			bool pointsValid = true;
-			
-			for(int i=0; i<4; i++)
-					if(!cit->vertex(i)->point().is_valid())
-						pointsValid = false;
-
-			if(pointsValid)
-			{
-				for(int i=0; i<4; i++)
-					std::cout<<cit->vertex(i)->point();
-				std::cout<<std::endl;
-				
-			}
-			
-		}
-
     beef.set_has_certificates(true);
 
 	while (sp->next_event_time() != sp->end_time()) 
