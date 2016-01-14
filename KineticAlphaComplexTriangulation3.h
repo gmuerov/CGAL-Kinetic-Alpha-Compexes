@@ -161,9 +161,9 @@ public:
 	}
 
 	typedef typename ACBase::Finite_vertices_iterator Finite_vertices_iterator;
-	void WriteVerticesAndEdges()
+	void WriteVerticesAndEdges(std::ofstream& outputFile)
 	{
-		kdel_.displayTest();
+		kdel_.displayTest(outputFile);
 	}
 
   //! Initialize it.

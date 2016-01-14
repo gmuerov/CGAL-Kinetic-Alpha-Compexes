@@ -211,20 +211,21 @@ public:
     }
 
 		//----------------------------------displa bigin--------------------
-	void displayTest() const
-	{
+	void displayTest(std::ofstream& outputFile) const
+	{	
+		outputFile << "Frame"<<std::endl;
         double currentTime = tr_.simulator_handle()->current_time().compute_double(0.01);
-		std::cout<<"Vertices"<<std::endl;
+		outputFile << "Vertices"<<std::endl;
 		for (Base::Finite_vertices_iterator vit = triangulation_.finite_vertices_begin();
 			vit != triangulation_.finite_vertices_end(); ++vit)
 		{
-			std::cout<<point(vit->point()).x().value_at(currentTime)<<" ";
-			std::cout<<point(vit->point()).y().value_at(currentTime)<<" ";
-			std::cout<<point(vit->point()).z().value_at(currentTime)<<std::endl;
+			outputFile << point(vit->point()).x().value_at(currentTime)<<" ";
+			outputFile << point(vit->point()).y().value_at(currentTime)<<" ";
+			outputFile << point(vit->point()).z().value_at(currentTime)<<std::endl;
 
 		}
 
-		std::cout<<"Edges"<<std::endl;		
+		outputFile << "Edges"<<std::endl;		
         for (All_edges_iterator eit = triangulation_.all_edges_begin();
 			eit != triangulation_.all_edges_end(); ++eit) 
 		{
@@ -248,7 +249,7 @@ public:
 
 				 if(!hiddenEdge)
 				 {
-					std::cout<<eit->first->vertex(eit->second)->point()<<
+					outputFile << eit->first->vertex(eit->second)->point()<<
 							 eit->first->vertex(eit->third )->point()<< std::endl;
 				 }
 
@@ -257,7 +258,7 @@ public:
         }	
 		
 		
-		std::cout<<"Facet"<<std::endl;
+		outputFile << "Facet"<<std::endl;
 		for (All_facets_iterator fit = triangulation_.all_facets_begin();
 	                 fit != triangulation_.all_facets_end(); ++fit)
 		{ 
@@ -281,14 +282,14 @@ public:
 				{
 					for(int i=0; i<4; i++)
 						if(i != fit->second)
-							std::cout<<fit->first->vertex(i)->point();
-					std::cout<<std::endl;
+							outputFile << fit->first->vertex(i)->point();
+					outputFile <<std::endl;
 				}
 			}
 			
 		}
 
-		std::cout<<"Cell"<<std::endl;
+		outputFile << "Cell"<<std::endl;
 		for (Base::All_cells_iterator cit = triangulation_.all_cells_begin();
 			cit != triangulation_.all_cells_end(); ++cit)
 		{
@@ -307,15 +308,14 @@ public:
 				if(cell == 0)
 				{
 					for(int i=0; i<4; i++)
-						std::cout<<cit->vertex(i)->point();
-					std::cout<<std::endl;
+						outputFile <<cit->vertex(i)->point();
+					outputFile <<std::endl;
 				}
 				
 			}
 			
 		}
-
-					   
+   
 	}
 	//----------------------------------displa end--------------------
     typename Triang::Vertex_handle insert(Point_key k)

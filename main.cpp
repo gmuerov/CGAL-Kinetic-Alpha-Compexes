@@ -45,7 +45,7 @@ int main()
 	//reading
 	std::ifstream input( "Points.txt" );
 
-	int nrOfPoints = 100;
+	int nrOfPoints = 30;
 	int startOfRotation = 10;
 	int nrOfPointsMoving = 2;
 
@@ -104,15 +104,17 @@ int main()
         }
     }
     beef.set_has_certificates(true);
-
+	std::ofstream outputFile;
+    outputFile.open ("out.txt");
 	while (sp->next_event_time() != sp->end_time()) 
     {
-		printf("Frame",sp->current_event_number());
+		printf("Frame %i",sp->current_event_number());
 		std::cout<<std::endl;
-        beef.WriteVerticesAndEdges();
+        beef.WriteVerticesAndEdges(outputFile);
         sp->set_current_event_number(sp->current_event_number()+1);
     }
-
+	
+	outputFile.close();		
     printf("Simulator time %d\n",tr.simulator_handle()->current_time());
 
 	return 0;
