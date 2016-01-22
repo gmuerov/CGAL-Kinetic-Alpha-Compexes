@@ -30,7 +30,7 @@ typedef Traits::Active_points_3_table::Key Point_key;
 
 int main()
 {
-	Traits tr(0, 1000);
+	Traits tr(0, 50);
 
     typedef KineticAlphaComplexTriangulation3<Traits> AC;
     AC beef(tr, Traits::Simulator::NT(2.0));
@@ -66,6 +66,7 @@ int main()
 		allPoints++;
 		
 	}
+
 
     std::set<int> VisitedIndexes;
 

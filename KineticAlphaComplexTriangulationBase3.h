@@ -56,7 +56,7 @@ public:
         
         if (returned == Facet())
             return returned;
-
+        
         std::vector<Cell_handle> cells;
         cells.push_back(returned.first);
         cells.push_back(triangulation_.mirror_facet(returned).first);
@@ -443,6 +443,7 @@ public:
 	void hideShowFace(StoredEdge e)
     {
         //printf("\nProcessing edge short event\n\n");
+
         if (hiddenEdgeList.count(e) <= 0)
         {
             StoredEdge mirror(e.second, e.first);
@@ -536,6 +537,32 @@ public:
 
 protected:
 
+    void edgeSize(StoredEdge convert)
+    {
+        std::cout<<"The length of this edge is: ";
+        Point A = point(convert.first);
+        TraitsT::Static_kernel::Point_3 curA(A.x().value_at(tr_.simulator_handle()->
+                                                    next_time_representable_as_nt()),
+                                                A.y().value_at(tr_.simulator_handle()->
+                                                    next_time_representable_as_nt()),
+                                                A.z().value_at(tr_.simulator_handle()->
+                                                    next_time_representable_as_nt()));
+                
+        Point B = point(convert.second);
+        TraitsT::Static_kernel::Point_3 curB(B.x().value_at(tr_.simulator_handle()->
+                                                    next_time_representable_as_nt()),
+                                                B.y().value_at(tr_.simulator_handle()->
+                                                    next_time_representable_as_nt()),
+                                                B.z().value_at(tr_.simulator_handle()->
+                                                    next_time_representable_as_nt()));
+                
+        TraitsT::Simulator::NT dx = curA.x() - curB.x();
+        TraitsT::Simulator::NT dy = curA.y() - curB.y();
+        TraitsT::Simulator::NT dz = curA.z() - curB.z();
+
+        std::cout<<dx*dx + dy*dy + dz*dz<<std::endl;
+    }
+
     void Initialization()
     {
         for (Base::All_edges_iterator eit = triangulation_.all_edges_begin();
@@ -545,7 +572,7 @@ protected:
 		    if(!CheckShortEdge(convert) && 
                 hiddenEdgeList.count(StoredEdge(convert.second, convert.first))<=0)
 		    {
-			    hiddenEdgeList.insert(convert);
+                hiddenEdgeList.insert(convert);
 		    }
 	    }
 			
@@ -785,7 +812,7 @@ protected:
         typename Kinetic_kernel::Function_kernel::Construct_function cf;
         std::vector<Point_key> ids;
         edgePoint(e, std::back_insert_iterator<std::vector<Point_key> >(ids));
-	
+
         if (ids.size()==2) 
         {
             return sEC3(point(ids[0]),
@@ -959,7 +986,7 @@ protected:
                 makeShortCertificate(f);
             }
 
-            if (cellShort && CheckShortFacet(f) &&
+            if (!cellShort && !CheckShortFacet(f) &&
                 hiddenFaceList.find(triangulation_.mirror_facet(f)) == hiddenFaceList.end())
                 hiddenFaceList.insert(f);
 
@@ -973,7 +1000,7 @@ protected:
                     makeShortCertificate(e);
                 }
 
-                if (cellShort && CheckShortEdge(e) && 
+                if (!cellShort && !CheckShortEdge(e) && 
                      hiddenEdgeList.count(StoredEdge(e.second, e.first))<=0)
                     hiddenEdgeList.insert(e);
             }
