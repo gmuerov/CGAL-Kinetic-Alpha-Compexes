@@ -36,8 +36,22 @@ public:
 	typedef typename TraitsT::eventShortCell cellShortEvent; 
 	typedef typename TraitsT::Simulator Simulator;
 
+	int nrOfEdgeFlips,nrOfFacetFlips,nrOfShortEdge,nrOfShortFacet,nrOfShortCell;
+
+	KineticAlphaComplexTriangulationBase(TraitsT tr, NT alpha, Visitor v = Visitor()):
+        Base(tr, v), squared_alpha(alpha * alpha)
+    {
+		nrOfEdgeFlips  = 0;
+		nrOfFacetFlips = 0;
+		nrOfShortEdge  = 0;
+		nrOfShortFacet = 0;
+		nrOfShortCell  = 0; 
+        Initialization();
+    }
+
     Facet flip(const Edge &e)
 	{
+		nrOfEdgeFlips++;
         Cell_handle deletedCell = e.first;
 
 		for (int i = 0; i < 4; i++)
@@ -70,7 +84,7 @@ public:
 
     Edge flip(const Facet &f)
     {
-        //printf("Processing facet flip event.\n");
+		nrOfFacetFlips++;
         Cell_handle oldCell = f.first;
 
         Edge returned = Base::flip(f);
@@ -204,11 +218,6 @@ public:
         return cellsList[c];
     }
     
-    KineticAlphaComplexTriangulationBase(TraitsT tr, NT alpha, Visitor v = Visitor()):
-        Base(tr, v), squared_alpha(alpha * alpha)
-    {
-        Initialization();
-    }
 
 		//----------------------------------displa bigin--------------------
 	void displayTest(std::ofstream& outputFile) const
@@ -302,10 +311,8 @@ public:
 
 			if(pointsValid)
 			{
-				//check if the Facet is contained in the set
-				int cell = hiddenCellList.count(cit);
 
-				if(cell == 0)
+				if(hiddenCellList.find(cit) == hiddenCellList.end())
 				{
 					for(int i=0; i<4; i++)
 						outputFile <<cit->vertex(i)->point();
@@ -362,7 +369,7 @@ public:
 
 	void hideShowFace(Facet f)
     {
-        //printf("\nProcessing short facet event.\n\n");
+        nrOfShortFacet++;
 		//check if the Facet is contained in the set
 		bool face = hiddenFaceList.find(f) != 
                     hiddenFaceList.end();
@@ -401,7 +408,7 @@ public:
 
 	void hideShowFace(StoredEdge e)
     {
-        //printf("\nProcessing edge short event\n\n");
+        nrOfShortEdge++;
         if (hiddenEdgeList.count(e) <= 0)
         {
             StoredEdge mirror(e.second, e.first);
@@ -431,7 +438,7 @@ public:
 
 	void hideShowFace(Cell_handle c)
     {
-        
+        nrOfShortCell++;
 		//Check if the cell is hidden
 		int cell = hiddenCellList.count(c);
 
@@ -492,6 +499,32 @@ public:
     {
         return tr_.active_points_3_table_handle();
     }
+	
+	
+	int getNrOfEdgeFlips()
+	{
+		return nrOfEdgeFlips;
+	}
+	
+	int getNrOfFacetFlips()
+	{
+		return nrOfFacetFlips;
+	}
+	
+	int getNrOfShortEdge()
+	{
+		return nrOfShortEdge;
+	}
+	
+	int getNrOfShortFacet()
+	{
+		return nrOfShortFacet;
+	}
+	
+	int getNrOfShortCell()
+	{
+		return nrOfShortCell;
+	}
 
 protected:
 
@@ -946,6 +979,7 @@ protected:
                 std::cout<<f.first->vertex(i)->point();
         }
     }
+
 
     NT squared_alpha;
     

@@ -165,7 +165,32 @@ public:
 	{
 		kdel_.displayTest(outputFile);
 	}
-
+	
+	
+	int getNrOfEdgeFlips()
+	{
+		return kdel_.getNrOfEdgeFlips();
+	}
+	
+	int getNrOfFacetFlips()
+	{
+		return kdel_.getNrOfFacetFlips();
+	}
+	
+	int getNrOfShortEdge()
+	{
+		return kdel_.getNrOfShortEdge();
+	}
+	
+	int getNrOfShortFacet()
+	{
+		return kdel_.getNrOfShortFacet();
+	}
+	
+	int getNrOfShortCell()
+	{
+		return kdel_.getNrOfShortCell();
+	}
   //! Initialize it.
   KineticAlphaComplexTriangulation3(TraitsT tr,typename TraitsT::Simulator::NT alpha, Visitor v= Visitor()): 
     kdel_(Base_traits(this, tr), alpha, v) {

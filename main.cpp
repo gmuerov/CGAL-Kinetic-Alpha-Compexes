@@ -10,6 +10,7 @@
 #define _USE_MATH_DEFINES
 #include <math.h>
 #include "UtilityFunctions.h"
+#include <boost/chrono.hpp>
 //#include "TrajectoryChangeEvent.h"
 
 #define CGAL_CHECK_EXACTNESS
@@ -30,6 +31,7 @@ typedef Traits::Active_points_3_table::Key Point_key;
 
 int main()
 {
+	boost::chrono::high_resolution_clock::time_point runTimeStart = boost::chrono::high_resolution_clock::now();
 	Traits tr(0, 50);
 
     typedef KineticAlphaComplexTriangulation3<Traits> AC;
@@ -45,9 +47,10 @@ int main()
 	//reading
 	std::ifstream input( "Points.txt" );
 
-	int nrOfPoints = 30;
-	int startOfRotation = 10;
-	int nrOfPointsMoving = 2;
+	int nrOfPoints = 100;
+	int startOfRotation = 50;
+	int nrOfPointsMoving = 25;
+	int nrOfCorners = 12;
 
 
 	int allPoints = 0;
@@ -69,9 +72,11 @@ int main()
 
     std::vector<Point_key> AlphaComplexKeys;
     
-    Simulator::NT angle = Simulator::NT(2) * M_PI/Simulator::NT(5);
+    Simulator::NT angle = Simulator::NT(2) * M_PI/Simulator::NT(nrOfCorners);
 
     StaticPoint center = initialPoints[startOfRotation-1];
+	
+	boost::chrono::high_resolution_clock::time_point initialisationTimeStart = boost::chrono::high_resolution_clock::now();
 
     for(int i = 0; i < nrOfPointsMoving; i++)
     {   
@@ -103,19 +108,39 @@ int main()
                 Point(initialPoints[i])));
         }
     }
+
+	boost::chrono::high_resolution_clock::time_point initialisationTimeEnd = boost::chrono::high_resolution_clock::now();
+	std::cout <<"Initialisation Triangulation: ";
+	std::cout << boost::chrono::duration_cast<boost::chrono::milliseconds>(initialisationTimeEnd-initialisationTimeStart) << "\n";
+
     beef.set_has_certificates(true);
 	std::ofstream outputFile;
-    outputFile.open ("out.txt");
+    //outputFile.open ("out.txt");
 	while (sp->next_event_time() != sp->end_time()) 
     {
+		//boost::chrono::high_resolution_clock::time_point frameTimeStart = boost::chrono::high_resolution_clock::now();
 		printf("Frame %i",sp->current_event_number());
 		std::cout<<std::endl;
-        beef.WriteVerticesAndEdges(outputFile);
+        //beef.WriteVerticesAndEdges(outputFile);
         sp->set_current_event_number(sp->current_event_number()+1);
+		/*boost::chrono::high_resolution_clock::time_point frameTimeEnd = boost::chrono::high_resolution_clock::now();
+		std::cout << boost::chrono::duration_cast<boost::chrono::milliseconds>(frameTimeEnd-frameTimeStart) << "\n";*/
     }
 	
-	outputFile.close();		
-    printf("Simulator time %d\n",tr.simulator_handle()->current_time());
+	//outputFile.close();	
+	printf("Nr Of Edge Flips: %d\n",beef.getNrOfEdgeFlips());
+	printf("Nr Of Facet Flips: %d\n",beef.getNrOfFacetFlips());
+	printf("Nr Of Short Edge: %d\n",beef.getNrOfShortEdge());
+	printf("Nr Of Short Facet: %d\n",beef.getNrOfShortFacet());
+	printf("Nr Of Short Cell: %d\n",beef.getNrOfShortCell());
+	boost::chrono::high_resolution_clock::time_point runTimeEnd = boost::chrono::high_resolution_clock::now();
+	
+	std::cout <<"Initialisation Triangulation: ";
+	std::cout << boost::chrono::duration_cast<boost::chrono::milliseconds>(initialisationTimeEnd-initialisationTimeStart) << "\n";
+	std::cout <<"Run Time: ";
+	std::cout << boost::chrono::duration_cast<boost::chrono::milliseconds>(runTimeEnd-runTimeStart) << "\n";
+
+    //printf("Simulator time: %d\n",tr.simulator_handle()->current_time());
 
 	return 0;
 }
