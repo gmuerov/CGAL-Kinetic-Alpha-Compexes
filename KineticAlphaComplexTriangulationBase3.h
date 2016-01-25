@@ -615,13 +615,12 @@ protected:
         bool cellShort = CheckShortCell(c);
 
         if(!cellShort && c->is_valid())
-            hiddenCellList.insert(c);
+            hiddenCellList.insert(Cell_handle(c))
 
         //Setup facets
         for(int i = 0; i < 4; i++)
         {
             Facet f(c,i);
-
             if(has_certificates_)
                 makeShortCertificate(f);
 

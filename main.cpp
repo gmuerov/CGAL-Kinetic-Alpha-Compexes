@@ -53,6 +53,7 @@ int main()
 
 	//reading
 	std::ifstream input( "Points.txt" );
+    AC beef(tr, Traits::Simulator::NT(2.0));
 
 	int allPoints = 0;
 	for( std::string line; getline( input, line ); )
