@@ -57,20 +57,24 @@ public:
 		for (int i = 0; i < 4; i++)
         {
             removeShortCertificate(Facet(deletedCell, i));
+            removeFacetFromHidden(Facet(deletedCell, i));
             for (int j = i + 1; j< 4; j++)
             {
                 StoredEdge e(deletedCell->vertex(i)->point(),
                              deletedCell->vertex(j)->point());
                 removeShortCertificate(e);
+                removeEdgeFromHidden(e);
             }
         }
         removeShortCertificate(deletedCell);
+
+        removeCellFromHidden(deletedCell);
 
         Facet returned = Base::flip(e);
         
         if (returned == Facet())
             return returned;
-
+        
         std::vector<Cell_handle> cells;
         cells.push_back(returned.first);
         cells.push_back(triangulation_.mirror_facet(returned).first);
@@ -197,13 +201,15 @@ public:
 
     typename Simulator::Event_key GetEventKey(const StoredEdge e)
     {
-        if (edgesList.count(e) > 0)
-            return edgesList[e];
+        EdgeMap::iterator edgeIt = edgesList.find(e);
+        if (edgeIt != edgesList.end())
+            return edgeIt->second;
         
         StoredEdge mirror(e.second, e.first);
-
-        if (edgesList.count(mirror) > 0)
-            return edgesList[mirror];
+        
+        EdgeMap::iterator mirrorIt = edgesList.find(mirror);
+        if (mirrorIt != edgesList.end())
+            return mirrorIt->second;
 
         CGAL_ERROR("Couldn't find key for edge");
         return Simulator::Event_key();
@@ -219,7 +225,7 @@ public:
     }
     
 
-		//----------------------------------displa bigin--------------------
+		//----------------------------------display bigin--------------------
 	void displayTest(std::ofstream& outputFile) const
 	{	
 		outputFile << "Frame"<<std::endl;
@@ -239,29 +245,18 @@ public:
 			eit != triangulation_.all_edges_end(); ++eit) 
 		{
 			
-			if(eit->first->vertex(eit->second)->point().is_valid() && eit->first->vertex(eit->third)->point().is_valid())
+			if(eit->first->vertex(eit->second)->point().is_valid() && 
+               eit->first->vertex(eit->third )->point().is_valid())
 			{
-				 bool hiddenEdge = false;
-				 for (std::set<StoredEdge>::iterator heit = hiddenEdgeList.begin();
-					 heit != hiddenEdgeList.end(); ++heit) 
-				 { 
+                StoredEdge sedge = convertEdge(*eit);
 
-					if(eit->first->vertex(eit->second)->point() == heit->first &&
-						eit->first->vertex(eit->third)->point() == heit->second ||
-						eit->first->vertex(eit->third)->point() == heit->first &&
-						eit->first->vertex(eit->second)->point() == heit->second)
-					{
-						hiddenEdge = true;
-					}
-
-				 }
-
+				bool hiddenEdge = hiddenEdgeList.find(sedge) != hiddenEdgeList.end() ||
+                                  hiddenEdgeList.find(StoredEdge(sedge.second, sedge.first)) != 
+                                        hiddenEdgeList.end();
 				 if(!hiddenEdge)
 				 {
-					outputFile << eit->first->vertex(eit->second)->point()<<
-							 eit->first->vertex(eit->third )->point()<< std::endl;
+					outputFile << sedge.first<<sedge.second<< std::endl;
 				 }
-
 			}
 			
         }	
@@ -281,13 +276,13 @@ public:
 			if(pointsValid)
 			{
 				//check if the Facet is contained in the set
-				int face = hiddenFaceList.count(*fit);
+				bool face = hiddenFaceList.find(*fit) == hiddenFaceList.end();
 
 				//check for the mirror Facet within the set
 				Facet mirror = triangulation_.mirror_facet(*fit);
-				int mirroredFace = hiddenFaceList.count(mirror);
+				bool mirroredFace = hiddenFaceList.find(mirror) == hiddenFaceList.end();
 
-				if(face == 0 && mirroredFace == 0)
+				if(!face && !mirroredFace)
 				{
 					for(int i=0; i<4; i++)
 						if(i != fit->second)
@@ -311,7 +306,6 @@ public:
 
 			if(pointsValid)
 			{
-
 				if(hiddenCellList.find(cit) == hiddenCellList.end())
 				{
 					for(int i=0; i<4; i++)
@@ -324,7 +318,8 @@ public:
 		}
    
 	}
-	//----------------------------------displa end--------------------
+	//----------------------------------display end--------------------
+
     typename Triang::Vertex_handle insert(Point_key k)
     {
         Triang::Vertex_handle baseVertex = Base::insert(k);
@@ -346,20 +341,25 @@ public:
         if(!has_certificates_) 
             return NULL;
 
-        Triang::Vertex_handle changedVertex = Base::change_vertex(k);
-
         std::vector<Cell_handle> cellsAround;
-
+        
         if(triangulation_.dimension() == 3)
         {
-            triangulation_.incident_cells(changedVertex, back_inserter(cellsAround));
-
+            triangulation_.incident_cells(vertex_handle(k), back_inserter(cellsAround));
+            for(std::vector<Cell_handle>::iterator it = cellsAround.begin();
+                it != cellsAround.end(); ++it)
+                clearCell(*it);
+        }
+         
+        Triang::Vertex_handle changedVertex = Base::change_vertex(k);
+            
+        if(triangulation_.dimension() == 3)
+        {
             for(std::vector<Cell_handle>::iterator it = cellsAround.begin();
                 it != cellsAround.end(); ++it)
             {
-                RenewCertificates(*it);
+                certifyCell(*it);
             }
-
         }
 
         return changedVertex;
@@ -409,10 +409,14 @@ public:
 	void hideShowFace(StoredEdge e)
     {
         nrOfShortEdge++;
-        if (hiddenEdgeList.count(e) <= 0)
+        
+        StoredEdge mirror(e.second, e.first);
+        bool edgeIn = hiddenEdgeList.find(e) != hiddenEdgeList.end();
+
+        if (!edgeIn)
         {
-            StoredEdge mirror(e.second, e.first);
-            if (hiddenEdgeList.count(mirror) <= 0)
+            bool mirrorIn = hiddenEdgeList.find(mirror) != hiddenEdgeList.end();
+            if (!mirrorIn)
                 hiddenEdgeList.insert(e);
             else
                 hiddenEdgeList.erase(mirror);
@@ -420,7 +424,21 @@ public:
         else
             hiddenEdgeList.erase(e);
 
-		typename Simulator::Event_key failed = edgesList[e];
+		typename Simulator::Event_key failed;
+
+        if (edgesList.find(e) == edgesList.end())
+        {
+            if(edgesList.find(mirror) == edgesList.end())
+            {
+                return;
+            }
+            
+            failed = edgesList[mirror];
+        }
+        else
+            failed = edgesList[e];
+
+        CGAL_assertion(failed != Event_key());
 
 		Base::Certificate core = extract_root_stack(failed);
 
@@ -526,7 +544,131 @@ public:
 		return nrOfShortCell;
 	}
 
+    void DisplaySize(std::ofstream& outputFile)
+    {
+        outputFile<< "Frame"<<std::endl; 
+        for (All_edges_iterator eit = triangulation_.all_edges_begin();
+			eit != triangulation_.all_edges_end(); ++eit) 
+		{
+			if(eit->first->vertex(eit->second)->point().is_valid() && 
+                eit->first->vertex(eit->third)->point().is_valid())
+			{
+                StoredEdge sedge = convertEdge(*eit);
+
+				bool hiddenEdge = hiddenEdgeList.find(sedge) != hiddenEdgeList.end() ||
+                                  hiddenEdgeList.find(StoredEdge(sedge.second, sedge.first)) != 
+                                        hiddenEdgeList.end();
+
+                outputFile<< eit->first->vertex(eit->second)->point()<<
+							 eit->first->vertex(eit->third )->point()<< std::endl;
+
+                outputFile<< ((hiddenEdge)? "Hidden" : "Visible")<<std::endl;
+                 
+                outputFile<<"The length of this edge is: ";
+                Simulator::NT s = edgeSize(convertEdge(*eit));
+                outputFile<< s<<std::endl;
+
+                Simulator::NT maxL = squared_alpha * 4;
+                if ((hiddenEdge && s <= maxL) ||
+                    (!hiddenEdge && s > maxL))
+                    outputFile<<"Edge too long"<<std::endl;
+               
+                outputFile<<std::endl;
+			}
+			
+        }	
+    }
+
 protected:
+
+    void clearCell(Cell_handle c)
+    {
+        if (has_certificates_)
+            removeShortCertificate(c);
+
+        removeCellFromHidden(c);
+
+        for(int i = 0; i < 4; i++)
+        {
+            Facet f(c, i);
+            if (has_certificates_)
+                removeShortCertificate(f);
+            removeFacetFromHidden(f);
+        }
+
+        for(int i = 0; i < 4; i++)
+            for(int j = i + 1; j < 4; j++)
+            {
+                StoredEdge e(c->vertex(i)->point(), c->vertex(j)->point());
+                if (has_certificates_)
+                    removeShortCertificate(e);
+
+                removeEdgeFromHidden(e);
+            }
+    }
+
+    void certifyCell(Cell_handle c)
+    {
+        if(has_certificates_)
+           makeShortCertificate(c);
+
+        bool cellShort = CheckShortCell(c);
+
+        if(!cellShort && c->is_valid())
+            hiddenCellList.insert(Cell_handle(c));
+
+        //Setup facets
+        for(int i = 0; i < 4; i++)
+        {
+            Facet f(c,i);
+            if(has_certificates_)
+                makeShortCertificate(f);
+
+            if (!cellShort && !CheckShortFacet(f) &&
+                hiddenFaceList.find(triangulation_.mirror_facet(f)) == 
+                hiddenFaceList.end())
+                hiddenFaceList.insert(f);
+        }
+        
+        for(int i = 0; i < 4; i++)
+            for(int j = i+1; j < 4; i++)
+            {
+                StoredEdge e(c->vertex(i)->point(), c->vertex(j)->point());
+
+                if(has_certificates_)
+                    makeShortCertificate(e);
+
+                if(!cellShort && !CheckShortEdge(e) &&
+                    hiddenEdgeList.find(StoredEdge(e.second, e.first)) == 
+                    hiddenEdgeList.end())
+                    hiddenEdgeList.insert(e);
+            }
+    }
+
+    typename Simulator::NT edgeSize(StoredEdge convert)
+    {
+        Point A = point(convert.first);
+        TraitsT::Static_kernel::Point_3 curA(A.x().value_at(tr_.simulator_handle()->
+                                                    next_time_representable_as_nt()),
+                                             A.y().value_at(tr_.simulator_handle()->
+                                                    next_time_representable_as_nt()),
+                                             A.z().value_at(tr_.simulator_handle()->
+                                                    next_time_representable_as_nt()));
+                
+        Point B = point(convert.second);
+        TraitsT::Static_kernel::Point_3 curB(B.x().value_at(tr_.simulator_handle()->
+                                                    next_time_representable_as_nt()),
+                                             B.y().value_at(tr_.simulator_handle()->
+                                                    next_time_representable_as_nt()),
+                                             B.z().value_at(tr_.simulator_handle()->
+                                                    next_time_representable_as_nt()));
+                
+        TraitsT::Simulator::NT dx = curA.x() - curB.x();
+        TraitsT::Simulator::NT dy = curA.y() - curB.y();
+        TraitsT::Simulator::NT dz = curA.z() - curB.z();
+
+        return dx*dx + dy*dy + dz*dz;
+    }
 
     void Initialization()
     {
@@ -537,7 +679,7 @@ protected:
 		    if(!CheckShortEdge(convert) && 
                 hiddenEdgeList.count(StoredEdge(convert.second, convert.first))<=0)
 		    {
-			    hiddenEdgeList.insert(convert);
+                hiddenEdgeList.insert(convert);
 		    }
 	    }
 			
@@ -682,70 +824,93 @@ protected:
 
     void removeShortCertificate(Cell_handle cell)
     {
-        Event_key renewed_key = cellsList[cell];
+        CellMap::iterator cellIt = cellsList.find(cell);
+        if(cellIt == cellsList.end())
+            return;
+        Event_key renewed_key = cellIt->second;
         if(renewed_key != Simulator::Event_key())
 		{
 			simulator()->delete_event(renewed_key);
 		}
-        cellsList.erase(cell);
+        cellsList.erase(cellIt);
+    }
 
-        if (hiddenCellList.count(cell) > 0)
-            hiddenCellList.erase(cell);
+    void removeCellFromHidden(Cell_handle cell)
+    {
+        CellSet::iterator found = hiddenCellList.find(cell);
+
+        if (found != hiddenCellList.end())
+            hiddenCellList.erase(found);
     }
 
     void removeShortCertificate(StoredEdge edge, bool mirroredEdge = false)
     {
-        if(edgesList.find(edge) != edgesList.end())
+        EdgeMap::iterator edgeIt = edgesList.find(edge);
+        bool edgeFound = edgeIt != edgesList.end();
+        if(edgeFound)
         {
-            Event_key for_removal = edgesList[edge];
+            Event_key for_removal = edgeIt->second;
             if(for_removal != Simulator::Event_key())
 		    {
 			    simulator()->delete_event(for_removal);
 		    }
-            edgesList.erase(edge);
-            return;
+            edgesList.erase(edgeIt);
         }
-        
-        if(hiddenEdgeList.find(edge) != hiddenEdgeList.end())
-            hiddenEdgeList.erase(edge);
 
-        if (!mirroredEdge)
+        if (!mirroredEdge && !edgeFound)
             removeShortCertificate(StoredEdge(edge.second, edge.first), true);
+    }
+
+    void removeEdgeFromHidden(StoredEdge e)
+    {
+        EdgeSet::iterator found = hiddenEdgeList.find(e);
+
+        if(found != hiddenEdgeList.end())
+            hiddenEdgeList.erase(found);
+
+        EdgeSet::iterator mirrorFound = hiddenEdgeList.find(
+                                            StoredEdge(e.second, e.first));
+
+        if(mirrorFound != hiddenEdgeList.end())
+            hiddenEdgeList.erase(mirrorFound);
     }
 
     void removeShortCertificate(Facet facet)
     {
-
         Facet mirror = triangulation_.mirror_facet(facet);
         bool removed = false;
 
-        if(facetsList.find(facet) != facetsList.end())
+        FacetMap::iterator found = facetsList.find(facet);
+
+        if(found != facetsList.end())
 		{
-            Event_key remove_key = facetsList[facet];
+            Event_key remove_key = found->second;
 			simulator()->delete_event(remove_key);
-            facetsList.erase(facet);
-            removed = true;
-		}
-        if (facetsList.find(mirror) != facetsList.end())
-        {
-            Event_key mirror_key = facetsList[mirror];
-            simulator()->delete_event(mirror_key);
-            facetsList.erase(mirror);
+            facetsList.erase(found);
             removed = true;
         }
 
-        /*if (!removed)
+        FacetMap::iterator foundM = facetsList.find(mirror);
+        if (foundM != facetsList.end())
         {
-            std::cout<<"Warning: Facet ";
-            printFacet(facet);
-            std::cout<<" had no short certificate."<<endl;
-        }*/
-            
+            Event_key mirror_key = foundM->second;
+            simulator()->delete_event(mirror_key);
+            facetsList.erase(foundM);
+            removed = true;
+        }
 
-        if(hiddenFaceList.find(facet ) != hiddenFaceList.end())
-            hiddenFaceList.erase(facet);
-        if(hiddenFaceList.find(mirror) != hiddenFaceList.end())
-            hiddenFaceList.erase(mirror);
+    }
+
+    void removeFacetFromHidden(Facet f)
+    {
+        FacetSet::iterator facetIt = hiddenFaceList.find(f );
+        if(facetIt != hiddenFaceList.end())
+            hiddenFaceList.erase(facetIt);
+        
+        FacetSet::iterator mirrorIt = hiddenFaceList.find(
+            triangulation_.mirror_facet(f));
+        if(mirrorIt!= hiddenFaceList.end())
+            hiddenFaceList.erase(mirrorIt);
     }
 
     Certificate cellRootStack(const Cell_handle &c,
@@ -776,7 +941,7 @@ protected:
         typename Kinetic_kernel::Function_kernel::Construct_function cf;
         std::vector<Point_key> ids;
         edgePoint(e, std::back_insert_iterator<std::vector<Point_key> >(ids));
-	
+
         if (ids.size()==2) 
         {
             return sEC3(point(ids[0]),
@@ -935,6 +1100,8 @@ protected:
             makeShortCertificate(edgeCirc);
         }
 
+        removeCellFromHidden(edgeCirc);
+
         bool cellShort = CheckShortCell(edgeCirc);
 
         if(!cellShort && edgeCirc->is_valid())
@@ -950,7 +1117,9 @@ protected:
                 makeShortCertificate(f);
             }
 
-            if (cellShort && CheckShortFacet(f) &&
+            removeFacetFromHidden(f);
+
+            if (!cellShort && !CheckShortFacet(f) &&
                 hiddenFaceList.find(triangulation_.mirror_facet(f)) == hiddenFaceList.end())
                 hiddenFaceList.insert(f);
 
@@ -964,8 +1133,10 @@ protected:
                     makeShortCertificate(e);
                 }
 
-                if (cellShort && CheckShortEdge(e) && 
-                     hiddenEdgeList.count(StoredEdge(e.second, e.first))<=0)
+                removeEdgeFromHidden(e);
+
+                if (!cellShort && !CheckShortEdge(e) && 
+                     hiddenEdgeList.find(StoredEdge(e.second, e.first)) == hiddenEdgeList.end())
                     hiddenEdgeList.insert(e);
             }
         }
@@ -987,13 +1158,19 @@ protected:
     STC3 sTC3;
     SEC3 sEC3;
 
-    std::set<Cell_handle> hiddenCellList;
-    std::set<Facet>		  hiddenFaceList;
-    std::set<StoredEdge>  hiddenEdgeList;
+    typedef std::set<Cell_handle> CellSet;
+    CellSet  hiddenCellList;
+    typedef std::set<Facet>       FacetSet;
+    FacetSet hiddenFaceList;
+    typedef std::set<StoredEdge>  EdgeSet;
+    EdgeSet  hiddenEdgeList;
 
-    std::map<Cell_handle, typename Simulator::Event_key> cellsList;
-    std::map<Facet,       typename Simulator::Event_key> facetsList;
-    std::map<StoredEdge,  typename Simulator::Event_key> edgesList;
+    typedef std::map<Cell_handle, Event_key> CellMap;
+    CellMap cellsList;
+    typedef std::map<Facet, Event_key> FacetMap;
+    FacetMap facetsList;
+    typedef std::map<StoredEdge, Event_key> EdgeMap;
+    EdgeMap edgesList;
 
 };
 

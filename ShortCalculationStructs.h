@@ -68,6 +68,8 @@ struct ShortTriangleCheck2D
 	}
 };
 
+///A structure for calculating the certificate functions for short edges in 3D.
+///
 template <class KK>
 struct ShortEdgeCheck3D
 {
@@ -82,10 +84,13 @@ struct ShortEdgeCheck3D
 		result_type dy = a.y() - b.y();
 		result_type dz = a.z() - b.z();
 
-		return squaredAlpha * 4 - (dx*dx + dy*dy + dz*dz);
+        result_type ret = squaredAlpha * 4 - (dx*dx + dy*dy + dz*dz);
+		return ret;
 	}
 };
 
+///A structure for calculating the certificate functions for short faces in 3D.
+///
 template <class KK>
 struct ShortTriangleCheck3D
 {
@@ -119,7 +124,8 @@ struct ShortTriangleCheck3D
 		result_type distanceBC = cxbx*cxbx + cyby*cyby + czbz*czbz;
 		result_type distanceAC = axcx*axcx + aycy*aycy + azcz*azcz;
 
-		/* The face of the triangle in 3D is 
+		/* 
+           The face of the triangle in 3D is 
 		   sqrt ((M^{a,b,c}_[0,1,2])^2 + (M^{a,b,c}_[0,2,3])^2 + (M^{a,b,c}_[0,1,3])^2) / 2
 		
 								|1 ax ay|
@@ -149,6 +155,8 @@ struct ShortTriangleCheck3D
 	}
 };
 
+///A structure for calculating the certificate functions for short cells in 3D.
+///
 template <class KK>
 struct ShortTetrahedronCheck3D
 {

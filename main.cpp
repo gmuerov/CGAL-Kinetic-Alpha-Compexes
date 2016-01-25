@@ -42,7 +42,6 @@ int main()
 	Traits tr(0, nrOfCorners*10);
 
     typedef KineticAlphaComplexTriangulation3<Traits> AC;
-    AC beef(tr, Traits::Simulator::NT(2.0));
 
 	KineticAlphaComplexTriangulation3<Traits>::Cell_handle ddd;
     std::vector<StaticPoint> initialPoints;
@@ -53,8 +52,7 @@ int main()
 
 	//reading
 	std::ifstream input( "Points.txt" );
-
-
+    AC beef(tr, Traits::Simulator::NT(2.0));
 
 	int allPoints = 0;
 	for( std::string line; getline( input, line ); )
@@ -77,13 +75,14 @@ int main()
     
     Simulator::NT angle = Simulator::NT(2) * M_PI/Simulator::NT(nrOfCorners);
 
-    StaticPoint center = initialPoints[startOfRotation-1];
-	
-	boost::chrono::high_resolution_clock::time_point initialisationTimeStart = boost::chrono::high_resolution_clock::now();
+    StaticPoint center(0, 0, 0); //initialPoints[startOfRotation-1];
+
+	boost::chrono::high_resolution_clock::time_point initialisationTimeStart = 
+        boost::chrono::high_resolution_clock::now();
 
     for(int i = 0; i < nrOfPointsMoving; i++)
     {   
-        /*rendam points selection
+        /*random points selection
 		int f = rand.get_int(0, nrOfPoints-1);
         while (std::find(VisitedIndexes.begin(), VisitedIndexes.end(), f) 
                         != VisitedIndexes.end())
@@ -117,20 +116,23 @@ int main()
 	std::cout << boost::chrono::duration_cast<boost::chrono::milliseconds>(initialisationTimeEnd-initialisationTimeStart) << "\n";
 
     beef.set_has_certificates(true);
-	std::ofstream outputFile;
-    //outputFile.open ("out.txt");
+	std::ofstream outputFile, edgeSize;
+    outputFile.open ("out.txt");
+    edgeSize.open("edgeSizes.txt");
 	while (sp->next_event_time() != sp->end_time()) 
     {
 		//boost::chrono::high_resolution_clock::time_point frameTimeStart = boost::chrono::high_resolution_clock::now();
 		printf("Frame %i",sp->current_event_number());
 		std::cout<<std::endl;
-        //beef.WriteVerticesAndEdges(outputFile);
+        beef.WriteVerticesAndEdges(outputFile);
+        beef.DisplayEdgeSize(edgeSize);
         sp->set_current_event_number(sp->current_event_number()+1);
 		/*boost::chrono::high_resolution_clock::time_point frameTimeEnd = boost::chrono::high_resolution_clock::now();
 		std::cout << boost::chrono::duration_cast<boost::chrono::milliseconds>(frameTimeEnd-frameTimeStart) << "\n";*/
     }
 	
-	//outputFile.close();	
+    edgeSize.close();
+	outputFile.close();	
 	printf("Nr Of Edge Flips: %d\n",beef.getNrOfEdgeFlips());
 	printf("Nr Of Facet Flips: %d\n",beef.getNrOfFacetFlips());
 	printf("Nr Of Short Edge: %d\n",beef.getNrOfShortEdge());
