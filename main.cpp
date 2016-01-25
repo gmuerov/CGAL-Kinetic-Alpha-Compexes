@@ -31,8 +31,15 @@ typedef Traits::Active_points_3_table::Key Point_key;
 
 int main()
 {
+
+	
+	int nrOfPoints = 100;
+	int startOfRotation = 50;
+	int nrOfPointsMoving = 2;
+	int nrOfCorners = 8;
+
 	boost::chrono::high_resolution_clock::time_point runTimeStart = boost::chrono::high_resolution_clock::now();
-	Traits tr(0, 50);
+	Traits tr(0, nrOfCorners*10);
 
     typedef KineticAlphaComplexTriangulation3<Traits> AC;
     AC beef(tr, Traits::Simulator::NT(2.0));
@@ -47,10 +54,6 @@ int main()
 	//reading
 	std::ifstream input( "Points.txt" );
 
-	int nrOfPoints = 100;
-	int startOfRotation = 50;
-	int nrOfPointsMoving = 25;
-	int nrOfCorners = 12;
 
 
 	int allPoints = 0;
