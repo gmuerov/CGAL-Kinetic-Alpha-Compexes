@@ -609,19 +609,20 @@ protected:
 
     void certifyCell(Cell_handle c)
     {
-        if(_has_certificates)
+        if(has_certificates_)
            makeShortCertificate(c);
 
         bool cellShort = CheckShortCell(c);
 
-        if(!cellShort && edgeCirc->is_valid())
-            hiddenCellList.insert(Cell_handle(c));
+        if(!cellShort && c->is_valid())
+            hiddenCellList.insert(c);
 
         //Setup facets
         for(int i = 0; i < 4; i++)
         {
             Facet f(c,i);
-            if(_has_certificates)
+
+            if(has_certificates_)
                 makeShortCertificate(f);
 
             if (!cellShort && !CheckShortFacet(f) &&
@@ -635,13 +636,13 @@ protected:
             {
                 StoredEdge e(c->vertex(i)->point(), c->vertex(j)->point());
 
-                if(_has_certificates)
+                if(has_certificates_)
                     makeShortCertificate(e);
 
-                if(!cellShort && !CheckShortFacet(e) &&
-                    hiddenFaceList.find(StoredEdge(e.second, e.first)) == 
-                    hiddenFaceList.end())
-                    hiddenFaceList.insert(e);
+                if(!cellShort && !CheckShortEdge(e) &&
+                    hiddenEdgeList.find(StoredEdge(e.second, e.first)) == 
+                    hiddenEdgeList.end())
+                    hiddenEdgeList.insert(e);
             }
     }
 
