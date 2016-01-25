@@ -1,0 +1,3563 @@
+Frame
+(23)(18)
+Hidden
+The length of this edge is: 26.3749
+
+(23)(15)
+Hidden
+The length of this edge is: 17.5209
+
+(23)(14)
+Hidden
+The length of this edge is: 16.1185
+
+(18)(15)
+Visible
+The length of this edge is: 7.72402
+
+(18)(14)
+Hidden
+The length of this edge is: 16.3397
+
+(15)(14)
+Visible
+The length of this edge is: 2.30828
+
+(9)(2)
+Visible
+The length of this edge is: 5.02856
+
+(9)(8)
+Visible
+The length of this edge is: 7.96509
+
+(9)(10)
+Visible
+The length of this edge is: 2.11443
+
+(2)(8)
+Hidden
+The length of this edge is: 16.5909
+
+(2)(10)
+Visible
+The length of this edge is: 7.59224
+
+(8)(10)
+Visible
+The length of this edge is: 10.8699
+
+(4)(5)
+Visible
+The length of this edge is: 2.30328
+
+(4)(7)
+Visible
+The length of this edge is: 8.95289
+
+(4)(6)
+Visible
+The length of this edge is: 6.49007
+
+(5)(7)
+Visible
+The length of this edge is: 5.69535
+
+(5)(6)
+Visible
+The length of this edge is: 2.29527
+
+(7)(6)
+Visible
+The length of this edge is: 1.55963
+
+(0)(1)
+Visible
+The length of this edge is: 2.32748
+
+(0)(9)
+Visible
+The length of this edge is: 5.85823
+
+(0)(3)
+Visible
+The length of this edge is: 2.13167
+
+(1)(9)
+Visible
+The length of this edge is: 1.76807
+
+(1)(3)
+Visible
+The length of this edge is: 6.10076
+
+(9)(3)
+Visible
+The length of this edge is: 7.40031
+
+(0)(6)
+Visible
+The length of this edge is: 10.9774
+
+(0)(4)
+Visible
+The length of this edge is: 2.32931
+
+(6)(3)
+Visible
+The length of this edge is: 13.7895
+
+(4)(3)
+Visible
+The length of this edge is: 5.99441
+
+(9)(11)
+Visible
+The length of this edge is: 5.99139
+
+(9)(12)
+Visible
+The length of this edge is: 7.99593
+
+(11)(10)
+Visible
+The length of this edge is: 2.30618
+
+(11)(12)
+Visible
+The length of this edge is: 1.51959
+
+(10)(12)
+Visible
+The length of this edge is: 5.88946
+
+(1)(2)
+Visible
+The length of this edge is: 1.51599
+
+(1)(4)
+Visible
+The length of this edge is: 6.26566
+
+(2)(0)
+Visible
+The length of this edge is: 5.83737
+
+(2)(4)
+Visible
+The length of this edge is: 10.2482
+
+(42)(43)
+Visible
+The length of this edge is: 1.77133
+
+(42)(41)
+Visible
+The length of this edge is: 1.74769
+
+(43)(41)
+Visible
+The length of this edge is: 5.27761
+
+(44)(45)
+Hidden
+The length of this edge is: 61.8003
+
+(44)(39)
+Visible
+The length of this edge is: 11.7235
+
+(44)(31)
+Visible
+The length of this edge is: 55.607
+Edge too long
+
+(45)(39)
+Hidden
+The length of this edge is: 22.2167
+
+(45)(31)
+Visible
+The length of this edge is: 11.9779
+
+(39)(31)
+Hidden
+The length of this edge is: 25.0638
+
+(13)(8)
+Visible
+The length of this edge is: 9.97396
+
+(13)(10)
+Visible
+The length of this edge is: 2.35239
+
+(13)(9)
+Visible
+The length of this edge is: 6.00525
+
+(7)(3)
+Visible
+The length of this edge is: 15.6151
+
+(0)(5)
+Visible
+The length of this edge is: 6.56419
+
+(1)(5)
+Visible
+The length of this edge is: 7.32118
+
+(2)(5)
+Visible
+The length of this edge is: 10.4345
+
+(11)(14)
+Visible
+The length of this edge is: 8.92064
+
+(11)(13)
+Visible
+The length of this edge is: 6.23735
+
+(12)(14)
+Visible
+The length of this edge is: 14.7742
+
+(12)(13)
+Visible
+The length of this edge is: 10.3539
+
+(14)(13)
+Visible
+The length of this edge is: 2.33085
+
+(16)(14)
+Visible
+The length of this edge is: 6.25465
+
+(16)(18)
+Visible
+The length of this edge is: 5.28335
+
+(16)(17)
+Visible
+The length of this edge is: 1.77023
+
+(14)(17)
+Visible
+The length of this edge is: 13.1731
+
+(18)(17)
+Visible
+The length of this edge is: 1.78354
+
+(7)(9)
+Hidden
+The length of this edge is: 16.0825
+
+(7)(13)
+Hidden
+The length of this edge is: 24.6981
+
+(13)(3)
+Hidden
+The length of this edge is: 23.8112
+
+(18)(2)
+Hidden
+The length of this edge is: 53.9819
+
+(2)(16)
+Hidden
+The length of this edge is: 36.6313
+
+(2)(17)
+Hidden
+The length of this edge is: 50.1697
+
+(37)(25)
+Hidden
+The length of this edge is: 26.2131
+
+(37)(27)
+Hidden
+The length of this edge is: 31.2625
+
+(37)(26)
+Hidden
+The length of this edge is: 20.5267
+
+(25)(27)
+Visible
+The length of this edge is: 1.58666
+
+(25)(26)
+Visible
+The length of this edge is: 1.54321
+
+(27)(26)
+Visible
+The length of this edge is: 4.94245
+
+(12)(3)
+Hidden
+The length of this edge is: 18.5368
+
+(46)(36)
+Visible
+The length of this edge is: 6.31588
+
+(46)(45)
+Visible
+The length of this edge is: 2.20412
+
+(46)(31)
+Hidden
+The length of this edge is: 19.6423
+
+(36)(45)
+Visible
+The length of this edge is: 1.79707
+
+(36)(31)
+Visible
+The length of this edge is: 9.93039
+
+(20)(22)
+Visible
+The length of this edge is: 6.0306
+
+(20)(23)
+Visible
+The length of this edge is: 8.76467
+
+(20)(14)
+Visible
+The length of this edge is: 9.81257
+
+(22)(23)
+Visible
+The length of this edge is: 1.56934
+
+(22)(14)
+Hidden
+The length of this edge is: 16.975
+
+(7)(19)
+Hidden
+The length of this edge is: 69.5209
+
+(5)(19)
+Hidden
+The length of this edge is: 66.0215
+
+(16)(5)
+Hidden
+The length of this edge is: 41.6222
+
+(16)(19)
+Visible
+The length of this edge is: 5.36514
+
+(5)(17)
+Hidden
+The length of this edge is: 57.1372
+
+(19)(17)
+Visible
+The length of this edge is: 1.77057
+
+(14)(10)
+Visible
+The length of this edge is: 6.49089
+
+(1)(8)
+Visible
+The length of this edge is: 11.5016
+
+(5)(8)
+Visible
+The length of this edge is: 5.63431
+
+(9)(6)
+Visible
+The length of this edge is: 9.67014
+
+(7)(8)
+Visible
+The length of this edge is: 4.82014
+
+(6)(8)
+Visible
+The length of this edge is: 1.56287
+
+(9)(5)
+Visible
+The length of this edge is: 9.92964
+
+(34)(28)
+Visible
+The length of this edge is: 7.73048
+
+(34)(44)
+Hidden
+The length of this edge is: 35.8258
+
+(34)(32)
+Visible
+The length of this edge is: 13.3843
+
+(28)(44)
+Hidden
+The length of this edge is: 49.0078
+
+(28)(32)
+Visible
+The length of this edge is: 6.1109
+
+(44)(32)
+Hidden
+The length of this edge is: 63.5089
+
+(7)(33)
+Hidden
+The length of this edge is: 83.6568
+
+(8)(33)
+Hidden
+The length of this edge is: 60.4762
+
+(33)(13)
+Hidden
+The length of this edge is: 23.0915
+
+(43)(25)
+Hidden
+The length of this edge is: 35.4942
+
+(43)(2)
+Hidden
+The length of this edge is: 75.5288
+
+(43)(12)
+Hidden
+The length of this edge is: 43.6446
+
+(25)(2)
+Hidden
+The length of this edge is: 40.2489
+
+(25)(12)
+Hidden
+The length of this edge is: 23.727
+
+(2)(12)
+Visible
+The length of this edge is: 14.2789
+
+(43)(44)
+Visible
+The length of this edge is: 5.12032
+
+(44)(42)
+Visible
+The length of this edge is: 1.78461
+
+(11)(2)
+Visible
+The length of this edge is: 10.542
+
+(1)(11)
+Visible
+The length of this edge is: 9.83119
+
+(33)(14)
+Hidden
+The length of this edge is: 18.3975
+
+(8)(14)
+Hidden
+The length of this edge is: 18.9726
+
+(1)(12)
+Visible
+The length of this edge is: 11.9348
+
+(0)(12)
+Hidden
+The length of this edge is: 19.7403
+
+(20)(24)
+Visible
+The length of this edge is: 5.72385
+
+(20)(15)
+Visible
+The length of this edge is: 10.7606
+
+(24)(15)
+Hidden
+The length of this edge is: 25.1879
+
+(24)(23)
+Visible
+The length of this edge is: 8.2852
+
+(45)(35)
+Visible
+The length of this edge is: 6.22116
+
+(35)(39)
+Visible
+The length of this edge is: 6.76759
+
+(35)(31)
+Visible
+The length of this edge is: 8.03554
+
+(24)(2)
+Hidden
+The length of this edge is: 27.8674
+
+(15)(2)
+Hidden
+The length of this edge is: 25.9546
+
+(2)(20)
+Visible
+The length of this edge is: 14.5128
+
+(23)(25)
+Visible
+The length of this edge is: 13.5032
+
+(23)(37)
+Hidden
+The length of this edge is: 22.995
+
+(23)(26)
+Visible
+The length of this edge is: 12.9935
+
+(10)(20)
+Visible
+The length of this edge is: 5.79909
+
+(20)(11)
+Visible
+The length of this edge is: 1.76105
+
+(10)(15)
+Visible
+The length of this edge is: 8.894
+
+(16)(15)
+Visible
+The length of this edge is: 2.14086
+
+(23)(34)
+Visible
+The length of this edge is: 14.5069
+
+(23)(28)
+Visible
+The length of this edge is: 5.15139
+
+(34)(22)
+Visible
+The length of this edge is: 11.8076
+
+(28)(22)
+Visible
+The length of this edge is: 1.79881
+
+(15)(8)
+Hidden
+The length of this edge is: 20.5241
+
+(15)(13)
+Visible
+The length of this edge is: 6.28055
+
+(16)(8)
+Hidden
+The length of this edge is: 21.5078
+
+(16)(13)
+Visible
+The length of this edge is: 11.3798
+
+(11)(22)
+Visible
+The length of this edge is: 10.5329
+
+(19)(2)
+Hidden
+The length of this edge is: 65.1543
+
+(31)(30)
+Visible
+The length of this edge is: 1.62832
+
+(31)(34)
+Visible
+The length of this edge is: 5.18102
+
+(39)(30)
+Hidden
+The length of this edge is: 19.4404
+
+(39)(34)
+Visible
+The length of this edge is: 10.2392
+
+(30)(34)
+Visible
+The length of this edge is: 1.80626
+
+(21)(20)
+Visible
+The length of this edge is: 2.14431
+
+(21)(2)
+Hidden
+The length of this edge is: 24.0849
+
+(21)(12)
+Visible
+The length of this edge is: 7.24277
+
+(20)(12)
+Visible
+The length of this edge is: 4.97057
+
+(23)(21)
+Visible
+The length of this edge is: 5.56115
+
+(22)(21)
+Visible
+The length of this edge is: 2.31495
+
+(12)(22)
+Visible
+The length of this edge is: 11.6025
+
+(26)(43)
+Hidden
+The length of this edge is: 27.2617
+
+(26)(12)
+Hidden
+The length of this edge is: 22.9027
+
+(24)(21)
+Visible
+The length of this edge is: 2.36216
+
+(24)(26)
+Visible
+The length of this edge is: 5.38275
+
+(24)(22)
+Visible
+The length of this edge is: 6.48826
+
+(21)(26)
+Visible
+The length of this edge is: 6.95811
+
+(26)(22)
+Visible
+The length of this edge is: 8.55805
+
+(18)(19)
+Visible
+The length of this edge is: 5.32381
+
+(33)(18)
+Hidden
+The length of this edge is: 53.6898
+
+(33)(23)
+Hidden
+The length of this edge is: 18.7588
+
+(37)(24)
+Hidden
+The length of this edge is: 33.336
+
+(24)(25)
+Visible
+The length of this edge is: 2.26092
+
+(29)(32)
+Visible
+The length of this edge is: 2.35362
+
+(29)(28)
+Visible
+The length of this edge is: 2.19025
+
+(29)(30)
+Visible
+The length of this edge is: 2.33905
+
+(32)(30)
+Visible
+The length of this edge is: 6.40592
+
+(28)(30)
+Visible
+The length of this edge is: 6.32981
+
+(0)(43)
+Hidden
+The length of this edge is: 82.2972
+
+(8)(19)
+Hidden
+The length of this edge is: 40.1095
+
+(19)(6)
+Hidden
+The length of this edge is: 56.2858
+
+(33)(44)
+Visible
+The length of this edge is: 87.9962
+Edge too long
+
+(33)(3)
+Hidden
+The length of this edge is: 64.6365
+
+(44)(3)
+Hidden
+The length of this edge is: 114.899
+
+(19)(14)
+Hidden
+The length of this edge is: 22.2184
+
+(40)(26)
+Visible
+The length of this edge is: 13.3564
+
+(40)(27)
+Hidden
+The length of this edge is: 21.5712
+
+(40)(41)
+Visible
+The length of this edge is: 2.09092
+
+(26)(41)
+Visible
+The length of this edge is: 14.0436
+
+(27)(41)
+Visible
+The length of this edge is: 22.9093
+Edge too long
+
+(31)(37)
+Visible
+The length of this edge is: 14.679
+
+(31)(23)
+Hidden
+The length of this edge is: 22.1699
+
+(37)(30)
+Visible
+The length of this edge is: 12.7195
+
+(30)(23)
+Visible
+The length of this edge is: 13.3541
+
+(24)(12)
+Hidden
+The length of this edge is: 16.1785
+
+(21)(25)
+Visible
+The length of this edge is: 6.30036
+
+(48)(37)
+Visible
+The length of this edge is: 12.8427
+
+(48)(46)
+Visible
+The length of this edge is: 5.75233
+
+(48)(23)
+Hidden
+The length of this edge is: 61.0717
+
+(37)(46)
+Visible
+The length of this edge is: 8.29402
+
+(46)(23)
+Hidden
+The length of this edge is: 51.1871
+
+(47)(38)
+Hidden
+The length of this edge is: 25.6317
+
+(47)(40)
+Hidden
+The length of this edge is: 55.1713
+
+(47)(39)
+Hidden
+The length of this edge is: 41.3945
+
+(38)(40)
+Visible
+The length of this edge is: 6.61439
+
+(38)(39)
+Visible
+The length of this edge is: 2.27363
+
+(40)(39)
+Visible
+The length of this edge is: 2.30041
+
+(40)(42)
+Visible
+The length of this edge is: 6.45764
+
+(40)(44)
+Visible
+The length of this edge is: 9.35416
+
+(44)(41)
+Visible
+The length of this edge is: 5.50314
+
+(24)(18)
+Hidden
+The length of this edge is: 38.5486
+
+(37)(47)
+Visible
+The length of this edge is: 8.78839
+
+(37)(38)
+Visible
+The length of this edge is: 8.85478
+
+(27)(47)
+Hidden
+The length of this edge is: 66.869
+
+(27)(38)
+Hidden
+The length of this edge is: 23.3628
+
+(39)(28)
+Hidden
+The length of this edge is: 26.622
+
+(39)(41)
+Visible
+The length of this edge is: 6.16523
+
+(39)(42)
+Visible
+The length of this edge is: 10.6016
+
+(28)(41)
+Hidden
+The length of this edge is: 33.68
+
+(28)(42)
+Hidden
+The length of this edge is: 40.121
+
+(34)(26)
+Visible
+The length of this edge is: 10.8177
+
+(26)(28)
+Visible
+The length of this edge is: 10.8043
+
+(28)(12)
+Visible
+The length of this edge is: 12.771
+
+(28)(43)
+Hidden
+The length of this edge is: 43.3942
+
+(43)(3)
+Hidden
+The length of this edge is: 77.6989
+
+(4)(43)
+Hidden
+The length of this edge is: 111.931
+
+(4)(27)
+Visible
+The length of this edge is: 98.9645
+Edge too long
+
+(2)(27)
+Hidden
+The length of this edge is: 46.6986
+
+(43)(27)
+Visible
+The length of this edge is: 39.394
+Edge too long
+
+(29)(31)
+Visible
+The length of this edge is: 5.96634
+
+(31)(32)
+Visible
+The length of this edge is: 8.4482
+
+(23)(29)
+Visible
+The length of this edge is: 7.66859
+
+(29)(34)
+Visible
+The length of this edge is: 6.11221
+
+(12)(33)
+Hidden
+The length of this edge is: 22.5273
+
+(11)(33)
+Hidden
+The length of this edge is: 24.7873
+
+(33)(22)
+Hidden
+The length of this edge is: 16.4193
+
+(18)(27)
+Visible
+The length of this edge is: 67.0566
+Edge too long
+
+(27)(24)
+Visible
+The length of this edge is: 5.71906
+
+(34)(35)
+Visible
+The length of this edge is: 2.16068
+
+(27)(23)
+Hidden
+The length of this edge is: 22.7608
+
+(38)(26)
+Visible
+The length of this edge is: 11.6476
+
+(26)(39)
+Visible
+The length of this edge is: 13.5285
+
+(32)(49)
+Visible
+The length of this edge is: 64.3251
+Edge too long
+
+(49)(31)
+Visible
+The length of this edge is: 26.6386
+Edge too long
+
+(21)(28)
+Visible
+The length of this edge is: 6.26718
+
+(11)(28)
+Visible
+The length of this edge is: 14.6247
+
+(33)(31)
+Hidden
+The length of this edge is: 21.3385
+
+(18)(31)
+Hidden
+The length of this edge is: 86.2005
+
+(47)(48)
+Visible
+The length of this edge is: 1.53111
+
+(48)(40)
+Hidden
+The length of this edge is: 70.4809
+
+(45)(38)
+Visible
+The length of this edge is: 12.3864
+
+(38)(35)
+Visible
+The length of this edge is: 2.41867
+
+(37)(34)
+Visible
+The length of this edge is: 8.47571
+
+(33)(32)
+Visible
+The length of this edge is: 3.38292
+
+(33)(43)
+Hidden
+The length of this edge is: 81.7128
+
+(12)(32)
+Hidden
+The length of this edge is: 25.9352
+
+(32)(43)
+Hidden
+The length of this edge is: 63.4054
+
+(16)(33)
+Hidden
+The length of this edge is: 41.9818
+
+(17)(33)
+Hidden
+The length of this edge is: 52.8067
+
+(19)(33)
+Hidden
+The length of this edge is: 67.9642
+
+(33)(29)
+Visible
+The length of this edge is: 8.26159
+
+(33)(49)
+Visible
+The length of this edge is: 91.7292
+Edge too long
+
+(38)(34)
+Visible
+The length of this edge is: 6.11012
+
+(37)(35)
+Visible
+The length of this edge is: 5.59592
+
+(34)(42)
+Hidden
+The length of this edge is: 31.8338
+
+(37)(36)
+Visible
+The length of this edge is: 1.52418
+
+(37)(45)
+Visible
+The length of this edge is: 5.10996
+
+(18)(48)
+Hidden
+The length of this edge is: 119.273
+
+(48)(31)
+Hidden
+The length of this edge is: 40.7729
+
+(44)(30)
+Hidden
+The length of this edge is: 47.382
+
+(33)(28)
+Visible
+The length of this edge is: 11.0182
+
+(34)(36)
+Visible
+The length of this edge is: 6.20883
+
+(36)(35)
+Visible
+The length of this edge is: 2.35187
+
+(30)(36)
+Visible
+The length of this edge is: 9.80031
+
+(18)(37)
+Hidden
+The length of this edge is: 81.3709
+
+(45)(47)
+Visible
+The length of this edge is: 6.10965
+
+(42)(32)
+Hidden
+The length of this edge is: 58.6826
+
+(36)(38)
+Visible
+The length of this edge is: 6.40303
+
+(27)(48)
+Visible
+The length of this edge is: 73.6472
+Edge too long
+
+(47)(36)
+Visible
+The length of this edge is: 9.37544
+
+(25)(41)
+Hidden
+The length of this edge is: 21.026
+
+(18)(46)
+Hidden
+The length of this edge is: 121.687
+
+(47)(44)
+Visible
+The length of this edge is: 94.788
+Edge too long
+
+(19)(48)
+Hidden
+The length of this edge is: 169.104
+
+(19)(49)
+Hidden
+The length of this edge is: 203.147
+
+(48)(49)
+Visible
+The length of this edge is: 10.7437
+
+(47)(49)
+Visible
+The length of this edge is: 6.54897
+
+(47)(46)
+Visible
+The length of this edge is: 2.32839
+
+(49)(44)
+Visible
+The length of this edge is: 100.052
+Edge too long
+
+(18)(49)
+Hidden
+The length of this edge is: 152.447
+
+(49)(46)
+Visible
+The length of this edge is: 2.40242
+
+(45)(49)
+Visible
+The length of this edge is: 6.34648
+
+(49)(39)
+Hidden
+The length of this edge is: 49.771
+
+(40)(49)
+Hidden
+The length of this edge is: 69.6431
+
+Frame
+(23)(18)
+Hidden
+The length of this edge is: 26.3749
+
+(23)(15)
+Hidden
+The length of this edge is: 17.5209
+
+(23)(14)
+Hidden
+The length of this edge is: 16.1185
+
+(18)(15)
+Visible
+The length of this edge is: 7.72402
+
+(18)(14)
+Hidden
+The length of this edge is: 16.3397
+
+(15)(14)
+Visible
+The length of this edge is: 2.30828
+
+(9)(2)
+Visible
+The length of this edge is: 5.12558
+
+(9)(8)
+Visible
+The length of this edge is: 7.96509
+
+(9)(10)
+Visible
+The length of this edge is: 2.11443
+
+(2)(8)
+Hidden
+The length of this edge is: 16.791
+
+(2)(10)
+Visible
+The length of this edge is: 7.71483
+
+(8)(10)
+Visible
+The length of this edge is: 10.8699
+
+(4)(5)
+Visible
+The length of this edge is: 2.30328
+
+(4)(7)
+Visible
+The length of this edge is: 8.95289
+
+(4)(6)
+Visible
+The length of this edge is: 6.49007
+
+(5)(7)
+Visible
+The length of this edge is: 5.69535
+
+(5)(6)
+Visible
+The length of this edge is: 2.29527
+
+(7)(6)
+Visible
+The length of this edge is: 1.55963
+
+(0)(1)
+Visible
+The length of this edge is: 2.32661
+
+(0)(9)
+Visible
+The length of this edge is: 5.94497
+
+(0)(3)
+Visible
+The length of this edge is: 2.15941
+
+(1)(9)
+Visible
+The length of this edge is: 1.8312
+
+(1)(3)
+Visible
+The length of this edge is: 6.10432
+
+(9)(3)
+Visible
+The length of this edge is: 7.40031
+
+(0)(6)
+Visible
+The length of this edge is: 11.1374
+
+(0)(4)
+Visible
+The length of this edge is: 2.35615
+
+(6)(3)
+Visible
+The length of this edge is: 13.7895
+
+(4)(3)
+Visible
+The length of this edge is: 5.99441
+
+(9)(11)
+Visible
+The length of this edge is: 5.99139
+
+(9)(12)
+Visible
+The length of this edge is: 7.99593
+
+(11)(10)
+Visible
+The length of this edge is: 2.30618
+
+(11)(12)
+Visible
+The length of this edge is: 1.51959
+
+(10)(12)
+Visible
+The length of this edge is: 5.88946
+
+(1)(2)
+Visible
+The length of this edge is: 1.51556
+
+(1)(4)
+Visible
+The length of this edge is: 6.26558
+
+(2)(0)
+Visible
+The length of this edge is: 5.83651
+
+(2)(4)
+Visible
+The length of this edge is: 10.2852
+
+(42)(43)
+Visible
+The length of this edge is: 1.77133
+
+(42)(41)
+Visible
+The length of this edge is: 1.74769
+
+(43)(41)
+Visible
+The length of this edge is: 5.27761
+
+(44)(45)
+Hidden
+The length of this edge is: 61.8003
+
+(44)(39)
+Visible
+The length of this edge is: 11.7235
+
+(44)(31)
+Visible
+The length of this edge is: 55.607
+Edge too long
+
+(45)(39)
+Hidden
+The length of this edge is: 22.2167
+
+(45)(31)
+Visible
+The length of this edge is: 11.9779
+
+(39)(31)
+Hidden
+The length of this edge is: 25.0638
+
+(13)(8)
+Visible
+The length of this edge is: 9.97396
+
+(13)(10)
+Visible
+The length of this edge is: 2.35239
+
+(13)(9)
+Visible
+The length of this edge is: 6.00525
+
+(7)(3)
+Visible
+The length of this edge is: 15.6151
+
+(0)(5)
+Visible
+The length of this edge is: 6.64707
+
+(1)(5)
+Visible
+The length of this edge is: 7.37615
+
+(2)(5)
+Visible
+The length of this edge is: 10.5259
+
+(11)(14)
+Visible
+The length of this edge is: 8.92064
+
+(11)(13)
+Visible
+The length of this edge is: 6.23735
+
+(12)(14)
+Visible
+The length of this edge is: 14.7742
+
+(12)(13)
+Visible
+The length of this edge is: 10.3539
+
+(14)(13)
+Visible
+The length of this edge is: 2.33085
+
+(16)(14)
+Visible
+The length of this edge is: 6.25465
+
+(16)(18)
+Visible
+The length of this edge is: 5.28335
+
+(16)(17)
+Visible
+The length of this edge is: 1.77023
+
+(14)(17)
+Visible
+The length of this edge is: 13.1731
+
+(18)(17)
+Visible
+The length of this edge is: 1.78354
+
+(7)(9)
+Hidden
+The length of this edge is: 16.0825
+
+(7)(13)
+Hidden
+The length of this edge is: 24.6981
+
+(13)(3)
+Hidden
+The length of this edge is: 23.8112
+
+(18)(2)
+Hidden
+The length of this edge is: 54.25
+
+(2)(16)
+Hidden
+The length of this edge is: 36.909
+
+(2)(17)
+Hidden
+The length of this edge is: 50.4701
+
+(37)(25)
+Hidden
+The length of this edge is: 26.2131
+
+(37)(27)
+Hidden
+The length of this edge is: 31.2625
+
+(37)(26)
+Hidden
+The length of this edge is: 20.5267
+
+(25)(27)
+Visible
+The length of this edge is: 1.58666
+
+(25)(26)
+Visible
+The length of this edge is: 1.54321
+
+(27)(26)
+Visible
+The length of this edge is: 4.94245
+
+(12)(3)
+Hidden
+The length of this edge is: 18.5368
+
+(46)(36)
+Visible
+The length of this edge is: 6.31588
+
+(46)(45)
+Visible
+The length of this edge is: 2.20412
+
+(46)(31)
+Hidden
+The length of this edge is: 19.6423
+
+(36)(45)
+Visible
+The length of this edge is: 1.79707
+
+(36)(31)
+Visible
+The length of this edge is: 9.93039
+
+(20)(22)
+Visible
+The length of this edge is: 6.0306
+
+(20)(23)
+Visible
+The length of this edge is: 8.76467
+
+(20)(14)
+Visible
+The length of this edge is: 9.81257
+
+(22)(23)
+Visible
+The length of this edge is: 1.56934
+
+(22)(14)
+Hidden
+The length of this edge is: 16.975
+
+(7)(19)
+Hidden
+The length of this edge is: 69.5209
+
+(5)(19)
+Hidden
+The length of this edge is: 66.0215
+
+(16)(5)
+Hidden
+The length of this edge is: 41.6222
+
+(16)(19)
+Visible
+The length of this edge is: 5.36514
+
+(5)(17)
+Hidden
+The length of this edge is: 57.1372
+
+(19)(17)
+Visible
+The length of this edge is: 1.77057
+
+(14)(10)
+Visible
+The length of this edge is: 6.49089
+
+(1)(8)
+Visible
+The length of this edge is: 11.6677
+
+(5)(8)
+Visible
+The length of this edge is: 5.63431
+
+(9)(6)
+Visible
+The length of this edge is: 9.67014
+
+(7)(8)
+Visible
+The length of this edge is: 4.82014
+
+(6)(8)
+Visible
+The length of this edge is: 1.56287
+
+(9)(5)
+Visible
+The length of this edge is: 9.92964
+
+(34)(28)
+Visible
+The length of this edge is: 7.73048
+
+(34)(44)
+Hidden
+The length of this edge is: 35.8258
+
+(34)(32)
+Visible
+The length of this edge is: 13.3843
+
+(28)(44)
+Hidden
+The length of this edge is: 49.0078
+
+(28)(32)
+Visible
+The length of this edge is: 6.1109
+
+(44)(32)
+Hidden
+The length of this edge is: 63.5089
+
+(7)(33)
+Hidden
+The length of this edge is: 83.6568
+
+(8)(33)
+Hidden
+The length of this edge is: 60.4762
+
+(33)(13)
+Hidden
+The length of this edge is: 23.0915
+
+(43)(25)
+Hidden
+The length of this edge is: 35.4942
+
+(43)(2)
+Visible
+The length of this edge is: 75.321
+Edge too long
+
+(43)(12)
+Hidden
+The length of this edge is: 43.6446
+
+(25)(2)
+Hidden
+The length of this edge is: 40.1858
+
+(25)(12)
+Hidden
+The length of this edge is: 23.727
+
+(2)(12)
+Visible
+The length of this edge is: 14.3427
+
+(43)(44)
+Visible
+The length of this edge is: 5.12032
+
+(44)(42)
+Visible
+The length of this edge is: 1.78461
+
+(11)(2)
+Visible
+The length of this edge is: 10.6256
+
+(1)(11)
+Visible
+The length of this edge is: 9.88256
+
+(33)(14)
+Hidden
+The length of this edge is: 18.3975
+
+(8)(14)
+Hidden
+The length of this edge is: 18.9726
+
+(1)(12)
+Visible
+The length of this edge is: 11.9665
+
+(0)(12)
+Hidden
+The length of this edge is: 19.7914
+
+(20)(24)
+Visible
+The length of this edge is: 5.72385
+
+(20)(15)
+Visible
+The length of this edge is: 10.7606
+
+(24)(15)
+Hidden
+The length of this edge is: 25.1879
+
+(24)(23)
+Visible
+The length of this edge is: 8.2852
+
+(45)(35)
+Visible
+The length of this edge is: 6.22116
+
+(35)(39)
+Visible
+The length of this edge is: 6.76759
+
+(35)(31)
+Visible
+The length of this edge is: 8.03554
+
+(24)(2)
+Hidden
+The length of this edge is: 27.8603
+
+(15)(2)
+Hidden
+The length of this edge is: 26.173
+
+(2)(20)
+Visible
+The length of this edge is: 14.5851
+
+(23)(25)
+Visible
+The length of this edge is: 13.5032
+
+(23)(37)
+Hidden
+The length of this edge is: 22.995
+
+(23)(26)
+Visible
+The length of this edge is: 12.9935
+
+(10)(20)
+Visible
+The length of this edge is: 5.79909
+
+(20)(11)
+Visible
+The length of this edge is: 1.76105
+
+(10)(15)
+Visible
+The length of this edge is: 8.894
+
+(16)(15)
+Visible
+The length of this edge is: 2.14086
+
+(23)(34)
+Visible
+The length of this edge is: 14.5069
+
+(23)(28)
+Visible
+The length of this edge is: 5.15139
+
+(34)(22)
+Visible
+The length of this edge is: 11.8076
+
+(28)(22)
+Visible
+The length of this edge is: 1.79881
+
+(15)(8)
+Hidden
+The length of this edge is: 20.5241
+
+(15)(13)
+Visible
+The length of this edge is: 6.28055
+
+(16)(8)
+Hidden
+The length of this edge is: 21.5078
+
+(16)(13)
+Visible
+The length of this edge is: 11.3798
+
+(11)(22)
+Visible
+The length of this edge is: 10.5329
+
+(19)(2)
+Hidden
+The length of this edge is: 65.5088
+
+(31)(30)
+Visible
+The length of this edge is: 1.62832
+
+(31)(34)
+Visible
+The length of this edge is: 5.18102
+
+(39)(30)
+Hidden
+The length of this edge is: 19.4404
+
+(39)(34)
+Visible
+The length of this edge is: 10.2392
+
+(30)(34)
+Visible
+The length of this edge is: 1.80626
+
+(21)(20)
+Visible
+The length of this edge is: 2.14431
+
+(21)(2)
+Hidden
+The length of this edge is: 24.124
+
+(21)(12)
+Visible
+The length of this edge is: 7.24277
+
+(20)(12)
+Visible
+The length of this edge is: 4.97057
+
+(23)(21)
+Visible
+The length of this edge is: 5.56115
+
+(22)(21)
+Visible
+The length of this edge is: 2.31495
+
+(12)(22)
+Visible
+The length of this edge is: 11.6025
+
+(26)(43)
+Hidden
+The length of this edge is: 27.2617
+
+(26)(12)
+Hidden
+The length of this edge is: 22.9027
+
+(24)(21)
+Visible
+The length of this edge is: 2.36216
+
+(24)(26)
+Visible
+The length of this edge is: 5.38275
+
+(24)(22)
+Visible
+The length of this edge is: 6.48826
+
+(21)(26)
+Visible
+The length of this edge is: 6.95811
+
+(26)(22)
+Visible
+The length of this edge is: 8.55805
+
+(18)(19)
+Visible
+The length of this edge is: 5.32381
+
+(33)(18)
+Hidden
+The length of this edge is: 53.6898
+
+(33)(23)
+Hidden
+The length of this edge is: 18.7588
+
+(37)(24)
+Hidden
+The length of this edge is: 33.336
+
+(24)(25)
+Visible
+The length of this edge is: 2.26092
+
+(29)(32)
+Visible
+The length of this edge is: 2.35362
+
+(29)(28)
+Visible
+The length of this edge is: 2.19025
+
+(29)(30)
+Visible
+The length of this edge is: 2.33905
+
+(32)(30)
+Visible
+The length of this edge is: 6.40592
+
+(28)(30)
+Visible
+The length of this edge is: 6.32981
+
+(0)(43)
+Hidden
+The length of this edge is: 82.0671
+
+(8)(19)
+Hidden
+The length of this edge is: 40.1095
+
+(19)(6)
+Hidden
+The length of this edge is: 56.2858
+
+(33)(44)
+Visible
+The length of this edge is: 87.9962
+Edge too long
+
+(33)(3)
+Hidden
+The length of this edge is: 64.6365
+
+(44)(3)
+Hidden
+The length of this edge is: 114.899
+
+(19)(14)
+Hidden
+The length of this edge is: 22.2184
+
+(40)(26)
+Visible
+The length of this edge is: 13.3564
+
+(40)(27)
+Hidden
+The length of this edge is: 21.5712
+
+(40)(41)
+Visible
+The length of this edge is: 2.09092
+
+(26)(41)
+Visible
+The length of this edge is: 14.0436
+
+(27)(41)
+Visible
+The length of this edge is: 22.9093
+Edge too long
+
+(31)(37)
+Visible
+The length of this edge is: 14.679
+
+(31)(23)
+Hidden
+The length of this edge is: 22.1699
+
+(37)(30)
+Visible
+The length of this edge is: 12.7195
+
+(30)(23)
+Visible
+The length of this edge is: 13.3541
+
+(24)(12)
+Hidden
+The length of this edge is: 16.1785
+
+(21)(25)
+Visible
+The length of this edge is: 6.30036
+
+(48)(37)
+Visible
+The length of this edge is: 12.8427
+
+(48)(46)
+Visible
+The length of this edge is: 5.75233
+
+(48)(23)
+Hidden
+The length of this edge is: 61.0717
+
+(37)(46)
+Visible
+The length of this edge is: 8.29402
+
+(46)(23)
+Hidden
+The length of this edge is: 51.1871
+
+(47)(38)
+Hidden
+The length of this edge is: 25.6317
+
+(47)(40)
+Hidden
+The length of this edge is: 55.1713
+
+(47)(39)
+Hidden
+The length of this edge is: 41.3945
+
+(38)(40)
+Visible
+The length of this edge is: 6.61439
+
+(38)(39)
+Visible
+The length of this edge is: 2.27363
+
+(40)(39)
+Visible
+The length of this edge is: 2.30041
+
+(40)(42)
+Visible
+The length of this edge is: 6.45764
+
+(40)(44)
+Visible
+The length of this edge is: 9.35416
+
+(44)(41)
+Visible
+The length of this edge is: 5.50314
+
+(24)(18)
+Hidden
+The length of this edge is: 38.5486
+
+(37)(47)
+Visible
+The length of this edge is: 8.78839
+
+(37)(38)
+Visible
+The length of this edge is: 8.85478
+
+(27)(47)
+Hidden
+The length of this edge is: 66.869
+
+(27)(38)
+Hidden
+The length of this edge is: 23.3628
+
+(39)(28)
+Hidden
+The length of this edge is: 26.622
+
+(39)(41)
+Visible
+The length of this edge is: 6.16523
+
+(39)(42)
+Visible
+The length of this edge is: 10.6016
+
+(28)(41)
+Hidden
+The length of this edge is: 33.68
+
+(28)(42)
+Hidden
+The length of this edge is: 40.121
+
+(34)(26)
+Visible
+The length of this edge is: 10.8177
+
+(26)(28)
+Visible
+The length of this edge is: 10.8043
+
+(28)(12)
+Visible
+The length of this edge is: 12.771
+
+(28)(43)
+Hidden
+The length of this edge is: 43.3942
+
+(43)(3)
+Hidden
+The length of this edge is: 77.6989
+
+(29)(31)
+Visible
+The length of this edge is: 5.96634
+
+(31)(32)
+Visible
+The length of this edge is: 8.4482
+
+(43)(27)
+Visible
+The length of this edge is: 39.394
+Edge too long
+
+(23)(29)
+Visible
+The length of this edge is: 7.66859
+
+(29)(34)
+Visible
+The length of this edge is: 6.11221
+
+(12)(33)
+Hidden
+The length of this edge is: 22.5273
+
+(11)(33)
+Hidden
+The length of this edge is: 24.7873
+
+(33)(22)
+Hidden
+The length of this edge is: 16.4193
+
+(2)(27)
+Visible
+The length of this edge is: 46.5818
+Edge too long
+
+(18)(27)
+Visible
+The length of this edge is: 67.0566
+Edge too long
+
+(27)(24)
+Visible
+The length of this edge is: 5.71906
+
+(4)(43)
+Visible
+The length of this edge is: 111.931
+Edge too long
+
+(34)(35)
+Visible
+The length of this edge is: 2.16068
+
+(27)(23)
+Hidden
+The length of this edge is: 22.7608
+
+(38)(26)
+Visible
+The length of this edge is: 11.6476
+
+(26)(39)
+Visible
+The length of this edge is: 13.5285
+
+(32)(49)
+Visible
+The length of this edge is: 64.3251
+Edge too long
+
+(49)(31)
+Visible
+The length of this edge is: 26.6386
+Edge too long
+
+(21)(28)
+Visible
+The length of this edge is: 6.26718
+
+(11)(28)
+Visible
+The length of this edge is: 14.6247
+
+(33)(31)
+Hidden
+The length of this edge is: 21.3385
+
+(18)(31)
+Hidden
+The length of this edge is: 86.2005
+
+(47)(48)
+Visible
+The length of this edge is: 1.53111
+
+(48)(40)
+Hidden
+The length of this edge is: 70.4809
+
+(45)(38)
+Visible
+The length of this edge is: 12.3864
+
+(38)(35)
+Visible
+The length of this edge is: 2.41867
+
+(37)(34)
+Visible
+The length of this edge is: 8.47571
+
+(33)(32)
+Visible
+The length of this edge is: 3.38292
+
+(33)(43)
+Hidden
+The length of this edge is: 81.7128
+
+(12)(32)
+Hidden
+The length of this edge is: 25.9352
+
+(32)(43)
+Hidden
+The length of this edge is: 63.4054
+
+(16)(33)
+Hidden
+The length of this edge is: 41.9818
+
+(17)(33)
+Hidden
+The length of this edge is: 52.8067
+
+(19)(33)
+Hidden
+The length of this edge is: 67.9642
+
+(33)(29)
+Visible
+The length of this edge is: 8.26159
+
+(33)(49)
+Visible
+The length of this edge is: 91.7292
+Edge too long
+
+(38)(34)
+Visible
+The length of this edge is: 6.11012
+
+(37)(35)
+Visible
+The length of this edge is: 5.59592
+
+(34)(42)
+Hidden
+The length of this edge is: 31.8338
+
+(37)(36)
+Visible
+The length of this edge is: 1.52418
+
+(37)(45)
+Visible
+The length of this edge is: 5.10996
+
+(18)(48)
+Hidden
+The length of this edge is: 119.273
+
+(48)(31)
+Hidden
+The length of this edge is: 40.7729
+
+(44)(30)
+Hidden
+The length of this edge is: 47.382
+
+(33)(28)
+Visible
+The length of this edge is: 11.0182
+
+(34)(36)
+Visible
+The length of this edge is: 6.20883
+
+(36)(35)
+Visible
+The length of this edge is: 2.35187
+
+(30)(36)
+Visible
+The length of this edge is: 9.80031
+
+(18)(37)
+Hidden
+The length of this edge is: 81.3709
+
+(45)(47)
+Visible
+The length of this edge is: 6.10965
+
+(42)(32)
+Hidden
+The length of this edge is: 58.6826
+
+(36)(38)
+Visible
+The length of this edge is: 6.40303
+
+(27)(48)
+Visible
+The length of this edge is: 73.6472
+Edge too long
+
+(47)(36)
+Visible
+The length of this edge is: 9.37544
+
+(25)(41)
+Hidden
+The length of this edge is: 21.026
+
+(18)(46)
+Hidden
+The length of this edge is: 121.687
+
+(47)(44)
+Visible
+The length of this edge is: 94.788
+Edge too long
+
+(19)(48)
+Hidden
+The length of this edge is: 169.104
+
+(19)(49)
+Hidden
+The length of this edge is: 203.147
+
+(48)(49)
+Visible
+The length of this edge is: 10.7437
+
+(47)(49)
+Visible
+The length of this edge is: 6.54897
+
+(47)(46)
+Visible
+The length of this edge is: 2.32839
+
+(49)(44)
+Visible
+The length of this edge is: 100.052
+Edge too long
+
+(18)(49)
+Hidden
+The length of this edge is: 152.447
+
+(49)(46)
+Visible
+The length of this edge is: 2.40242
+
+(45)(49)
+Visible
+The length of this edge is: 6.34648
+
+(49)(39)
+Hidden
+The length of this edge is: 49.771
+
+(40)(49)
+Hidden
+The length of this edge is: 69.6431
+
+Frame
+(23)(18)
+Hidden
+The length of this edge is: 26.3749
+
+(23)(15)
+Hidden
+The length of this edge is: 17.5209
+
+(23)(14)
+Hidden
+The length of this edge is: 16.1185
+
+(18)(15)
+Visible
+The length of this edge is: 7.72402
+
+(18)(14)
+Hidden
+The length of this edge is: 16.3397
+
+(15)(14)
+Visible
+The length of this edge is: 2.30828
+
+(9)(2)
+Visible
+The length of this edge is: 5.13813
+
+(9)(8)
+Visible
+The length of this edge is: 7.96509
+
+(9)(10)
+Visible
+The length of this edge is: 2.11443
+
+(2)(8)
+Hidden
+The length of this edge is: 16.8168
+
+(2)(10)
+Visible
+The length of this edge is: 7.73067
+
+(8)(10)
+Visible
+The length of this edge is: 10.8699
+
+(4)(5)
+Visible
+The length of this edge is: 2.30328
+
+(4)(7)
+Visible
+The length of this edge is: 8.95289
+
+(4)(6)
+Visible
+The length of this edge is: 6.49007
+
+(5)(7)
+Visible
+The length of this edge is: 5.69535
+
+(5)(6)
+Visible
+The length of this edge is: 2.29527
+
+(7)(6)
+Visible
+The length of this edge is: 1.55963
+
+(0)(1)
+Visible
+The length of this edge is: 2.32649
+
+(0)(9)
+Visible
+The length of this edge is: 5.95621
+
+(0)(3)
+Visible
+The length of this edge is: 2.16308
+
+(1)(9)
+Visible
+The length of this edge is: 1.83941
+
+(1)(3)
+Visible
+The length of this edge is: 6.10488
+
+(9)(3)
+Visible
+The length of this edge is: 7.40031
+
+(0)(6)
+Visible
+The length of this edge is: 11.1581
+
+(0)(4)
+Visible
+The length of this edge is: 2.3597
+
+(6)(3)
+Visible
+The length of this edge is: 13.7895
+
+(4)(3)
+Visible
+The length of this edge is: 5.99441
+
+(9)(11)
+Visible
+The length of this edge is: 5.99139
+
+(9)(12)
+Visible
+The length of this edge is: 7.99593
+
+(11)(10)
+Visible
+The length of this edge is: 2.30618
+
+(11)(12)
+Visible
+The length of this edge is: 1.51959
+
+(10)(12)
+Visible
+The length of this edge is: 5.88946
+
+(1)(2)
+Visible
+The length of this edge is: 1.51551
+
+(1)(4)
+Visible
+The length of this edge is: 6.26568
+
+(2)(0)
+Visible
+The length of this edge is: 5.8364
+
+(2)(4)
+Visible
+The length of this edge is: 10.29
+
+(42)(43)
+Visible
+The length of this edge is: 1.77133
+
+(42)(41)
+Visible
+The length of this edge is: 1.74769
+
+(43)(41)
+Visible
+The length of this edge is: 5.27761
+
+(44)(45)
+Hidden
+The length of this edge is: 61.8003
+
+(44)(39)
+Visible
+The length of this edge is: 11.7235
+
+(44)(31)
+Visible
+The length of this edge is: 55.607
+Edge too long
+
+(45)(39)
+Hidden
+The length of this edge is: 22.2167
+
+(45)(31)
+Visible
+The length of this edge is: 11.9779
+
+(39)(31)
+Hidden
+The length of this edge is: 25.0638
+
+(13)(8)
+Visible
+The length of this edge is: 9.97396
+
+(13)(10)
+Visible
+The length of this edge is: 2.35239
+
+(13)(9)
+Visible
+The length of this edge is: 6.00525
+
+(7)(3)
+Visible
+The length of this edge is: 15.6151
+
+(0)(5)
+Visible
+The length of this edge is: 6.65781
+
+(1)(5)
+Visible
+The length of this edge is: 7.38331
+
+(2)(5)
+Visible
+The length of this edge is: 10.5377
+
+(11)(14)
+Visible
+The length of this edge is: 8.92064
+
+(11)(13)
+Visible
+The length of this edge is: 6.23735
+
+(12)(14)
+Visible
+The length of this edge is: 14.7742
+
+(12)(13)
+Visible
+The length of this edge is: 10.3539
+
+(14)(13)
+Visible
+The length of this edge is: 2.33085
+
+(16)(14)
+Visible
+The length of this edge is: 6.25465
+
+(16)(18)
+Visible
+The length of this edge is: 5.28335
+
+(16)(17)
+Visible
+The length of this edge is: 1.77023
+
+(14)(17)
+Visible
+The length of this edge is: 13.1731
+
+(18)(17)
+Visible
+The length of this edge is: 1.78354
+
+(7)(9)
+Hidden
+The length of this edge is: 16.0825
+
+(7)(13)
+Hidden
+The length of this edge is: 24.6981
+
+(13)(3)
+Hidden
+The length of this edge is: 23.8112
+
+(18)(2)
+Hidden
+The length of this edge is: 54.2845
+
+(2)(16)
+Hidden
+The length of this edge is: 36.9447
+
+(2)(17)
+Hidden
+The length of this edge is: 50.5087
+
+(37)(25)
+Hidden
+The length of this edge is: 26.2131
+
+(37)(27)
+Hidden
+The length of this edge is: 31.2625
+
+(37)(26)
+Hidden
+The length of this edge is: 20.5267
+
+(25)(27)
+Visible
+The length of this edge is: 1.58666
+
+(25)(26)
+Visible
+The length of this edge is: 1.54321
+
+(27)(26)
+Visible
+The length of this edge is: 4.94245
+
+(12)(3)
+Hidden
+The length of this edge is: 18.5368
+
+(46)(36)
+Visible
+The length of this edge is: 6.31588
+
+(46)(45)
+Visible
+The length of this edge is: 2.20412
+
+(46)(31)
+Hidden
+The length of this edge is: 19.6423
+
+(36)(45)
+Visible
+The length of this edge is: 1.79707
+
+(36)(31)
+Visible
+The length of this edge is: 9.93039
+
+(20)(22)
+Visible
+The length of this edge is: 6.0306
+
+(20)(23)
+Visible
+The length of this edge is: 8.76467
+
+(20)(14)
+Visible
+The length of this edge is: 9.81257
+
+(22)(23)
+Visible
+The length of this edge is: 1.56934
+
+(22)(14)
+Hidden
+The length of this edge is: 16.975
+
+(7)(19)
+Hidden
+The length of this edge is: 69.5209
+
+(5)(19)
+Hidden
+The length of this edge is: 66.0215
+
+(16)(5)
+Hidden
+The length of this edge is: 41.6222
+
+(16)(19)
+Visible
+The length of this edge is: 5.36514
+
+(5)(17)
+Hidden
+The length of this edge is: 57.1372
+
+(19)(17)
+Visible
+The length of this edge is: 1.77057
+
+(14)(10)
+Visible
+The length of this edge is: 6.49089
+
+(1)(8)
+Visible
+The length of this edge is: 11.6891
+
+(5)(8)
+Visible
+The length of this edge is: 5.63431
+
+(9)(6)
+Visible
+The length of this edge is: 9.67014
+
+(7)(8)
+Visible
+The length of this edge is: 4.82014
+
+(6)(8)
+Visible
+The length of this edge is: 1.56287
+
+(9)(5)
+Visible
+The length of this edge is: 9.92964
+
+(34)(28)
+Visible
+The length of this edge is: 7.73048
+
+(34)(44)
+Hidden
+The length of this edge is: 35.8258
+
+(34)(32)
+Visible
+The length of this edge is: 13.3843
+
+(28)(44)
+Hidden
+The length of this edge is: 49.0078
+
+(28)(32)
+Visible
+The length of this edge is: 6.1109
+
+(44)(32)
+Hidden
+The length of this edge is: 63.5089
+
+(7)(33)
+Hidden
+The length of this edge is: 83.6568
+
+(8)(33)
+Hidden
+The length of this edge is: 60.4762
+
+(33)(13)
+Hidden
+The length of this edge is: 23.0915
+
+(43)(25)
+Hidden
+The length of this edge is: 35.4942
+
+(43)(2)
+Visible
+The length of this edge is: 75.2945
+Edge too long
+
+(43)(12)
+Hidden
+The length of this edge is: 43.6446
+
+(25)(2)
+Hidden
+The length of this edge is: 40.1778
+
+(25)(12)
+Hidden
+The length of this edge is: 23.727
+
+(2)(12)
+Visible
+The length of this edge is: 14.351
+
+(43)(44)
+Visible
+The length of this edge is: 5.12032
+
+(44)(42)
+Visible
+The length of this edge is: 1.78461
+
+(11)(2)
+Visible
+The length of this edge is: 10.6364
+
+(1)(11)
+Visible
+The length of this edge is: 9.88925
+
+(33)(14)
+Hidden
+The length of this edge is: 18.3975
+
+(8)(14)
+Hidden
+The length of this edge is: 18.9726
+
+(1)(12)
+Visible
+The length of this edge is: 11.9707
+
+(0)(12)
+Hidden
+The length of this edge is: 19.7981
+
+(20)(24)
+Visible
+The length of this edge is: 5.72385
+
+(20)(15)
+Visible
+The length of this edge is: 10.7606
+
+(24)(15)
+Hidden
+The length of this edge is: 25.1879
+
+(24)(23)
+Visible
+The length of this edge is: 8.2852
+
+(45)(35)
+Visible
+The length of this edge is: 6.22116
+
+(35)(39)
+Visible
+The length of this edge is: 6.76759
+
+(35)(31)
+Visible
+The length of this edge is: 8.03554
+
+(24)(2)
+Hidden
+The length of this edge is: 27.8595
+
+(15)(2)
+Hidden
+The length of this edge is: 26.2011
+
+(2)(20)
+Visible
+The length of this edge is: 14.5945
+
+(23)(25)
+Visible
+The length of this edge is: 13.5032
+
+(23)(37)
+Hidden
+The length of this edge is: 22.995
+
+(23)(26)
+Visible
+The length of this edge is: 12.9935
+
+(10)(20)
+Visible
+The length of this edge is: 5.79909
+
+(20)(11)
+Visible
+The length of this edge is: 1.76105
+
+(10)(15)
+Visible
+The length of this edge is: 8.894
+
+(16)(15)
+Visible
+The length of this edge is: 2.14086
+
+(23)(34)
+Visible
+The length of this edge is: 14.5069
+
+(23)(28)
+Visible
+The length of this edge is: 5.15139
+
+(34)(22)
+Visible
+The length of this edge is: 11.8076
+
+(28)(22)
+Visible
+The length of this edge is: 1.79881
+
+(15)(8)
+Hidden
+The length of this edge is: 20.5241
+
+(15)(13)
+Visible
+The length of this edge is: 6.28055
+
+(16)(8)
+Hidden
+The length of this edge is: 21.5078
+
+(16)(13)
+Visible
+The length of this edge is: 11.3798
+
+(11)(22)
+Visible
+The length of this edge is: 10.5329
+
+(19)(2)
+Hidden
+The length of this edge is: 65.5543
+
+(31)(30)
+Visible
+The length of this edge is: 1.62832
+
+(31)(34)
+Visible
+The length of this edge is: 5.18102
+
+(39)(30)
+Hidden
+The length of this edge is: 19.4404
+
+(39)(34)
+Visible
+The length of this edge is: 10.2392
+
+(30)(34)
+Visible
+The length of this edge is: 1.80626
+
+(21)(20)
+Visible
+The length of this edge is: 2.14431
+
+(21)(2)
+Hidden
+The length of this edge is: 24.1291
+
+(21)(12)
+Visible
+The length of this edge is: 7.24277
+
+(20)(12)
+Visible
+The length of this edge is: 4.97057
+
+(23)(21)
+Visible
+The length of this edge is: 5.56115
+
+(22)(21)
+Visible
+The length of this edge is: 2.31495
+
+(12)(22)
+Visible
+The length of this edge is: 11.6025
+
+(26)(43)
+Hidden
+The length of this edge is: 27.2617
+
+(26)(12)
+Hidden
+The length of this edge is: 22.9027
+
+(24)(21)
+Visible
+The length of this edge is: 2.36216
+
+(24)(26)
+Visible
+The length of this edge is: 5.38275
+
+(24)(22)
+Visible
+The length of this edge is: 6.48826
+
+(21)(26)
+Visible
+The length of this edge is: 6.95811
+
+(26)(22)
+Visible
+The length of this edge is: 8.55805
+
+(18)(19)
+Visible
+The length of this edge is: 5.32381
+
+(33)(18)
+Hidden
+The length of this edge is: 53.6898
+
+(33)(23)
+Hidden
+The length of this edge is: 18.7588
+
+(37)(24)
+Hidden
+The length of this edge is: 33.336
+
+(24)(25)
+Visible
+The length of this edge is: 2.26092
+
+(29)(32)
+Visible
+The length of this edge is: 2.35362
+
+(29)(28)
+Visible
+The length of this edge is: 2.19025
+
+(29)(30)
+Visible
+The length of this edge is: 2.33905
+
+(32)(30)
+Visible
+The length of this edge is: 6.40592
+
+(28)(30)
+Visible
+The length of this edge is: 6.32981
+
+(0)(43)
+Hidden
+The length of this edge is: 82.0377
+
+(8)(19)
+Hidden
+The length of this edge is: 40.1095
+
+(19)(6)
+Hidden
+The length of this edge is: 56.2858
+
+(33)(44)
+Visible
+The length of this edge is: 87.9962
+Edge too long
+
+(33)(3)
+Hidden
+The length of this edge is: 64.6365
+
+(44)(3)
+Hidden
+The length of this edge is: 114.899
+
+(19)(14)
+Hidden
+The length of this edge is: 22.2184
+
+(40)(26)
+Visible
+The length of this edge is: 13.3564
+
+(40)(27)
+Hidden
+The length of this edge is: 21.5712
+
+(40)(41)
+Visible
+The length of this edge is: 2.09092
+
+(26)(41)
+Visible
+The length of this edge is: 14.0436
+
+(27)(41)
+Visible
+The length of this edge is: 22.9093
+Edge too long
+
+(31)(37)
+Visible
+The length of this edge is: 14.679
+
+(31)(23)
+Hidden
+The length of this edge is: 22.1699
+
+(37)(30)
+Visible
+The length of this edge is: 12.7195
+
+(30)(23)
+Visible
+The length of this edge is: 13.3541
+
+(24)(12)
+Hidden
+The length of this edge is: 16.1785
+
+(21)(25)
+Visible
+The length of this edge is: 6.30036
+
+(48)(37)
+Visible
+The length of this edge is: 12.8427
+
+(48)(46)
+Visible
+The length of this edge is: 5.75233
+
+(48)(23)
+Hidden
+The length of this edge is: 61.0717
+
+(37)(46)
+Visible
+The length of this edge is: 8.29402
+
+(46)(23)
+Hidden
+The length of this edge is: 51.1871
+
+(47)(38)
+Hidden
+The length of this edge is: 25.6317
+
+(47)(40)
+Hidden
+The length of this edge is: 55.1713
+
+(47)(39)
+Hidden
+The length of this edge is: 41.3945
+
+(38)(40)
+Visible
+The length of this edge is: 6.61439
+
+(38)(39)
+Visible
+The length of this edge is: 2.27363
+
+(40)(39)
+Visible
+The length of this edge is: 2.30041
+
+(40)(42)
+Visible
+The length of this edge is: 6.45764
+
+(40)(44)
+Visible
+The length of this edge is: 9.35416
+
+(44)(41)
+Visible
+The length of this edge is: 5.50314
+
+(24)(18)
+Hidden
+The length of this edge is: 38.5486
+
+(37)(47)
+Visible
+The length of this edge is: 8.78839
+
+(37)(38)
+Visible
+The length of this edge is: 8.85478
+
+(27)(47)
+Hidden
+The length of this edge is: 66.869
+
+(27)(38)
+Hidden
+The length of this edge is: 23.3628
+
+(39)(28)
+Hidden
+The length of this edge is: 26.622
+
+(39)(41)
+Visible
+The length of this edge is: 6.16523
+
+(39)(42)
+Visible
+The length of this edge is: 10.6016
+
+(28)(41)
+Hidden
+The length of this edge is: 33.68
+
+(28)(42)
+Hidden
+The length of this edge is: 40.121
+
+(34)(26)
+Visible
+The length of this edge is: 10.8177
+
+(26)(28)
+Visible
+The length of this edge is: 10.8043
+
+(28)(12)
+Visible
+The length of this edge is: 12.771
+
+(28)(43)
+Hidden
+The length of this edge is: 43.3942
+
+(43)(3)
+Hidden
+The length of this edge is: 77.6989
+
+(29)(31)
+Visible
+The length of this edge is: 5.96634
+
+(31)(32)
+Visible
+The length of this edge is: 8.4482
+
+(43)(27)
+Visible
+The length of this edge is: 39.394
+Edge too long
+
+(23)(29)
+Visible
+The length of this edge is: 7.66859
+
+(29)(34)
+Visible
+The length of this edge is: 6.11221
+
+(12)(33)
+Hidden
+The length of this edge is: 22.5273
+
+(11)(33)
+Hidden
+The length of this edge is: 24.7873
+
+(33)(22)
+Hidden
+The length of this edge is: 16.4193
+
+(2)(27)
+Visible
+The length of this edge is: 46.567
+Edge too long
+
+(18)(27)
+Visible
+The length of this edge is: 67.0566
+Edge too long
+
+(27)(24)
+Visible
+The length of this edge is: 5.71906
+
+(4)(43)
+Visible
+The length of this edge is: 111.931
+Edge too long
+
+(34)(35)
+Visible
+The length of this edge is: 2.16068
+
+(27)(23)
+Hidden
+The length of this edge is: 22.7608
+
+(38)(26)
+Visible
+The length of this edge is: 11.6476
+
+(26)(39)
+Visible
+The length of this edge is: 13.5285
+
+(32)(49)
+Visible
+The length of this edge is: 64.3251
+Edge too long
+
+(49)(31)
+Visible
+The length of this edge is: 26.6386
+Edge too long
+
+(21)(28)
+Visible
+The length of this edge is: 6.26718
+
+(11)(28)
+Visible
+The length of this edge is: 14.6247
+
+(33)(31)
+Hidden
+The length of this edge is: 21.3385
+
+(18)(31)
+Hidden
+The length of this edge is: 86.2005
+
+(47)(48)
+Visible
+The length of this edge is: 1.53111
+
+(48)(40)
+Hidden
+The length of this edge is: 70.4809
+
+(45)(38)
+Visible
+The length of this edge is: 12.3864
+
+(38)(35)
+Visible
+The length of this edge is: 2.41867
+
+(37)(34)
+Visible
+The length of this edge is: 8.47571
+
+(33)(32)
+Visible
+The length of this edge is: 3.38292
+
+(33)(43)
+Hidden
+The length of this edge is: 81.7128
+
+(12)(32)
+Hidden
+The length of this edge is: 25.9352
+
+(32)(43)
+Hidden
+The length of this edge is: 63.4054
+
+(16)(33)
+Hidden
+The length of this edge is: 41.9818
+
+(17)(33)
+Hidden
+The length of this edge is: 52.8067
+
+(19)(33)
+Hidden
+The length of this edge is: 67.9642
+
+(33)(29)
+Visible
+The length of this edge is: 8.26159
+
+(33)(49)
+Visible
+The length of this edge is: 91.7292
+Edge too long
+
+(38)(34)
+Visible
+The length of this edge is: 6.11012
+
+(37)(35)
+Visible
+The length of this edge is: 5.59592
+
+(34)(42)
+Hidden
+The length of this edge is: 31.8338
+
+(37)(36)
+Visible
+The length of this edge is: 1.52418
+
+(37)(45)
+Visible
+The length of this edge is: 5.10996
+
+(18)(48)
+Hidden
+The length of this edge is: 119.273
+
+(48)(31)
+Hidden
+The length of this edge is: 40.7729
+
+(44)(30)
+Hidden
+The length of this edge is: 47.382
+
+(33)(28)
+Visible
+The length of this edge is: 11.0182
+
+(34)(36)
+Visible
+The length of this edge is: 6.20883
+
+(36)(35)
+Visible
+The length of this edge is: 2.35187
+
+(30)(36)
+Visible
+The length of this edge is: 9.80031
+
+(18)(37)
+Hidden
+The length of this edge is: 81.3709
+
+(45)(47)
+Visible
+The length of this edge is: 6.10965
+
+(42)(32)
+Hidden
+The length of this edge is: 58.6826
+
+(36)(38)
+Visible
+The length of this edge is: 6.40303
+
+(27)(48)
+Visible
+The length of this edge is: 73.6472
+Edge too long
+
+(47)(36)
+Visible
+The length of this edge is: 9.37544
+
+(25)(41)
+Hidden
+The length of this edge is: 21.026
+
+(18)(46)
+Hidden
+The length of this edge is: 121.687
+
+(47)(44)
+Visible
+The length of this edge is: 94.788
+Edge too long
+
+(19)(48)
+Hidden
+The length of this edge is: 169.104
+
+(19)(49)
+Hidden
+The length of this edge is: 203.147
+
+(48)(49)
+Visible
+The length of this edge is: 10.7437
+
+(47)(49)
+Visible
+The length of this edge is: 6.54897
+
+(47)(46)
+Visible
+The length of this edge is: 2.32839
+
+(49)(44)
+Visible
+The length of this edge is: 100.052
+Edge too long
+
+(18)(49)
+Hidden
+The length of this edge is: 152.447
+
+(49)(46)
+Visible
+The length of this edge is: 2.40242
+
+(45)(49)
+Visible
+The length of this edge is: 6.34648
+
+(49)(39)
+Hidden
+The length of this edge is: 49.771
+
+(40)(49)
+Hidden
+The length of this edge is: 69.6431
+

@@ -84,7 +84,7 @@ struct ShortEdgeCheck3D
 		result_type dy = a.y() - b.y();
 		result_type dz = a.z() - b.z();
 
-        result_type ret = (dx*dx + dy*dy + dz*dz) - squaredAlpha * 4;
+        result_type ret = squaredAlpha * 4 - (dx*dx + dy*dy + dz*dz);
 		return ret;
 	}
 };

@@ -10,6 +10,7 @@
 #define _USE_MATH_DEFINES
 #include <math.h>
 #include "UtilityFunctions.h"
+#include <boost/chrono.hpp>
 //#include "TrajectoryChangeEvent.h"
 
 #define CGAL_CHECK_EXACTNESS
@@ -30,10 +31,9 @@ typedef Traits::Active_points_3_table::Key Point_key;
 
 int main()
 {
-	Traits tr(0, 50);
+	boost::chrono::high_resolution_clock::time_point runTimeStart = boost::chrono::high_resolution_clock::now();
 
     typedef KineticAlphaComplexTriangulation3<Traits> AC;
-    AC beef(tr, Traits::Simulator::NT(2.0));
 
 	KineticAlphaComplexTriangulation3<Traits>::Cell_handle ddd;
     std::vector<StaticPoint> initialPoints;
@@ -44,29 +44,27 @@ int main()
 
 	//reading
 	std::ifstream input( "Points.txt" );
-	std::cout<<"Frame"<<std::endl;
-	std::cout<<"Vertices"<<std::endl;
 
-	int nrOfPoints = 20;
+	int nrOfPoints = 50;
+	int startOfRotation = 1;
+	int nrOfPointsMoving = 3;
+	int nrOfCorners = 5;
+
+    Traits tr(0, nrOfCorners * Helper::dt);
+    AC beef(tr, Traits::Simulator::NT(2.0));
+
 	int allPoints = 0;
-	int nrOfPointsMoving = 5;
 	for( std::string line; getline( input, line ); )
 	{
 		double x, y, z;
 		input >> x >> y >> z;
 		StaticPoint new_point = StaticPoint(x,y,z);		
         initialPoints.push_back(new_point);
-		if(nrOfPoints>allPoints)
-		{
-			std::cout<<x<<" ";
-			std::cout<<y<<" ";
-			std::cout<<z<<std::endl;
-		}
-		
 		allPoints++;
 		
 	}
 
+	//nrOfPoints = allPoints;
 
     std::set<int> VisitedIndexes;
 
@@ -74,17 +72,22 @@ int main()
 
     std::vector<Point_key> AlphaComplexKeys;
     
-    Simulator::NT angle = Simulator::NT(2) * M_PI/Simulator::NT(5);
-    
-    StaticPoint center = initialPoints[rand.get_int(0, nrOfPoints - 1)];
+    Simulator::NT angle = Simulator::NT(2) * M_PI/Simulator::NT(nrOfCorners);
+
+    StaticPoint center(0, 0, 0); //initialPoints[startOfRotation-1];
+
+	boost::chrono::high_resolution_clock::time_point initialisationTimeStart = 
+        boost::chrono::high_resolution_clock::now();
 
     for(int i = 0; i < nrOfPointsMoving; i++)
     {   
-        int f = rand.get_int(0, nrOfPoints-1);
+        /*random points selection
+		int f = rand.get_int(0, nrOfPoints-1);
         while (std::find(VisitedIndexes.begin(), VisitedIndexes.end(), f) 
                         != VisitedIndexes.end())
             f = rand.get_int(0, nrOfPoints-1);
-			
+			*/
+		int f = startOfRotation + i;			
         VisitedIndexes.insert(f);
         Point_key new_key = Helper::makePointRotate(initialPoints[f], center,
                     &tr, angle);
@@ -107,74 +110,41 @@ int main()
         }
     }
 
-
-	AC::Triangulation tri = beef.triangulation();
-
-	
-	std::cout<<"Edges"<<std::endl;
-        for (AC::Triangulation::All_edges_iterator eit = tri.all_edges_begin();
-			eit != tri.all_edges_end(); ++eit) 
-		{			
-			if(eit->first->vertex(eit->second)->point().is_valid() && eit->first->vertex(eit->third)->point().is_valid())
-			{
-				std::cout<<eit->first->vertex(eit->second)->point()<<
-						 eit->first->vertex(eit->third )->point()<< std::endl;				 		
-			}			
-        }
-
-	std::cout<<"Facet"<<std::endl;
-		for (AC::Triangulation::All_facets_iterator fit = tri.all_facets_begin();
-	                 fit != tri.all_facets_end(); ++fit)
-		{ 
-			bool pointsValid = true;
-			
-			for(int i=0; i<4; i++)
-				if(i != fit->second)
-					if(!fit->first->vertex(i)->point().is_valid())
-						pointsValid = false;
-
-			if(pointsValid)
-			{
-				for(int i=0; i<4; i++)
-					if(i != fit->second)
-						std::cout<<fit->first->vertex(i)->point();
-				std::cout<<std::endl;
-			}
-			
-		}
-
-	std::cout<<"Cell"<<std::endl;
-		for (AC::Triangulation::All_cells_iterator cit = tri.all_cells_begin();
-			cit != tri.all_cells_end(); ++cit)
-		{
-			
-			bool pointsValid = true;
-			
-			for(int i=0; i<4; i++)
-					if(!cit->vertex(i)->point().is_valid())
-						pointsValid = false;
-
-			if(pointsValid)
-			{
-				for(int i=0; i<4; i++)
-					std::cout<<cit->vertex(i)->point();
-				std::cout<<std::endl;
-				
-			}
-			
-		}
+	boost::chrono::high_resolution_clock::time_point initialisationTimeEnd = boost::chrono::high_resolution_clock::now();
+	std::cout <<"Initialisation Triangulation: ";
+	std::cout << boost::chrono::duration_cast<boost::chrono::milliseconds>(initialisationTimeEnd-initialisationTimeStart) << "\n";
 
     beef.set_has_certificates(true);
-
+	std::ofstream outputFile, edgeSize;
+    outputFile.open ("out.txt");
+    edgeSize.open("edgeSizes.txt");
 	while (sp->next_event_time() != sp->end_time()) 
     {
-		printf("Frame",sp->current_event_number());
+		//boost::chrono::high_resolution_clock::time_point frameTimeStart = boost::chrono::high_resolution_clock::now();
+		printf("Frame %i",sp->current_event_number());
 		std::cout<<std::endl;
-        beef.WriteVerticesAndEdges();
+        beef.WriteVerticesAndEdges(outputFile);
+        beef.DisplayEdgeSize(edgeSize);
         sp->set_current_event_number(sp->current_event_number()+1);
+		/*boost::chrono::high_resolution_clock::time_point frameTimeEnd = boost::chrono::high_resolution_clock::now();
+		std::cout << boost::chrono::duration_cast<boost::chrono::milliseconds>(frameTimeEnd-frameTimeStart) << "\n";*/
     }
+	
+    edgeSize.close();
+	outputFile.close();	
+	printf("Nr Of Edge Flips: %d\n",beef.getNrOfEdgeFlips());
+	printf("Nr Of Facet Flips: %d\n",beef.getNrOfFacetFlips());
+	printf("Nr Of Short Edge: %d\n",beef.getNrOfShortEdge());
+	printf("Nr Of Short Facet: %d\n",beef.getNrOfShortFacet());
+	printf("Nr Of Short Cell: %d\n",beef.getNrOfShortCell());
+	boost::chrono::high_resolution_clock::time_point runTimeEnd = boost::chrono::high_resolution_clock::now();
+	
+	std::cout <<"Initialisation Triangulation: ";
+	std::cout << boost::chrono::duration_cast<boost::chrono::milliseconds>(initialisationTimeEnd-initialisationTimeStart) << "\n";
+	std::cout <<"Run Time: ";
+	std::cout << boost::chrono::duration_cast<boost::chrono::milliseconds>(runTimeEnd-runTimeStart) << "\n";
 
-    printf("Simulator time %d\n",tr.simulator_handle()->current_time());
+    //printf("Simulator time: %d\n",tr.simulator_handle()->current_time());
 
 	return 0;
 }
