@@ -166,11 +166,6 @@ public:
 		kdel_.displayTest(outputFile);
 	}
 	
-    void DisplayEdgeSize(std::ofstream& outputFile)
-    {
-        kdel_.DisplaySize(outputFile);
-    };
-	
 	int getNrOfEdgeFlips()
 	{
 		return kdel_.getNrOfEdgeFlips();

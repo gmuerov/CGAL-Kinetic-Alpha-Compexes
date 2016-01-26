@@ -33,10 +33,10 @@ int main()
 {
 
 	
-	int nrOfPoints = 100;
-	int startOfRotation = 50;
+	int nrOfPoints = 50;
+	int startOfRotation = 1;
 	int nrOfPointsMoving = 2;
-	int nrOfCorners = 8;
+	int nrOfCorners = 5;
 
 	boost::chrono::high_resolution_clock::time_point runTimeStart = boost::chrono::high_resolution_clock::now();
 	Traits tr(0, nrOfCorners*10);
@@ -118,20 +118,17 @@ int main()
     beef.set_has_certificates(true);
 	std::ofstream outputFile, edgeSize;
     outputFile.open ("out.txt");
-    edgeSize.open("edgeSizes.txt");
 	while (sp->next_event_time() != sp->end_time()) 
     {
 		//boost::chrono::high_resolution_clock::time_point frameTimeStart = boost::chrono::high_resolution_clock::now();
 		printf("Frame %i",sp->current_event_number());
 		std::cout<<std::endl;
         beef.WriteVerticesAndEdges(outputFile);
-        beef.DisplayEdgeSize(edgeSize);
         sp->set_current_event_number(sp->current_event_number()+1);
 		/*boost::chrono::high_resolution_clock::time_point frameTimeEnd = boost::chrono::high_resolution_clock::now();
 		std::cout << boost::chrono::duration_cast<boost::chrono::milliseconds>(frameTimeEnd-frameTimeStart) << "\n";*/
     }
 	
-    edgeSize.close();
 	outputFile.close();	
 	printf("Nr Of Edge Flips: %d\n",beef.getNrOfEdgeFlips());
 	printf("Nr Of Facet Flips: %d\n",beef.getNrOfFacetFlips());
