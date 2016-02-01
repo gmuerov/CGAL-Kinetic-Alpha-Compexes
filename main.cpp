@@ -31,12 +31,57 @@ typedef Traits::Active_points_3_table::Key Point_key;
 
 int main()
 {
+	// If testWith50RandomPoints is true the program will run a test with random points
+	bool testWith50RandomPoints = true;
+	// If testWith50ProteinPoints is true the program will run a test with points from the protein 1KT3.pdb database
+	bool testWith50ProteinPoints = false;
+	// The indexis of the points that will be in motion
+	int nrOfPointsMoving[] = {5,6,7,8,9};
 
-	
-	int nrOfPoints = 50;
-	int startOfRotation = 1;
-	int nrOfPointsMoving = 2;
-	int nrOfCorners = 5;
+	int nrOfPoints,startOfRotation,nrOfCorners;
+	double alpha;
+	std::string outputTxtFile;
+	bool useProteinPoints,useRandomPoints,makeNewRandomPoints;
+
+	if(testWith50RandomPoints)
+	{
+		 // Nr of points used
+		 nrOfPoints = 50;
+		 // The rotation point
+		 startOfRotation = 25;	
+		 // Number of corners is used to simulate a circle	
+		 nrOfCorners = 5;
+		 // The Alpha
+		 alpha = 2.0;
+		 // If useProteinPoints true, read points from the protein 1KT3.pdb database
+		 useProteinPoints = false;
+		 // If useRandomPoints true, read points from the radom points file
+		 useRandomPoints = true;
+		 // If makeNewRandomPoints true, make and read a file with  random points
+		 makeNewRandomPoints = false;
+		 //Output file name
+		 outputTxtFile = "out.txt";
+	}
+
+	if(testWith50ProteinPoints)
+	{
+		 // Nr of points used
+		 nrOfPoints = 50;
+		 // The rotation point
+		 startOfRotation = 4;
+		 // Number of corners is used to simulate a circle
+		 nrOfCorners = 5;
+		 // The Alpha
+		 alpha = 2.0;
+		 // If useProteinPoints true, read points from the protein 1KT3.pdb database
+		 useProteinPoints = true;
+		 // If useRandomPoints true, read points from the radom points file
+		 useRandomPoints = false;
+		 // If makeNewRandomPoints true, make and read a file with  random points
+		 makeNewRandomPoints = false;
+		 //Output file name
+		 outputTxtFile = "out.txt";
+	}
 
 	boost::chrono::high_resolution_clock::time_point runTimeStart = boost::chrono::high_resolution_clock::now();
 	Traits tr(0, nrOfCorners*10);
@@ -46,27 +91,54 @@ int main()
 	KineticAlphaComplexTriangulation3<Traits>::Cell_handle ddd;
     std::vector<StaticPoint> initialPoints;
 
-    int numP = 50;
-
     CGAL::Random rand;
 
-	//reading
-	std::ifstream input( "Points.txt" );
-    AC beef(tr, Traits::Simulator::NT(2.0));
-
-	int allPoints = 0;
-	for( std::string line; getline( input, line ); )
+    AC beef(tr, Traits::Simulator::NT(alpha));
+	
+	//Reading Protein Points
+	if(useProteinPoints)
 	{
-		double x, y, z;
-		input >> x >> y >> z;
-		StaticPoint new_point = StaticPoint(x,y,z);		
-        initialPoints.push_back(new_point);
-		allPoints++;
-		
+		std::ifstream input( "Points.txt" );
+		for( std::string line; getline( input, line ); )
+		{
+			double x, y, z;
+			input >> x >> y >> z;
+			StaticPoint new_point = StaticPoint(x,y,z);		
+			initialPoints.push_back(new_point);
+		}
+	
 	}
 
-	//nrOfPoints = allPoints;
-
+	//Reading Random Points
+	if(useRandomPoints)
+	{
+		std::ifstream input( "randPoint.txt" );
+		for( std::string line; getline( input, line ); )
+		{
+			double x, y, z;
+			input >> x >> y >> z;
+			StaticPoint new_point = StaticPoint(x,y,z);		
+			initialPoints.push_back(new_point);
+		}
+	
+	}
+	
+	//Making and Reading Random Points
+	if(makeNewRandomPoints)
+	{
+		std::ofstream outputPiontFile;
+		outputPiontFile.open ("randPoint.txt");
+		CGAL::Random rand;
+		for(int i=0;i<=nrOfPoints;i++ )
+		{	
+			StaticPoint new_point = Helper::sampleCube(rand,5);		
+			initialPoints.push_back(new_point);
+			outputPiontFile <<new_point.x()<<" "<<new_point.y()<<" "<<new_point.z()<<std::endl;
+		}
+		
+		outputPiontFile.close();
+	}
+	
     std::set<int> VisitedIndexes;
 
     std::vector<Point_key> movingPoints;
@@ -75,20 +147,15 @@ int main()
     
     Simulator::NT angle = Simulator::NT(2) * M_PI/Simulator::NT(nrOfCorners);
 
-    StaticPoint center(0, 0, 0); //initialPoints[startOfRotation-1];
+    StaticPoint center = initialPoints[startOfRotation-1];
 
 	boost::chrono::high_resolution_clock::time_point initialisationTimeStart = 
         boost::chrono::high_resolution_clock::now();
 
-    for(int i = 0; i < nrOfPointsMoving; i++)
+    for(int i = 0; i < sizeof(nrOfPointsMoving) / sizeof(int); i++)
     {   
-        /*random points selection
-		int f = rand.get_int(0, nrOfPoints-1);
-        while (std::find(VisitedIndexes.begin(), VisitedIndexes.end(), f) 
-                        != VisitedIndexes.end())
-            f = rand.get_int(0, nrOfPoints-1);
-			*/
-		int f = startOfRotation + i;			
+
+		int f = nrOfPointsMoving[i];			
         VisitedIndexes.insert(f);
         Point_key new_key = Helper::makePointRotate(initialPoints[f], center,
                     &tr, angle);
@@ -112,24 +179,33 @@ int main()
     }
 
 	boost::chrono::high_resolution_clock::time_point initialisationTimeEnd = boost::chrono::high_resolution_clock::now();
-	std::cout <<"Initialisation Triangulation: ";
-	std::cout << boost::chrono::duration_cast<boost::chrono::milliseconds>(initialisationTimeEnd-initialisationTimeStart) << "\n";
-
     beef.set_has_certificates(true);
-	std::ofstream outputFile, edgeSize;
-    outputFile.open ("out.txt");
+
+
+	std::ofstream outputFile;
+    outputFile.open (outputTxtFile);
+	
 	while (sp->next_event_time() != sp->end_time()) 
     {
-		//boost::chrono::high_resolution_clock::time_point frameTimeStart = boost::chrono::high_resolution_clock::now();
-		printf("Frame %i",sp->current_event_number());
+		printf("Events %i",sp->current_event_number());
 		std::cout<<std::endl;
         beef.WriteVerticesAndEdges(outputFile);
         sp->set_current_event_number(sp->current_event_number()+1);
-		/*boost::chrono::high_resolution_clock::time_point frameTimeEnd = boost::chrono::high_resolution_clock::now();
-		std::cout << boost::chrono::duration_cast<boost::chrono::milliseconds>(frameTimeEnd-frameTimeStart) << "\n";*/
     }
 	
-	outputFile.close();	
+	outputFile.close();
+	
+	std::cout <<"Nr Of Points: ";
+	std::cout << nrOfPoints << "\n";
+	std::cout <<"Nr Of Rotation: ";
+	std::cout << startOfRotation << "\n";
+	std::cout <<"Nr Of Point Moving: ";
+	for(int i = 0; i < sizeof(nrOfPointsMoving) / sizeof(int); i++)
+		std::cout << nrOfPointsMoving[i] << ",";
+	std::cout << "\n";
+	std::cout <<"Nr Of Corners: ";
+	std::cout << nrOfCorners << "\n";
+
 	printf("Nr Of Edge Flips: %d\n",beef.getNrOfEdgeFlips());
 	printf("Nr Of Facet Flips: %d\n",beef.getNrOfFacetFlips());
 	printf("Nr Of Short Edge: %d\n",beef.getNrOfShortEdge());
@@ -141,8 +217,6 @@ int main()
 	std::cout << boost::chrono::duration_cast<boost::chrono::milliseconds>(initialisationTimeEnd-initialisationTimeStart) << "\n";
 	std::cout <<"Run Time: ";
 	std::cout << boost::chrono::duration_cast<boost::chrono::milliseconds>(runTimeEnd-runTimeStart) << "\n";
-
-    //printf("Simulator time: %d\n",tr.simulator_handle()->current_time());
 
 	return 0;
 }

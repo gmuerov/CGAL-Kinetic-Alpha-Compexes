@@ -150,8 +150,9 @@ struct ShortTriangleCheck3D
 		result_type M013 = b.x() * c.z() + c.x() * a.z() + a.x() * b.z() -
 					      (b.x() * a.z() + c.x() * b.z() + a.x() * c.z());
 
+
 		return squaredAlpha * (M012 * M012 + M023*M023 + M013*M013) * 4 - 
-                    distanceAB * distanceBC * distanceBC;
+                    distanceAB * distanceBC * distanceAC;
 	}
 };
 

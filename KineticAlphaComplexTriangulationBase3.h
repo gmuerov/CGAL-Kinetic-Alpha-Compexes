@@ -51,6 +51,7 @@ public:
 
     Facet flip(const Edge &e)
 	{
+		nrOfEdgeFlips++;
         Cell_handle deletedCell = e.first;
 
 		for (int i = 0; i < 4; i++)
